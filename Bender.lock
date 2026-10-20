@@ -1,0 +1,19 @@
+packages:
+  common_cells:
+    revision: null
+    version: null
+    source:
+      Path: vendor/common_cells
+    dependencies: []
+  cvfpu:
+    revision: null
+    version: null
+    source:
+      Path: vendor/cvfpu
+    dependencies: []
+  fpu_div_sqrt_mvp:
+    revision: null
+    version: null
+    source:
+      Path: vendor/fpu_div_sqrt_mvp
+    dependencies: []

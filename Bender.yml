@@ -1,0 +1,90 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+package:
+  name: coralnpu
+
+# Third-party RTL is vendored (and patched) into vendor/ with `bender vendor`.
+# Vendored packages carry their own upstream Bender.yml (where one exists),
+# so these are plain path dependencies.
+dependencies:
+  common_cells: { path: vendor/common_cells }
+  fpu_div_sqrt_mvp: { path: vendor/fpu_div_sqrt_mvp }
+  cvfpu: { path: vendor/cvfpu }
+
+# Upstream cvfpu references git revisions of common_cells/fpu_div_sqrt_mvp;
+# force everything onto the pinned, vendored copies.
+overrides:
+  common_cells: { path: vendor/common_cells }
+  fpu_div_sqrt_mvp: { path: vendor/fpu_div_sqrt_mvp }
+
+vendor_package:
+  - name: common_cells
+    target_dir: vendor/common_cells
+    upstream:
+      git: "https://github.com/pulp-platform/common_cells.git"
+      rev: 6aeee85d0a34fedc06c14f04fd6363c9f7b4eeea
+  - name: fpu_div_sqrt_mvp
+    target_dir: vendor/fpu_div_sqrt_mvp
+    upstream:
+      git: "https://github.com/pulp-platform/fpu_div_sqrt_mvp.git"
+      rev: 86e1f558b3c95e91577c41b2fc452c86b04e85ac
+  - name: cvfpu
+    target_dir: vendor/cvfpu
+    upstream:
+      git: "https://github.com/openhwgroup/cvfpu.git"
+      rev: bb65bdedd07711dfd41c621382f940a5cbb93046
+    patch_dir: vendor/patches/cvfpu
+  # Scala (not RTL) sources: rocket-chip's AsyncQueue and what it needs.
+  # Compiled by the `asyncqueue` sbt subproject.
+  - name: rocket_chip
+    target_dir: vendor/rocket_chip
+    upstream:
+      git: "https://github.com/chipsalliance/rocket-chip.git"
+      rev: f517abbf41abb65cea37421d3559f9739efd00a9
+    include_from_upstream:
+      - src/main/scala/util/AsyncQueue.scala
+      - src/main/scala/util/AsyncResetReg.scala
+      - src/main/scala/util/Counters.scala
+      - src/main/scala/util/Crossing.scala
+      - src/main/scala/util/ShiftReg.scala
+      - src/main/scala/util/SynchronizerReg.scala
+      - src/main/scala/util/package.scala
+      - LICENSE.SiFive
+      - LICENSE.Berkeley
+  - name: diplomacy
+    target_dir: vendor/diplomacy
+    upstream:
+      git: "https://github.com/chipsalliance/diplomacy.git"
+      rev: 6590276fa4dac315ae7c7c01371b954c5687a473
+    include_from_upstream:
+      - diplomacy/src/diplomacy/nodes/HeterogeneousBag.scala
+  # RVVI reflects tag 20240403.0 (before its update).
+  - name: RVVI
+    target_dir: vendor/RVVI
+    upstream:
+      git: "https://github.com/riscv-verification/RVVI.git"
+      rev: 5786f0d39b84f3fd15ef75b792bdea4281941afe
+    patch_dir: vendor/patches/RVVI
+
+sources:
+  # Hand-written RTL that the Chisel designs instantiate as BlackBoxes.
+  - hdl/verilog/ClockGate.sv
+  - hdl/verilog/RstSync.sv
+  - hdl/verilog/Sram.v
+
+  # RVVI trace interface (simulation only).
+  - target: rvvi
+    files:
+      - vendor/RVVI/source/host/rvvi/rvviTrace.sv
