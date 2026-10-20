@@ -71,3 +71,18 @@ endif
 	  --model $(BUILD)/model/$(MODEL)/$($(MODEL)_TOP) \
 	  --hdl_toplevel $($(MODEL)_TOP) --test_module $(MODULE) \
 	  $(if $(TESTCASE),--testcase $(TESTCASE))
+
+# ---- Suites (module + model pairs from the former cocotb_test_suite targets) ----
+
+include mk/cocotb_suites.mk
+
+.PHONY: list-suites cocotb-suite
+
+list-suites:
+	@printf '%s\n' $(COCOTB_SUITES)
+
+cocotb-suite:
+ifndef SUITE
+	$(error usage: make cocotb-suite SUITE=<name>; see `make list-suites`)
+endif
+	$(MAKE) cocotb-test MODEL=$($(SUITE)_MODEL) MODULE=$($(SUITE)_MODULE) TESTCASE=$(TESTCASE)

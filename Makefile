@@ -21,6 +21,8 @@
 #   make flist                   Bender file list for the hand-written RTL
 #   make model MODEL=core_mini_axi_model   Verilate a cocotb model (make list-models)
 #   make cocotb-test MODEL=... MODULE=tests.cocotb.core_mini_axi_sim [TESTCASE=...]
+#   make cocotb-suite SUITE=tests_cocotb_core_mini_axi_sim_cocotb   (make list-suites)
+#   make riscv-tests                       Build the riscv-tests ELFs
 #   make elf T=tests/cocotb/wfi_slot_0     Build a firmware ELF (make list-elfs, elfs-cocotb)
 #   make chisel-test T=coralnpu.AluSpec   run one Chisel test class (omit T for all)
 #

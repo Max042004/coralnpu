@@ -57,9 +57,39 @@ make chisel-test T=coralnpu.AluSpec   # one test class; omit T for everything
 make flist                            # build/coralnpu.f from Bender.yml
 ```
 
+## Verilator models, firmware and cocotb
+
+```bash
+make list-models
+make model MODEL=core_mini_axi_model            # Verilate (generates the RTL first)
+make elfs-cocotb                                # firmware for tests/cocotb (make list-elfs)
+make riscv-tests                                # riscv-tests ELFs (vendored, patched)
+make cocotb-suite SUITE=tests_cocotb_core_mini_axi_sim_cocotb
+make cocotb-test MODEL=core_mini_axi_model MODULE=tests.cocotb.core_mini_axi_sim TESTCASE=core_mini_axi_slow_bready
+```
+
+* `mk/models.mk`, `mk/sw_targets.mk`, `mk/cocotb_suites.mk` are tables extracted
+  from the former Bazel targets by `utils/extract_*.py` (kept for regeneration
+  while Bazel files still exist).
+* Firmware uses the prebuilt toolchain (`utils/setup_vm.sh toolchain`) and
+  `utils/gen_linker_script.py` (port of `rules/linker.bzl`). `SW_COPT=opt|dbg`
+  selects the optimisation mode (default is Bazel's `fastbuild`).
+* The tests are unchanged: `utils/pyshim/` provides a stand-in for
+  `bazel_tools.tools.python.runfiles` that resolves `coralnpu_hw/<path>` in
+  `build/runfiles/` (built artifacts) and then in the source tree.
+* `utils/cocotb_run.py` replaces `rules/cocotb_wrapper.py`.
+
+Verified on the `vivado` OrbStack VM: `core_mini_axi_sim` passes 30/30 on both
+`core_mini_axi_model` and `rvv_core_mini_axi_model`; a TL-UL suite also passes.
+
 ## Status of the migration
 
 Done: RTL dependency management, Chisel generation and unit tests, tool
-provisioning. Still on the former Bazel rules (to be ported): Verilator
-simulation models, cocotb tests, RISC-V toolchain/firmware, MPACT, Spike,
-SystemC, TFLite Micro, FPGA (FuseSoC `.core`) flows.
+provisioning, Verilator cocotb models, firmware ELFs (491 targets, see
+`mk/sw_targets.mk`), riscv-tests, cocotb runner.
+
+Still on the former Bazel rules: firmware that needs extra libraries or
+generated sources (RVV arithmetic templates, `sw/utils`, FreeRTOS, TFLite
+Micro; listed as UNSUPPORTED in `mk/sw_targets.mk`), MPACT, Spike, SystemC,
+VCS/UVM flows, FPGA (FuseSoC `.core`) flows, lint, and the Bazel files
+themselves.
