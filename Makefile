@@ -19,6 +19,9 @@
 #   make rtl-all                 generate every design in mk/designs.mk
 #   make list-designs
 #   make flist                   Bender file list for the hand-written RTL
+#   make model MODEL=core_mini_axi_model   Verilate a cocotb model (make list-models)
+#   make cocotb-test MODEL=... MODULE=tests.cocotb.core_mini_axi_sim [TESTCASE=...]
+#   make elf T=tests/cocotb/wfi_slot_0     Build a firmware ELF (make list-elfs, elfs-cocotb)
 #   make chisel-test T=coralnpu.AluSpec   run one Chisel test class (omit T for all)
 #
 # Tools (bender, sbt, firtool, verilator) are installed by utils/setup_vm.sh.
@@ -36,6 +39,9 @@ export CHISEL_FIRTOOL_PATH := $(dir $(FIRTOOL))
 endif
 
 include mk/designs.mk
+include mk/model.mk
+include mk/sw.mk
+include mk/riscv_tests.mk
 
 .DEFAULT_GOAL := help
 .PHONY: help vendor-update flist rtl rtl-all list-designs chisel-compile chisel-test clean
@@ -47,7 +53,7 @@ help:
 
 # vendor/ is committed, as is usual for Bender vendor_package; this target is
 # only needed after changing a pinned revision in Bender.yml or a patch.
-VENDOR_PKGS := common_cells fpu_div_sqrt_mvp cvfpu RVVI rocket_chip diplomacy
+VENDOR_PKGS := common_cells fpu_div_sqrt_mvp cvfpu RVVI rocket_chip diplomacy riscv-tests
 
 vendor-update:
 	rm -rf $(addprefix vendor/,$(VENDOR_PKGS))

@@ -19,7 +19,7 @@
 #
 #   orb -m <vm> bash utils/setup_vm.sh [step...]
 #
-# Steps: apt bender sbt firtool verilator   (default: all)
+# Steps: apt bender sbt firtool verilator toolchain python   (default: all)
 set -euo pipefail
 
 TOOLS="${TOOLS:-$HOME/tools}"
@@ -27,6 +27,10 @@ BENDER_VERSION="${BENDER_VERSION:-0.28.1}"
 SBT_VERSION="${SBT_VERSION:-1.10.7}"
 FIRTOOL_VERSION="${FIRTOOL_VERSION:-1.114.0}"   # llvm-firtool jar on Maven
 VERILATOR_VERSION="${VERILATOR_VERSION:-5.052}"
+TOOLCHAIN_URL="${TOOLCHAIN_URL:-https://storage.googleapis.com/shodan-public-artifacts/toolchain_coralnpu_v2-2026-06-29.tar.xz}"
+TOOLCHAIN_SHA256="${TOOLCHAIN_SHA256:-de06690c2da5cd783d76b2998208bd4db4dcdc22dec146c7b0a5ee1af40d3db7}"
+UV_VERSION="${UV_VERSION:-0.5.31}"
+PYTHON_VERSION="${PYTHON_VERSION:-3.11}"
 
 mkdir -p "$TOOLS" "$HOME/bin"
 
@@ -87,6 +91,29 @@ step_verilator() {
   "$HOME/bin/verilator" --version
 }
 
-STEPS=("$@"); [ ${#STEPS[@]} -gt 0 ] || STEPS=(apt bender sbt firtool verilator)
+# Prebuilt RISC-V cross toolchain for CoralNPU firmware (same archive the
+# Bazel build used).
+step_toolchain() {
+  local tmp; tmp="$(mktemp -d)"
+  curl -fsSL -o "$tmp/tc.tar.xz" "$TOOLCHAIN_URL"
+  echo "$TOOLCHAIN_SHA256  $tmp/tc.tar.xz" | sha256sum -c -
+  rm -rf "$TOOLS/toolchain_coralnpu_v2"
+  tar xJf "$tmp/tc.tar.xz" -C "$TOOLS"
+  ls "$TOOLS/toolchain_coralnpu_v2/bin" | head -5
+}
+
+# Python 3.11 venv (cocotb et al.), matching the old hermetic interpreter.
+step_python() {
+  local tmp; tmp="$(mktemp -d)"
+  curl -fsSL -o "$tmp/uv.tgz" \
+    "https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/uv-x86_64-unknown-linux-gnu.tar.gz"
+  tar xzf "$tmp/uv.tgz" -C "$tmp"
+  install -m755 "$tmp"/uv-*/uv "$HOME/bin/uv"
+  "$HOME/bin/uv" venv --python "$PYTHON_VERSION" "$TOOLS/venv"
+  "$HOME/bin/uv" pip install --python "$TOOLS/venv/bin/python" \
+    -r "$(dirname "$0")/../requirements.txt"
+}
+
+STEPS=("$@"); [ ${#STEPS[@]} -gt 0 ] || STEPS=(apt bender sbt firtool verilator toolchain python)
 for s in "${STEPS[@]}"; do echo "=== $s ==="; "step_$s"; done
 echo 'Add to your shell profile:  export PATH="$HOME/bin:$PATH"'

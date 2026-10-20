@@ -70,6 +70,17 @@ vendor_package:
       rev: 6590276fa4dac315ae7c7c01371b954c5687a473
     include_from_upstream:
       - diplomacy/src/diplomacy/nodes/HeterogeneousBag.scala
+  # RISC-V ISA tests; `env/` is a submodule upstream and lives in
+  # third_party/riscv-tests/env (CoralNPU-specific).
+  - name: riscv-tests
+    target_dir: vendor/riscv-tests
+    upstream:
+      git: "https://github.com/riscv-software-src/riscv-tests.git"
+      rev: fd4e6cdd033d9075632be9dd207c848181ca474c
+    patch_dir: vendor/patches/riscv-tests
+    include_from_upstream:
+      - isa
+      - LICENSE
   # RVVI reflects tag 20240403.0 (before its update).
   - name: RVVI
     target_dir: vendor/RVVI
