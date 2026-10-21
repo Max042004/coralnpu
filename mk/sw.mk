@@ -131,7 +131,8 @@ $(foreach t,$(SW_TARGETS),$(eval $(call sw_rule,$(t))))
 -include $(shell find $(SW_OUT) -name '*.d' 2>/dev/null)
 
 SW_ELFS := $(foreach t,$(SW_TARGETS),$($(t)_ELF))
-COCOTB_ELFS := $(foreach t,$(filter tests_cocotb_%,$(SW_TARGETS)),$($(t)_ELF))
+# Firmware the cocotb suites load: tests/cocotb plus the examples.
+COCOTB_ELFS := $(foreach t,$(filter tests_cocotb_% examples_%,$(SW_TARGETS)),$($(t)_ELF))
 
 .PHONY: elf elfs-cocotb list-elfs
 list-elfs:
