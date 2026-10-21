@@ -1,0 +1,4 @@
+# Used by `make host-deps` (GIT_CONFIG_GLOBAL): fetch submodules over https
+# instead of ssh, so no GitHub ssh keys are required.
+[url "https://github.com/"]
+	insteadOf = git@github.com:

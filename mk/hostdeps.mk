@@ -41,7 +41,7 @@ CMAKE_COMMON := -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=$(HOST_
 host-deps: $(ROOT)/tools/.bender/.checked_out
 
 # Submodules are listed with ssh URLs; fetch them over https (no ssh keys needed).
-GIT_HTTPS := GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=url.https://github.com/.insteadOf GIT_CONFIG_VALUE_0=git@github.com:
+GIT_HTTPS := GIT_CONFIG_GLOBAL=$(ROOT)/tools/gitconfig
 
 # The libsystemctlm-soc checkout may still fail on its (unneeded) submodules; the headers are all we use.
 $(ROOT)/tools/.bender/.checked_out: tools/Bender.yml
