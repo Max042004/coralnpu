@@ -75,14 +75,14 @@ $(UVM_OUT)/$(1)/Vuvm: $(BUILD)/rtl/$(uvm_dut_design_$(1))/$(uvm_dut_design_$(1))
                       $(SPIKE_BUILD)/spike $(MPACT_LINENOISE) $(DEPS_PREFIX)/lib/libantlr4-runtime.a
 	@mkdir -p $(UVM_OUT)/$(1)
 	sed 's/{HDL_TOPLEVEL}/coralnpu_tb_top/g' mk/default.vlt.tpl > $(UVM_OUT)/$(1)/coralnpu_tb_top.vlt
-	cd $(ROOT) && $$(VERILATOR) -cc --main --build -j $$(JOBS) --top-module coralnpu_tb_top --vpi \
+	cd $(ROOT) && $$(VERILATOR) -cc --exe --main --build -j $$(JOBS) --top-module coralnpu_tb_top --vpi \
 	  --prefix Vtop -Mdir $(UVM_OUT)/$(1) -o Vuvm \
 	  -I$(UVM_LIB)/src $(UVM_LIB)/src/uvm_pkg.sv \
 	  $$(addprefix -Itests/uvm/,$$(UVM_INC_DIRS)) $$(UVM_VFLAGS) $$(uvm_dut_flags_$(1)) \
 	  --output-split 20000 --output-split-cfuncs 2000 --output-groups $$(JOBS) \
 	  -CFLAGS "$$(UVM_CFLAGS)" -LDFLAGS "$$(UVM_LDFLAGS)" \
 	  $(UVM_OUT)/$(1)/coralnpu_tb_top.vlt $$(UVM_SV) $(BUILD)/rtl/$(uvm_dut_design_$(1))/$(uvm_dut_design_$(1)).sv \
-	  $$(UVM_DPI_CC)
+	  $$(addprefix $(ROOT)/,$$(UVM_DPI_CC))
 endef
 $(foreach d,rvv vme,$(eval $(call uvm_model_rule,$(d))))
 
@@ -98,5 +98,20 @@ endif
 	  UVM_ENABLE_SPIKE=$(SPIKE) UVM_SPIKE_RLOCATION=$(if $(filter 1,$(SPIKE)),SPIKE) \
 	  UVM_CORALNPU_ELFS="$$(for e in $(ELFS); do \
 	    printf '%s\t%s\t%s\t%s\n' $(ELF_DIR)/$$e.elf $$e $(TIMEOUT) $(if $(filter 1,$(SPIKE)),True,False); done)" \
+	  CORALNPU_RUNFILES=$(ELF_DIR) PYTHONPATH=$(ROOT)/utils:$(ROOT)/utils/pyshim \
+	  $(PYTHON) utils/uvm_batch_runner.py
+
+# Full regression: every firmware binary / riscv-test that was a UVM regression target in the
+# Bazel build (list: mk/uvm_regression.tsv, from utils/gen_uvm_regression.py).
+UVM_REG_TSV  := mk/uvm_regression.tsv
+UVM_REG_FW   := $(addprefix $(ELF_DIR)/,$(filter-out third_party/%,$(shell cut -f1 $(UVM_REG_TSV))))
+
+.PHONY: uvm-regression
+uvm-regression: $(UVM_OUT)/$(DUT)/Vuvm $(UVM_REG_FW) riscv-tests $(SPIKE_BUILD)/spike
+	cd $(ROOT) && UVM_MODEL_RLOCATION=$(UVM_OUT)/$(DUT)/Vuvm \
+	  UVM_ENABLE_SPIKE=$(SPIKE) UVM_SPIKE_RLOCATION=$(if $(filter 1,$(SPIKE)),SPIKE) \
+	  UVM_CORALNPU_ELFS="$$(awk -F'\t' -v d=$(ELF_DIR) -v sp=$(SPIKE) \
+	    '{ printf "%s/%s\t%s\t%s\t%s\n", d, $$1, $$2, $$3, ($$4 == "True" && sp == "1") ? "True" : "False" }' \
+	    $(UVM_REG_TSV))" \
 	  CORALNPU_RUNFILES=$(ELF_DIR) PYTHONPATH=$(ROOT)/utils:$(ROOT)/utils/pyshim \
 	  $(PYTHON) utils/uvm_batch_runner.py

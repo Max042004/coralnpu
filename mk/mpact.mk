@@ -35,7 +35,8 @@ MPACT_CC  ?= clang
 MPACT_INCS =-Ivendor/mpact-sim -Ivendor/mpact-riscv -Ivendor/coralnpu-mpact \
              -I$(MPACT_GEN)/mpact-sim -I$(MPACT_GEN)/mpact-riscv -I$(MPACT_GEN)/coralnpu-mpact \
              -isystem $(DEPS_PREFIX)/include -isystem $(DEPS_PREFIX)/include/antlr4-runtime \
-             -isystem $(ELFIO_SRC) -isystem $(LINENOISE_SRC)
+             -isystem $(ELFIO_SRC) -isystem $(LINENOISE_SRC) \
+             -isystem $(VERILATOR_INC)/vltstd
 MPACT_WARN = -w
 MPACT_CXXFLAGS = -std=c++17 -O2 -fPIC -fexceptions $(MPACT_WARN) $(MPACT_INCS)
 MPACT_CFLAGS = -O2 -fPIC $(MPACT_WARN) $(MPACT_INCS)
