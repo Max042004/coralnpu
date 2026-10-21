@@ -180,18 +180,33 @@ nexus_target = $(if $(filter elab_only,$(TYPE)),elab,synth)
 nexus_pnr    = $(if $(filter synth_only elab_only,$(TYPE)),--pnr=none)
 
 # One variant per invocation: make chip-nexus VARIANT=vector_normal TYPE=elab_only
+#   bitstream  : fusesoc synth + place & route
+#   synth_only : fusesoc synth, --pnr=none
+#   elab_only  : fusesoc project setup only, then `synth_design -rtl` in Vivado batch mode
+NEXUS_SYSTEM := com.google.coralnpu:fpga:chip_nexus:0.1
+NEXUS_SYSDIR := com.google.coralnpu_fpga_chip_nexus_0.1
+nexus_dir = $(FPGA_BUILD)/nexus_$(VARIANT)_$(TYPE)
+nexus_fusesoc = cd $(ROOT) && HOME=$(FPGA_BUILD)/home PATH=$(dir $(FUSESOC)):$(VIVADO_BIN):$$PATH $(FUSESOC) \
+  --config=$(nexus_dir)/fusesoc.toml $(FUSESOC_ROOTS) \
+  --cores-root=$(FPGA_BUILD)/cores/$(VARIANT) $(addprefix --cores-root=,$(NEXUS_EXTRA_ROOTS)) \
+  run --target=synth --setup $(if $(filter elab_only,$(TYPE)),,--build) \
+  --build-root=$(nexus_dir)/build $(NEXUS_SYSTEM) \
+  --ClockFrequencyMhz=$(call fv_field,$(VARIANT),4) --IspClockFrequencyMhz=$(ISP_MHZ) \
+  --SpimClockFrequencyMhz=$(NEXUS_CLK_SPIM) \
+  --ItcmSizeKBytes=$(call fv_field,$(VARIANT),5) --DtcmSizeKBytes=$(call fv_field,$(VARIANT),6) \
+  $(zvt_flags_$(VARIANT)) $(nexus_pnr)
+
 chip-nexus: $(FPGA_BUILD)/cores/$(VARIANT)/.stamp $(OT_DIR)/.stamp $(ISP_DIR)/.stamp
 ifndef VARIANT
 	$(error usage: make chip-nexus VARIANT=<variant> [TYPE=bitstream|synth_only|elab_only])
 endif
-	@mkdir -p $(FPGA_BUILD)/nexus_$(VARIANT)_$(TYPE) $(FPGA_BUILD)/home
-	printf '[main]\n  cache_root = $(FPGA_BUILD)/cache\n' > $(FPGA_BUILD)/nexus_$(VARIANT)_$(TYPE)/fusesoc.toml
-	cd $(ROOT) && HOME=$(FPGA_BUILD)/home PATH=$(dir $(FUSESOC)):$(VIVADO_BIN):$$PATH $(FUSESOC) \
-	  --config=$(FPGA_BUILD)/nexus_$(VARIANT)_$(TYPE)/fusesoc.toml $(FUSESOC_ROOTS) \
-	  --cores-root=$(FPGA_BUILD)/cores/$(VARIANT) $(addprefix --cores-root=,$(NEXUS_EXTRA_ROOTS)) \
-	  run --target=$(nexus_target) --setup --build --build-root=$(FPGA_BUILD)/nexus_$(VARIANT)_$(TYPE)/build \
-	  com.google.coralnpu:fpga:chip_nexus:0.1 \
-	  --ClockFrequencyMhz=$(call fv_field,$(VARIANT),4) --IspClockFrequencyMhz=$(ISP_MHZ) \
-	  --SpimClockFrequencyMhz=$(NEXUS_CLK_SPIM) \
-	  --ItcmSizeKBytes=$(call fv_field,$(VARIANT),5) --DtcmSizeKBytes=$(call fv_field,$(VARIANT),6) \
-	  $(zvt_flags_$(VARIANT)) $(nexus_pnr)
+	@mkdir -p $(nexus_dir) $(FPGA_BUILD)/home
+	printf '[main]\n  cache_root = $(FPGA_BUILD)/cache\n' > $(nexus_dir)/fusesoc.toml
+	$(nexus_fusesoc)
+ifeq ($(TYPE),elab_only)
+	cd $(nexus_dir)/build/$(NEXUS_SYSDIR)/synth-vivado && \
+	  printf '%s\n' 'source $(NEXUS_SYSDIR).tcl' \
+	    'if {[catch {synth_design -rtl -name rtl_1} err]} { puts "ERROR: Elaboration failed: $$err"; exit 1 }' \
+	    'puts "=== VIVADO RTL ELABORATION COMPLETED SUCCESSFULLY ==="' > run_elab.tcl && \
+	  HOME=$(FPGA_BUILD)/home PATH=$(VIVADO_BIN):$$PATH vivado -notrace -mode batch -source run_elab.tcl
+endif

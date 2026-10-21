@@ -118,13 +118,44 @@ Verified on the `vivado` OrbStack VM: Spike wrapper tests (16), MPACT
 `coralnpu_v2_sim_test` (15), `core_mini_axi_sim` on a firmware ELF,
 `core_mini_axi_non_incr_tests`, `backdoor_load_test`, `dbus2axi_tb`.
 
+## FPGA SoC and UVM
+
+```bash
+make fpga-deps                                   # pinned OpenTitan + ISP sources
+make chip-verilator VARIANT=vector_normal        # full-chip Verilator model (4 variants)
+make fpga-sim-tests                              # clk / trivial_pass (SPI loader) / dma / highmem
+make chip-nexus VARIANT=vector_normal TYPE=elab_only|synth_only|bitstream
+make uvm-model [DUT=rvv|vme]                     # UVM testbench on Verilator (+ MPACT, Spike DPI)
+make uvm-test ELFS="tests/cocotb/wfi_slot_0" [SPIKE=1]
+make uvm-regression [SPIKE=1]                    # 821 firmware / riscv-tests ELFs
+```
+
+The SoC embeds OpenTitan IP whose cores are FuseSoC-native, so `fusesoc` is still
+used to resolve the file sets (and to drive Verilator/Vivado through edalize);
+Bender and make own everything around it: pinned downloads, the generated Chisel
+subsystem core, the search path and the flags (`mk/fpga.mk`). The VCS flavours of
+the UVM bench need a Synopsys licence and are not built here.
+
+Known upstream problems in this snapshot (reproduced, not introduced by the port):
+
+* `fpga/rom_test*` (ROM-boot images) do not link: `fpga/sw/rom_boot/crt0.S` uses
+  `_stack_top`, `_data_load`, ... that neither `rom.ld` nor `rom_highmem.ld` define.
+  The ROM boot variants of the SoC therefore have no working image.
+* `coralnpu_soc.sv` instantiates `CoralNPUChiselSubsystem`, while the Chisel
+  emitter names the matrix/highmem subsystems after their configuration; the make
+  flow renames the top module when it stages the generated core.
+
 ## Status of the migration
 
 Done: RTL dependency management, Chisel generation and unit tests, tool
 provisioning, Verilator cocotb models (60 of 65 suites pass), firmware
-(749 targets), riscv-tests, FreeRTOS, TFLite Micro, Spike, SystemC testbenches,
-hw_sim shared libraries, MPACT and its python binding.
+(757 targets), riscv-tests, FreeRTOS, TFLite Micro, Spike, SystemC testbenches,
+hw_sim shared libraries, MPACT and its python binding, FPGA SoC Verilator flow
+and simulation tests, UVM Verilator regression (821 ELFs pass).
 
-Still on the former Bazel rules: UVM regression flows (`tests/uvm`), VCS flows
-(need a licence), FPGA / FuseSoC `.core` flows, the npusim example runner, lint,
-CI, and the Bazel files themselves.
+Not verified: Vivado builds (the VM's Vivado 2019.2 lacks the xcvu13p device;
+the FuseSoC project setup itself works), VCS flows (licence), the `*_slow`
+cocotb suites, `mobilenet_v1`.
+
+Still on the former Bazel rules: lint, CI, npusim example runner, and the Bazel
+files themselves.
