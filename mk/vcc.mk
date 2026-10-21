@@ -40,7 +40,7 @@ $(VCC_DIR)/$(1)_$(2)/libV$(1).a: $(BUILD)/rtl/$(1)/$$($(1)_SV) $(DEPS_PREFIX)/li
 	SYSTEMC_INCLUDE=$(DEPS_PREFIX)/include SYSTEMC_LIBDIR=$(DEPS_PREFIX)/lib \
 	  $$(MAKE) -C $(VCC_DIR)/$(1)_$(2) -f V$(1).mk -j$$(JOBS) \
 	    CXX=$$(HOST_CXX) OPT_FAST=-O2 OPT_SLOW=-O1 \
-	    USER_CPPFLAGS="-std=c++17 -Wno-sign-compare -Wno-unused-variable -Wno-unused-parameter -Wno-bool-operation -Wno-tautological-compare" \
+	    USER_CPPFLAGS="-fPIC -std=c++17 -Wno-sign-compare -Wno-unused-variable -Wno-unused-parameter -Wno-bool-operation -Wno-tautological-compare" \
 	    libV$(1).a libverilated.a
 # The generated header path the testbenches expect: hdl/chisel/src/coralnpu/V<design>_parameters.h
 $(VCC_INC)/hdl/chisel/src/coralnpu/V$(1)_parameters.h: $(BUILD)/rtl/$(1)/$$($(1)_SV)
@@ -103,3 +103,27 @@ endif
 
 sim-run: sim
 	$(SIM_DIR)/$(SIM) $(if $(ELF),--binary $(ROOT)/build/runfiles/$(ELF).elf)
+
+# ---- other C++ testbenches: <name>:<design>:<main source>:<uses core_mini_axi_tb (1/0)> ----
+SIM_TESTS := \
+  core_mini_axi_non_incr_tests:CoreMiniAxi:tests/verilator_sim/coralnpu/core_mini_axi_non_incr_tests.cc:1 \
+  backdoor_load_test:CoreMiniAxi:tests/verilator_sim/coralnpu/backdoor_load_test.cc:1 \
+  dbus2axi_tb:DBus2AxiV2:tests/verilator_sim/coralnpu/dbus2axi_tb.cc:0 \
+  core_mini_sim:CoreMini:tests/verilator_sim/coralnpu/core_tb.cc:0
+
+define simtest_rule
+$(SIM_DIR)/$(1): $(VCC_DIR)/$(2)_sc/libV$(2).a $(3) $$(SIM_TB_SRCS) $(DEPS_PREFIX)/lib/libsystemc.a \
+                 $(DEPS_PREFIX)/lib/libabsl_base.a
+	@mkdir -p $(SIM_DIR) $(VCC_INC)/hdl/chisel/src/coralnpu
+	-cp $(BUILD)/rtl/$(2)/V$(2)_parameters.h $(VCC_INC)/hdl/chisel/src/coralnpu/ 2>/dev/null
+	$$(HOST_CXX) $$(SIM_CXXFLAGS) $$(SIM_INCS) -I$(VCC_DIR)/$(2)_sc -DVERILATOR_MODEL=V$(2) \
+	  -DVM_SC=1 -DVM_TRACE=1 $(3) $$(if $(filter 1,$(4)),$$(SIM_TB_SRCS)) $$(if $(filter 0,$(4)),tests/verilator_sim/elf.cc hdl/verilog/sram_backdoor.cc) -o $$@ \
+	  $(VCC_DIR)/$(2)_sc/libV$(2).a $(VCC_DIR)/$(2)_sc/libverilated.a $$(SIM_LDLIBS) \
+	  -Wl,--allow-multiple-definition
+endef
+$(foreach v,$(SIM_TESTS),$(eval $(call simtest_rule,$(word 1,$(subst :, ,$(v))),$(word 2,$(subst :, ,$(v))),$(word 3,$(subst :, ,$(v))),$(word 4,$(subst :, ,$(v))))))
+
+.PHONY: sim-tests
+sim-tests: $(addprefix $(SIM_DIR)/,$(foreach v,$(SIM_TESTS),$(word 1,$(subst :, ,$(v)))))
+	@set -e; for t in core_mini_axi_non_incr_tests backdoor_load_test dbus2axi_tb; do \
+	  echo "== $$t"; (cd $(ROOT) && CORALNPU_RUNFILES=$(BUILD)/runfiles CORALNPU_ROOT=$(ROOT) $(SIM_DIR)/$$t); done
