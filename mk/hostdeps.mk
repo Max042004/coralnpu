@@ -46,8 +46,10 @@ GIT_HTTPS := GIT_CONFIG_GLOBAL=$(ROOT)/tools/gitconfig
 # The libsystemctlm-soc checkout may still fail on its (unneeded) submodules; the headers are all we use.
 $(ROOT)/tools/.bender/.checked_out: tools/Bender.yml
 	-$(GIT_HTTPS) $(TOOLS_BENDER) checkout
-	@test -d "$(ABSEIL_SRC)" -a -d "$(SYSTEMC_SRC)" -a -d "$(SYSTEMCTLM_SRC)/soc" -a -d "$(PYBIND11_SRC)" \
-	  || { echo "host dependency checkout incomplete"; exit 1; }
+	@# (recipe lines are expanded before any runs, so test the checkouts from the shell)
+	@for d in abseil_cpp systemc libsystemctlm_soc pybind11 antlr4 elfio linenoise; do \
+	  ls -d $(ROOT)/tools/.bender/git/checkouts/$$d-*/ > /dev/null 2>&1 \
+	    || { echo "host dependency checkout incomplete: $$d"; exit 1; }; done
 	@touch $@
 
 absl: $(DEPS_PREFIX)/lib/libabsl_base.a
