@@ -1,0 +1,25 @@
+packages:
+  abseil_cpp:
+    revision: d38452e1ee03523a208362186fd42248ff2609f6
+    version: null
+    source:
+      Git: https://github.com/abseil/abseil-cpp.git
+    dependencies: []
+  libsystemctlm_soc:
+    revision: 79d624f3c7300a2ead97ca35e683c38f0b6f5021
+    version: null
+    source:
+      Git: https://github.com/Xilinx/libsystemctlm-soc.git
+    dependencies: []
+  pybind11:
+    revision: a2e59f0e7065404b44dfe92a28aca47ba1378dc4
+    version: 2.13.6
+    source:
+      Git: https://github.com/pybind/pybind11.git
+    dependencies: []
+  systemc:
+    revision: 5fc1469339775b54b1fcc2020ac744a58be5b50e
+    version: null
+    source:
+      Git: https://github.com/accellera-official/systemc.git
+    dependencies: []

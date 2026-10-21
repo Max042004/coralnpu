@@ -45,6 +45,8 @@ include mk/model.mk
 include mk/sw.mk
 include mk/riscv_tests.mk
 include mk/spike.mk
+include mk/hostdeps.mk
+include mk/vcc.mk
 
 .DEFAULT_GOAL := help
 .PHONY: help vendor-update flist rtl rtl-all list-designs chisel-compile chisel-test clean

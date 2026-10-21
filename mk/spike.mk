@@ -39,7 +39,6 @@ $(addprefix $(SPIKE_BUILD)/,$(SPIKE_LIBS)): $(SPIKE_BUILD)/spike
 
 # ---- C++ co-simulation wrapper and its unit test (gtest from the distro) ----
 VERILATOR_INC ?= $(TOOLS_DIR)/verilator/share/verilator/include
-HOST_CXX ?= clang++
 # Spike's own headers are included as <fesvr/htif.h>, so its root is a normal -I;
 # the sub-directories are -iquote only, otherwise fesvr/syscall.h shadows the
 # system <syscall.h> (SYS_futex).
@@ -53,7 +52,7 @@ SPIKE_TEST := $(SPIKE_BUILD)/spike_simulator_test
 
 $(SPIKE_TEST): sw/coralnpu_sim/spike_simulator_test.cc sw/coralnpu_sim/spike_simulator.cc \
                sw/coralnpu_sim/spike_cosim_dpi.cc $(SPIKE_BUILD)/spike
-	$(HOST_CXX) -std=c++20 -O1 $(SPIKE_INCS) $(filter %.cc,$^) -o $@ $(SPIKE_LDLIBS) -lgtest -lgtest_main
+	clang++ -std=c++20 -O1 $(SPIKE_INCS) $(filter %.cc,$^) -o $@ $(SPIKE_LDLIBS) -lgtest -lgtest_main
 
 spike-test: $(SPIKE_TEST) $(ELF_DIR)/tests/cocotb/rvv/arithmetics/rvv_add_int8_m1.elf
 	CORALNPU_RUNFILES=$(BUILD)/runfiles CORALNPU_ROOT=$(ROOT) $(SPIKE_TEST)

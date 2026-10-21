@@ -1,0 +1,29 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Large, unmodified third-party code needed by the host-side C++ tools
+# (simulators, testbenches, python bindings). Separate from the RTL manifest in
+# ../Bender.yml so that resolving one does not disturb the other.
+#
+# Fetched on demand into tools/.bender/ (revisions pinned in tools/Bender.lock):
+#   bender -d tools checkout          # or: make host-deps
+#   bender -d tools path abseil_cpp   # -> checkout directory
+package:
+  name: coralnpu_host_deps
+
+dependencies:
+  abseil_cpp: { git: "https://github.com/abseil/abseil-cpp.git", rev: d38452e1ee03523a208362186fd42248ff2609f6 }  # 20250814.1
+  systemc: { git: "https://github.com/accellera-official/systemc.git", rev: 5fc1469339775b54b1fcc2020ac744a58be5b50e }  # 2.3.4
+  libsystemctlm_soc: { git: "https://github.com/Xilinx/libsystemctlm-soc.git", rev: 79d624f3c7300a2ead97ca35e683c38f0b6f5021 }
+  pybind11: { git: "https://github.com/pybind/pybind11.git", rev: a2e59f0e7065404b44dfe92a28aca47ba1378dc4 }  # v2.13.6
