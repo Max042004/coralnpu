@@ -45,7 +45,6 @@ GIT_HTTPS := GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=url.https://github.com/.instead
 
 # The libsystemctlm-soc checkout may still fail on its (unneeded) submodules; the headers are all we use.
 $(ROOT)/tools/.bender/.checked_out: tools/Bender.yml
-	$(GIT_HTTPS) $(TOOLS_BENDER) update
 	-$(GIT_HTTPS) $(TOOLS_BENDER) checkout
 	@test -d "$(ABSEIL_SRC)" -a -d "$(SYSTEMC_SRC)" -a -d "$(SYSTEMCTLM_SRC)/soc" -a -d "$(PYBIND11_SRC)" \
 	  || { echo "host dependency checkout incomplete"; exit 1; }
