@@ -108,10 +108,11 @@ UVM_REG_FW   := $(addprefix $(ELF_DIR)/,$(filter-out third_party/%,$(shell cut -
 
 .PHONY: uvm-regression
 uvm-regression: $(UVM_OUT)/$(DUT)/Vuvm $(UVM_REG_FW) riscv-tests $(SPIKE_BUILD)/spike
+	awk -F'\t' -v d=$(ELF_DIR) -v sp=$(SPIKE) \
+	  '{ printf "%s/%s\t%s\t%s\t%s\n", d, $$1, $$2, $$3, ($$4 == "True" && sp == "1") ? "True" : "False" }' \
+	  $(UVM_REG_TSV) > $(UVM_OUT)/regression_list.txt
 	cd $(ROOT) && UVM_MODEL_RLOCATION=$(UVM_OUT)/$(DUT)/Vuvm \
 	  UVM_ENABLE_SPIKE=$(SPIKE) UVM_SPIKE_RLOCATION=$(if $(filter 1,$(SPIKE)),SPIKE) \
-	  UVM_CORALNPU_ELFS="$$(awk -F'\t' -v d=$(ELF_DIR) -v sp=$(SPIKE) \
-	    '{ printf "%s/%s\t%s\t%s\t%s\n", d, $$1, $$2, $$3, ($$4 == "True" && sp == "1") ? "True" : "False" }' \
-	    $(UVM_REG_TSV))" \
+	  UVM_CORALNPU_ELFS_FILE=$(UVM_OUT)/regression_list.txt \
 	  CORALNPU_RUNFILES=$(ELF_DIR) PYTHONPATH=$(ROOT)/utils:$(ROOT)/utils/pyshim \
 	  $(PYTHON) utils/uvm_batch_runner.py

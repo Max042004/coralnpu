@@ -24,6 +24,7 @@ SW_TARGETS += fpga_display_test
 fpga_display_test_PKG  := fpga
 fpga_display_test_NAME := display_test
 fpga_display_test_SRCS := fpga/sw/display_test.cc fpga/sw/display_hal.c fpga/sw/gpio.c fpga/sw/spi.c fpga/sw/clk.c third_party/waveshare_display/LCD_Driver.cpp third_party/waveshare_display/font12.c third_party/waveshare_display/font16.c third_party/waveshare_display/font20.c third_party/waveshare_display/font24.c third_party/waveshare_display/font8.c
+fpga_display_test_COPTS := -Ithird_party/waveshare_display -Ithird_party/waveshare_display
 fpga_display_test_LDS := 1024 1024 128 - DTCM
 
 SW_TARGETS += fpga_add_uint32_m1
@@ -71,7 +72,7 @@ fpga_dma_sim_test_binary_LDS := 8 32 128 - DTCM
 SW_TARGETS += fpga_flash_tool
 fpga_flash_tool_PKG  := fpga
 fpga_flash_tool_NAME := flash_tool
-fpga_flash_tool_SRCS := fpga/sw/flash_tool.c fpga/sw/flash_tool_status.h fpga/sw/spi.c fpga/sw/clk.c fpga/sw/spi_flash.c fpga/sw/dma.c fpga/sw/gpio.c fpga/sw/uart.c
+fpga_flash_tool_SRCS := fpga/sw/flash_tool.c fpga/sw/spi.c fpga/sw/clk.c fpga/sw/spi_flash.c fpga/sw/dma.c fpga/sw/gpio.c fpga/sw/uart.c
 fpga_flash_tool_LDS := 1024 1024 128 - DTCM
 
 SW_TARGETS += fpga_spi_flash_sim_test_binary
@@ -101,7 +102,7 @@ fpga_timer_LDS := 8 32 128 - DTCM
 SW_TARGETS += fpga_isp_cam_test
 fpga_isp_cam_test_PKG  := fpga
 fpga_isp_cam_test_NAME := isp_cam_test
-fpga_isp_cam_test_SRCS := fpga/sw/isp_cam_test.c fpga/sw/yocto_isp_register_address.h fpga/sw/uart.c fpga/sw/clk.c
+fpga_isp_cam_test_SRCS := fpga/sw/isp_cam_test.c fpga/sw/uart.c fpga/sw/clk.c
 fpga_isp_cam_test_LDS := 8 32 128 - DTCM
 
 SW_TARGETS += fpga_rom_test

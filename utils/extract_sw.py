@@ -15,6 +15,7 @@ TFLite, ...) are listed as UNSUPPORTED.
 """
 import ast
 import json
+import os
 import pathlib
 import sys
 import types
@@ -301,6 +302,9 @@ def main():
                     srcs.append(f"{lib['_pkg']}/{s_}")
             defs += lib.get("defines", [])
             copts += lib.get("copts", [])
+            for inc in lib.get("includes", []):
+                d = os.path.normpath(f"{lib['_pkg']}/{inc}")
+                copts.append(f"-I{d}")
             sub = resolve(lib.get("deps", []), lib["_pkg"])
             if sub is None:
                 return None
@@ -336,6 +340,8 @@ def main():
                 gens.append(GENERATED[(pkg, s.lstrip(":"))])
             elif s.startswith(("//", "@")) or (s.startswith(":") and (pkg, s[1:]) not in GENERATED):
                 bad = True
+            elif s.endswith((".h", ".hh", ".hpp", ".inc")):
+                pass          # headers listed in srcs are not compiled
             else:
                 srcs.append(f"{pkg}/{s}")
         if bad:

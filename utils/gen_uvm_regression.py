@@ -48,7 +48,7 @@ def main():
     targets = re.findall(r"^SW_TARGETS \+= (\S+)$", mk, re.M)
     fields = {}
     for line in mk.splitlines():
-        m = re.match(r"^(\S+?)_(PKG|NAME|LDSCRIPT)\s*:=\s*(.*)$", line)
+        m = re.match(r"^(\S+?)_(PKG|NAME|LDSCRIPT|LDS)\s*:=\s*(.*)$", line)
         if m:
             fields.setdefault(m.group(1), {})[m.group(2)] = m.group(3).strip()
 
@@ -65,6 +65,11 @@ def main():
         f = fields.get(t, {})
         if "LDSCRIPT" in f:
             continue            # custom linker script: not a UVM regression target
+        if f.get("LDS") != "8 32 128 - DTCM":
+            # collect_coralnpu_elfs() only picks binaries whose generated linker script is
+            # named after the target, i.e. the default 8KB ITCM / 32KB DTCM / 128B stack
+            # configuration the UVM DUT is built for.
+            continue
         pkg, name = f["PKG"], f["NAME"]
         if pkg not in packages:
             continue

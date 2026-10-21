@@ -117,7 +117,12 @@ def main():
         spike = bool(os.environ.get("UVM_SPIKE_RLOCATION", ""))
 
     coralnpu_elfs = []
-    for line in os.environ.get("UVM_CORALNPU_ELFS", "").splitlines():
+    # A full regression (hundreds of ELFs) does not fit in one environment variable;
+    # UVM_CORALNPU_ELFS_FILE names a file with the same tab-separated lines.
+    elf_list_file = os.environ.get("UVM_CORALNPU_ELFS_FILE")
+    elf_lines = (Path(elf_list_file).read_text() if elf_list_file
+                 else os.environ.get("UVM_CORALNPU_ELFS", ""))
+    for line in elf_lines.splitlines():
         rloc, label, timeout, enable_spike = line.split("\t")
         coralnpu_elfs.append((
             Path(r.Rlocation(rloc)), label, int(timeout),
