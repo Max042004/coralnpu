@@ -21,7 +21,7 @@ import random
 
 from coralnpu_test_utils.core_mini_axi_interface import AxiBurst, AxiResp, CoreMiniAxiInterface
 from coralnpu_test_utils.sim_backends.verilator_test_fixture import VerilatorTestFixture
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 from cocotb.triggers import ClockCycles
 
 

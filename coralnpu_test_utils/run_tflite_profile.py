@@ -22,7 +22,7 @@ import time
 import re
 import json
 
-# To support 'import coralnpu_hw.coralnpu_test_utils' without Bazel:
+# To support 'import coralnpu_hw.coralnpu_test_utils' when run as a script:
 _script_dir = os.path.dirname(os.path.abspath(__file__))
 _project_root = os.path.dirname(_script_dir)
 if _project_root not in sys.path:
@@ -36,7 +36,7 @@ except ImportError:
     _coralnpu_hw.__path__ = [_project_root]
     sys.modules["coralnpu_hw"] = _coralnpu_hw
 
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 from coralnpu_hw.coralnpu_test_utils.ftdi_spi_master import FtdiSpiMaster
 from coralnpu_hw.coralnpu_test_utils.sim_backends.common_utils import parse_elf_symbols
 
@@ -58,7 +58,7 @@ class TfliteProfiler:
     ):
         self.runner_elf_path = runner_elf_path
         self.model_path = model_path
-        # Resolve relative path if run via bazel run
+        # Resolve relative path against the invoking directory
         if not os.path.isabs(self.model_path
                              ) and "BUILD_WORKSPACE_DIRECTORY" in os.environ:
             self.model_path = os.path.join(
@@ -450,7 +450,7 @@ class TfliteProfiler:
             logger.warning(f"Failed to save results to cache: {e}")
 
     def _get_cache_path(self):
-        # Use workspace directory if run via bazel, otherwise CWD
+        # Use the workspace directory if set, otherwise CWD
         base_dir = os.environ.get("BUILD_WORKSPACE_DIRECTORY", os.getcwd())
         model_name = os.path.basename(self.model_path)
         return os.path.join(base_dir, f"profile_cache_{model_name}.json")
@@ -531,16 +531,16 @@ def main():
         "coralnpu_hw/sw/utils/tflite_runner/tflite_runner.elf"
     )
     if not runner_elf or not os.path.exists(runner_elf):
-        # Fallback for manual run outside bazel sandbox
+        # Fallback: the Make build output (make firmware-sw_utils_tflite_runner_tflite_runner)
         script_dir = os.path.dirname(os.path.abspath(__file__))
         project_root = os.path.abspath(os.path.join(script_dir, ".."))
         runner_elf = os.path.join(
-            project_root, "bazel-bin/sw/utils/tflite_runner/tflite_runner.elf"
+            project_root, "build/runfiles/sw/utils/tflite_runner/tflite_runner.elf"
         )
 
     if not os.path.exists(runner_elf):
         logger.error(
-            f"Could not find tflite_runner.elf. Please build it first: bazel build //sw/utils/tflite_runner"
+            f"Could not find tflite_runner.elf. Please build it first with make"
         )
         sys.exit(1)
 

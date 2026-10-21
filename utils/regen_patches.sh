@@ -1,6 +1,6 @@
 #!/bin/bash
 # Re-express patches that `git apply` rejects (zero-context `diff -ur` hunks
-# were fine for Bazel's `patch`) as context-carrying git patches.
+# were fine for `patch`) as context-carrying git patches.
 # Usage: regen_patches.sh <upstream-url> <rev> <patch_dir>
 set -euo pipefail
 URL="$1"; REV="$2"; PDIR="$(readlink -f "$3")"

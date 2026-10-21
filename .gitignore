@@ -1,11 +1,9 @@
-bazel-*
 # Make/sbt/Bender outputs
 /build/
 target/
 project/project/
 .bsp/
 .bender/
-.bazelrc.user
 # Robot
 log.html
 report.html

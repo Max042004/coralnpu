@@ -18,7 +18,7 @@ import random
 from cocotb.triggers import ClockCycles
 from coralnpu_test_utils.core_mini_axi_interface import CoreMiniAxiInterface, DmCmdType, DmRspOp
 from coralnpu_test_utils.core_mini_axi_pyocd_gdbserver import CoreMiniAxiGDBServer
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 
 
 @cocotb.test()

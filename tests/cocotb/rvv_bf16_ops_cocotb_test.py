@@ -16,7 +16,7 @@ import cocotb
 import ml_dtypes
 import numpy as np
 from coralnpu_test_utils.sim_backends.verilator_test_fixture import VerilatorTestFixture
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 
 
 async def run_bfloat16_ops_test_case(dut, op_name, lmul, num_elements=64):

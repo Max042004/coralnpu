@@ -19,7 +19,7 @@ import re
 import numpy as np
 import os
 
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 from coralnpu_test_utils.sim_backends.verilator_test_fixture import VerilatorTestFixture
 
 import ctypes

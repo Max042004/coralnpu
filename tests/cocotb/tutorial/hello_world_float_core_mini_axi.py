@@ -16,7 +16,7 @@ import cocotb
 import numpy as np
 import argparse
 from coralnpu_test_utils.core_mini_axi_interface import CoreMiniAxiInterface
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 
 
 @cocotb.test()
@@ -29,7 +29,7 @@ async def core_mini_axi_tutorial(dut):
     cocotb.start_soon(core_mini_axi.clock.start())
     r = runfiles.Create()
 
-    #Elf file is generated from bazel build //examples:coralnpu_v2_hello_world_add_floats
+    #Elf file is built by make (examples/coralnpu_v2_hello_world_add_floats)
     elf_path = r.Rlocation(
         "coralnpu_hw/examples/coralnpu_v2_hello_world_add_floats.elf"
     )

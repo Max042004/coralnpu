@@ -15,8 +15,7 @@
 
 """Run a cocotb test module against a pre-built Verilator model.
 
-Replaces rules/cocotb_wrapper.py + rules/sim_runner.py (the Bazel runfiles
-plumbing). The model is the executable produced by `make model DESIGN=...`.
+The model is the executable produced by `make model DESIGN=...`.
 
     cocotb_run.py --model build/model/CoreMiniAxi/CoreMiniAxi \
         --hdl_toplevel CoreMiniAxi \
@@ -49,14 +48,13 @@ def main():
     if not model.exists():
         sys.exit(f"model not found: {model} (run `make model`)")
 
-    # Make the repo importable and let tests find firmware via the runfiles shim.
-    shim = ROOT / "utils" / "pyshim"
+    # Make the repo importable and let tests find firmware via coralnpu_test_utils/runfiles.py.
     runfiles = ROOT / "build" / "runfiles"
     env_runfiles = os.pathsep.join(
         filter(None, [os.environ.get("CORALNPU_RUNFILES", ""), str(runfiles)]))
     os.environ["CORALNPU_RUNFILES"] = env_runfiles
     os.environ["CORALNPU_ROOT"] = str(ROOT)
-    for d in (str(ROOT), str(shim)):
+    for d in (str(ROOT),):
         if d not in sys.path:
             sys.path.insert(0, d)
     # cocotb_tools.runner hands sys.path to the simulator process as PYTHONPATH.

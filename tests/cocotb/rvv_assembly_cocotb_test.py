@@ -6,7 +6,7 @@ import tqdm
 from coralnpu_test_utils.core_mini_axi_interface import CoreMiniAxiInterface
 from coralnpu_test_utils.rvv_type_util import construct_vtype, DTYPE_TO_SEW, SEWS, SEW_TO_LMULS_AND_VLMAXS, LMUL_TO_EMUL
 from coralnpu_test_utils.sim_backends.verilator_test_fixture import VerilatorTestFixture
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 from cocotb.triggers import RisingEdge
 
 SEWS = [

@@ -50,6 +50,9 @@ include mk/vcc.mk
 include mk/mpact.mk
 include mk/fpga.mk
 include mk/uvm.mk
+include mk/vcs.mk
+include mk/tools.mk
+include mk/ci.mk
 
 .DEFAULT_GOAL := help
 .PHONY: help vendor-update flist rtl rtl-all list-designs chisel-compile chisel-test clean

@@ -62,7 +62,7 @@ ifndef MODEL
 endif
 	$(MAKE) $(BUILD)/model/$(MODEL)/$($(MODEL)_TOP)
 
-# Firmware ELFs that tests look up via the runfiles shim live in build/runfiles.
+# Firmware ELFs that tests look up via coralnpu_test_utils/runfiles.py live in build/runfiles.
 cocotb-test: model $(BUILD)/runfiles/toolchain/gdb
 ifndef MODULE
 	$(error usage: make cocotb-test MODEL=<name> MODULE=<python module>)

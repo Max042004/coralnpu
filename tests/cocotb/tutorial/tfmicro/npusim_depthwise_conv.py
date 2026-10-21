@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import asyncio
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 from coralnpu_test_utils.sim_backends.mpact_npusim_test_fixture import MpactNpuSimTestFixture
 import numpy as np
 

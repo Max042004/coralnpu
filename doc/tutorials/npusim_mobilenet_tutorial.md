@@ -7,7 +7,7 @@ This tutorial explains the plumbing and mechanics of how `npusim_run_mobilenet.p
 Simulating a TFLite Micro model like MobileNet typically requires two components:
 
 1. **Host Python Script (`npusim_run_mobilenet.py`)**: Controls the NPU simulator, injects inputs, running the simulation, and extracting outputs.
-2. **Device C++ Binary (`run_full_mobilenet_v1.cc`)**: The C++ code sets up the TFLM interpreter to run inference. Building the target with the `coralnpu_v2_binary` Bazel rule packages it to run as an executable on the simulated CoralNPU.
+2. **Device C++ Binary (`run_full_mobilenet_v1.cc`)**: The C++ code sets up the TFLM interpreter to run inference. Building it with `make elf T=tests/npusim_examples/run_full_mobilenet_v1_binary` packages it to run as an executable on the simulated CoralNPU.
 
 ## 1. The C++ Device Code (`run_full_mobilenet_v1.cc`)
 
@@ -55,7 +55,7 @@ r = runfiles.Create()
 elf_file = r.Rlocation('coralnpu_hw/tests/npusim_examples/run_full_mobilenet_v1_binary.elf')
 ```
 
-The script uses Bazel's `runfiles` utility to locate the compiled `.elf` binary regardless of the host environment.
+The script uses `coralnpu_test_utils/runfiles.py` to locate the compiled `.elf` binary regardless of the host environment.
 
 ### Symbol Resolution
 
@@ -103,10 +103,10 @@ Finally, `npu_sim.read_memory` is used to check the final `inference_status` val
 
 ## How to Run
 
-To run the simulation with the updated Python script, run the Bazel target from the repository root:
+To run the simulation with the updated Python script, run the make target from the repository root:
 
 ```bash
-bazel run tests/npusim_examples:npusim_run_mobilenet
+make npusim-mobilenet
 ```
 
 ## Summary of the Plumbing Flow

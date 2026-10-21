@@ -30,7 +30,7 @@ sys.set_int_max_str_digits(100000)
 import cocotb
 import ml_dtypes
 import numpy as np
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 from coralnpu_test_utils.sim_backends.verilator_test_fixture import VerilatorTestFixture
 from sw.utils.metrics import log_matmul_metrics
 

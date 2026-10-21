@@ -15,7 +15,7 @@
 import cocotb
 import numpy as np
 
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 from coralnpu_test_utils.core_mini_axi_interface import CoreMiniAxiInterface
 
 

@@ -17,31 +17,11 @@ export LD_LIBRARY_PATH="${VCS_HOME}"/linux64/lib
 export PATH=$PATH:${VCS_HOME}/bin/
 ```
 
-A VCS simulation can defined with the `vcs_testbench_test` rule. For example
-use in a BUILD file:
+The VCS entry point is the UVM testbench: `make uvm-model-vcs` (see
+[`mk/vcs.mk`](../mk/vcs.mk)) compiles `tests/uvm` with the same sources, defines
+and co-simulation libraries as the Verilator model (`make uvm-model`). It needs a
+VCS installation and licence and has not been exercised by the maintainers of the
+Make build; the previous build system's other VCS rules (single-testbench
+runner, cocotb flows) were not carried over.
 
-```starlark
-load("//rules:vcs.bzl", "vcs_testbench_test")
-
-vcs_testbench_test(
-    name = "foobar_tb",
-    srcs = ["Foobar_tb.sv"],
-    module = "Foobar_tb",
-    deps = ":foobar",
-)
-```
-
-By default, we disable VCS within bazel. Invoke
-`bazel {build,run,test} --config=vcs` to enable VCS support.
-
-### Troubleshooting
-
-#### CCACHE and VCS (Read-only filesystem error)
-
-If you encounter an error like `ccache: error: Failed to create temporary file ... Read-only file system` during a VCS simulation, it is because `ccache` is attempting to write to your home directory from within the Bazel sandbox.
-
-**Fix:** Prepend `CCACHE_DISABLE=1` to your command:
-
-```bash
-bazel --action_env=CCACHE_DISABLE=1 test --config=vcs //...
-```
+For everything that does not need VCS use Verilator: [build.md](build.md).

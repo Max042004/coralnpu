@@ -328,7 +328,7 @@ import coralnpu.MemorySize
 
 /** A standalone main object to generate the SystemVerilog for the CoralNPUXbar.
   *
-  * This can be run via Bazel to produce the final Verilog output.
+  * Run via `make rtl DESIGN=CoralNPUXbar` to produce the final Verilog output.
   */
 object CoralNPUXbarEmitter extends App {
   // Basic argument parsing for --enableTestHarness

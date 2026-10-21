@@ -15,7 +15,7 @@
 
 """Expand the source templates listed in mk/gen_sources.json.
 
-Equivalent of Bazel's ctx.actions.expand_template: each key of `substitutions`
+Template expansion: each key of `substitutions`
 is replaced literally in the template. Output paths are written under --outdir
 keeping their repo-relative path.
 
@@ -29,7 +29,7 @@ import sys
 
 
 def cc_array(root, job, dst):
-    """Run TFLM's generate_cc_arrays.py (.tflite -> C array), as the Bazel genrule did.
+    """Run TFLM's generate_cc_arrays.py (.tflite -> C array).
 
     The generator derives the #include of the header from the part of the output
     path after `genfiles/`, hence the outputs live under <outdir>/genfiles/.

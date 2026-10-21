@@ -23,6 +23,7 @@
 set -euo pipefail
 
 TOOLS="${TOOLS:-$HOME/tools}"
+BIN="${BIN:-$HOME/bin}"   # where launchers/symlinks go (put it on PATH)
 BENDER_VERSION="${BENDER_VERSION:-0.28.1}"
 SBT_VERSION="${SBT_VERSION:-1.10.7}"
 FIRTOOL_VERSION="${FIRTOOL_VERSION:-1.114.0}"   # llvm-firtool jar on Maven
@@ -32,14 +33,17 @@ TOOLCHAIN_SHA256="${TOOLCHAIN_SHA256:-de06690c2da5cd783d76b2998208bd4db4dcdc22de
 UV_VERSION="${UV_VERSION:-0.5.31}"
 PYTHON_VERSION="${PYTHON_VERSION:-3.11}"
 
-mkdir -p "$TOOLS" "$HOME/bin"
+mkdir -p "$TOOLS" "$BIN"
+
+# Containers usually run as root without sudo.
+if [ "$(id -u)" -eq 0 ]; then SUDO=""; else SUDO="sudo"; fi
 
 step_apt() {
   # Finish any half-configured packages left by an interrupted earlier install.
-  sudo DEBIAN_FRONTEND=noninteractive dpkg --configure -a || true
-  sudo apt-get update
-  sudo DEBIAN_FRONTEND=noninteractive apt-get install -f -y
-  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  $SUDO env DEBIAN_FRONTEND=noninteractive dpkg --configure -a || true
+  $SUDO apt-get update
+  $SUDO env DEBIAN_FRONTEND=noninteractive apt-get install -f -y
+  $SUDO env DEBIAN_FRONTEND=noninteractive apt-get install -y \
     build-essential git curl wget unzip ca-certificates \
     openjdk-17-jdk-headless \
     flex bison autoconf automake libtool help2man perl \
@@ -47,7 +51,7 @@ step_apt() {
     cmake ninja-build clang \
     python3-venv python3-pip \
     device-tree-compiler libboost-dev libboost-system-dev libboost-regex-dev libelf-dev liblz4-dev libmpfr-dev \
-    libgtest-dev libgmock-dev libre2-dev libprotobuf-dev protobuf-compiler gawk xxd srecord zip
+    libgtest-dev libgmock-dev libftdi1-dev libusb-1.0-0-dev libre2-dev libprotobuf-dev protobuf-compiler gawk xxd srecord zip
 }
 
 step_bender() {
@@ -55,8 +59,8 @@ step_bender() {
   curl -fsSL -o "$tmp/bender.tgz" \
     "https://github.com/pulp-platform/bender/releases/download/v${BENDER_VERSION}/bender-${BENDER_VERSION}-x86_64-linux-gnu-ubuntu22.04.tar.gz"
   tar xzf "$tmp/bender.tgz" -C "$tmp"
-  install -m755 "$tmp/bender" "$HOME/bin/bender"
-  "$HOME/bin/bender" --version
+  install -m755 "$tmp/bender" "$BIN/bender"
+  "$BIN/bender" --version
 }
 
 step_sbt() {
@@ -65,7 +69,7 @@ step_sbt() {
     "https://github.com/sbt/sbt/releases/download/v${SBT_VERSION}/sbt-${SBT_VERSION}.tgz"
   rm -rf "$TOOLS/sbt"
   tar xzf "$tmp/sbt.tgz" -C "$TOOLS"
-  ln -sf "$TOOLS/sbt/bin/sbt" "$HOME/bin/sbt"
+  ln -sf "$TOOLS/sbt/bin/sbt" "$BIN/sbt"
 }
 
 step_firtool() {
@@ -74,9 +78,9 @@ step_firtool() {
     "https://repo1.maven.org/maven2/org/chipsalliance/llvm-firtool/${FIRTOOL_VERSION}/llvm-firtool-${FIRTOOL_VERSION}.jar"
   rm -rf "$TOOLS/firtool"; mkdir -p "$TOOLS/firtool"
   unzip -q -o "$tmp/firtool.jar" 'org.chipsalliance/llvm-firtool/linux-x64/bin/firtool' -d "$TOOLS/firtool"
-  ln -sf "$TOOLS/firtool/org.chipsalliance/llvm-firtool/linux-x64/bin/firtool" "$HOME/bin/firtool"
-  chmod +x "$HOME/bin/firtool"
-  "$HOME/bin/firtool" --version | head -2
+  ln -sf "$TOOLS/firtool/org.chipsalliance/llvm-firtool/linux-x64/bin/firtool" "$BIN/firtool"
+  chmod +x "$BIN/firtool"
+  "$BIN/firtool" --version | head -2
 }
 
 step_verilator() {
@@ -88,13 +92,12 @@ step_verilator() {
     && autoconf && ./configure --prefix="$TOOLS/verilator-${VERILATOR_VERSION}" \
     && make -j"$(nproc)" && make install )
   ln -sfn "$TOOLS/verilator-${VERILATOR_VERSION}" "$TOOLS/verilator"
-  ln -sf "$TOOLS/verilator/bin/verilator" "$HOME/bin/verilator"
-  ln -sf "$TOOLS/verilator/bin/verilator_bin" "$HOME/bin/verilator_bin"
-  "$HOME/bin/verilator" --version
+  ln -sf "$TOOLS/verilator/bin/verilator" "$BIN/verilator"
+  ln -sf "$TOOLS/verilator/bin/verilator_bin" "$BIN/verilator_bin"
+  "$BIN/verilator" --version
 }
 
-# Prebuilt RISC-V cross toolchain for CoralNPU firmware (same archive the
-# Bazel build used).
+# Prebuilt RISC-V cross toolchain for CoralNPU firmware.
 step_toolchain() {
   local tmp; tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' RETURN
   curl -fsSL -o "$tmp/tc.tar.xz" "$TOOLCHAIN_URL"
@@ -110,12 +113,12 @@ step_python() {
   curl -fsSL -o "$tmp/uv.tgz" \
     "https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/uv-x86_64-unknown-linux-gnu.tar.gz"
   tar xzf "$tmp/uv.tgz" -C "$tmp"
-  install -m755 "$tmp"/uv-*/uv "$HOME/bin/uv"
-  "$HOME/bin/uv" venv --python "$PYTHON_VERSION" "$TOOLS/venv"
-  "$HOME/bin/uv" pip install --python "$TOOLS/venv/bin/python" \
+  install -m755 "$tmp"/uv-*/uv "$BIN/uv"
+  "$BIN/uv" venv --python "$PYTHON_VERSION" "$TOOLS/venv"
+  "$BIN/uv" pip install --python "$TOOLS/venv/bin/python" \
     -r "$(dirname "$0")/../requirements.txt"
 }
 
 STEPS=("$@"); [ ${#STEPS[@]} -gt 0 ] || STEPS=(apt bender sbt firtool verilator toolchain python)
 for s in "${STEPS[@]}"; do echo "=== $s ==="; "step_$s"; done
-echo 'Add to your shell profile:  export PATH="$HOME/bin:$PATH"'
+echo "Add to your shell profile:  export PATH=\"$BIN:\$PATH\"  (and TOOLS_DIR=$TOOLS if not ~/tools)"

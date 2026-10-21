@@ -18,7 +18,7 @@ set_msg_config -id {[Synth 8-4445]} -new_severity ERROR
 set workroot [pwd]
 
 # Fix up MemInitFile path if it's relative to the execroot but we are in a subdirectory
-# This is common in Bazel builds where FuseSoC runs in a subdirectory of the sandbox.
+# This is common when FuseSoC runs in a build subdirectory (build/fpga/...).
 set generics [get_property generic [get_filesets sources_1]]
 set new_generics [list]
 set changed 0

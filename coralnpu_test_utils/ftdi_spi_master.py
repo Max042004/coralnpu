@@ -22,7 +22,7 @@ import logging
 import re
 
 try:
-    from bazel_tools.tools.python.runfiles import runfiles
+    from coralnpu_test_utils import runfiles
 except ImportError:
     runfiles = None
 from elftools.elf.elffile import ELFFile
@@ -48,12 +48,12 @@ class FtdiSpiMaster:
             )
 
         if not self.nexus_loader_bin:
-            # Fallback if not running in bazel run environment
+            # Fallback: the Make build output (make nexus-loader)
             # Use absolute path relative to this script
             script_dir = os.path.dirname(os.path.abspath(__file__))
             project_root = os.path.abspath(os.path.join(script_dir, ".."))
             self.nexus_loader_bin = os.path.join(
-                project_root, "bazel-bin/sw/utils/nexus_loader/nexus_loader"
+                project_root, "build/tools/nexus_loader"
             )
             if not os.path.exists(self.nexus_loader_bin):
                 self.nexus_loader_bin = os.path.join(
@@ -63,7 +63,7 @@ class FtdiSpiMaster:
         if not os.path.exists(self.nexus_loader_bin):
             raise FileNotFoundError(
                 f"Could not find nexus_loader binary at {self.nexus_loader_bin}. "
-                "Please build it first: bazel build //sw/utils/nexus_loader"
+                "Please build it first: make nexus-loader"
             )
 
         logger.info(

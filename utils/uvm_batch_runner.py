@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 #
-# This script acts as a backend for running UVM regression tests using Bazel
+# This script acts as a backend for running UVM regression tests (see mk/uvm.mk)
 #
-# Env vars (set by the verilator_batch_uvm_test rule):
+# Env vars (set by `make uvm-test` / `make uvm-regression`):
 #   UVM_MODEL_RLOCATION: rlocation path of the model binary
-#   UVM_RISCV_DIRS: newline-separated rlocation paths of riscv-tests directories
-#   UVM_CORALNPU_ELFS: newline-separated "<rlocation path>\t<bazel label>" pairs for individual coralnpu_v2_binary ELFs
+#   UVM_CORALNPU_ELFS: newline-separated "<elf path>\t<label>\t<timeout>\t<spike True/False>" lines (or UVM_CORALNPU_ELFS_FILE: a file of such lines)
 #   UVM_SPIKE_RLOCATION: rlocation path of the spike binary, if any
 
 from __future__ import annotations
@@ -19,8 +18,8 @@ import tempfile
 from pathlib import Path
 from typing import IO, Optional, TypedDict
 
-from bazel_tools.tools.python.runfiles import runfiles
-from run_uvm_regression import (
+from coralnpu_test_utils import runfiles
+from uvm_regression_lib import (
     format_batch_entry,
     get_entry_point,
     get_tohost_addr,

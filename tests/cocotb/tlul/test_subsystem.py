@@ -18,7 +18,7 @@ from cocotb.clock import Clock
 from cocotb.queue import Queue
 from cocotb.triggers import ClockCycles, RisingEdge, FallingEdge, with_timeout
 from elftools.elf.elffile import ELFFile
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 
 from coralnpu_test_utils.TileLinkULInterface import TileLinkULInterface, create_a_channel_req
 from coralnpu_test_utils.axi_slave import AxiSlave

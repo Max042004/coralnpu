@@ -14,7 +14,6 @@
 
 // CoralNPU Chisel generators and unit tests.
 //
-// Replaces the rules_scala/rules_jvm_external setup of the old Bazel build.
 // Third-party RTL (common_cells, cvfpu, fpu_div_sqrt_mvp, RVVI) comes from
 // `bender vendor` (see Bender.yml); Chisel BlackBoxes still locate it as
 // classpath resources, so it is staged below under the same paths the Scala
@@ -67,7 +66,7 @@ lazy val root = (project in file("."))
       "-Xlint:unused",
     ) ++ (if (sys.env.contains("SCALA_FATAL_WARNINGS")) Seq("-Xfatal-warnings") else Nil),
 
-    // The chisel plugin artifact is the one the Bazel build used (_2.13.6).
+    // The chisel plugin artifact is pinned to _2.13.6.
     addCompilerPlugin("org.chipsalliance" % "chisel-plugin_2.13.6" % chiselVersion),
     libraryDependencies ++= Seq(
       "org.chipsalliance" %% "chisel" % chiselVersion,
@@ -91,7 +90,7 @@ lazy val root = (project in file("."))
     Test / unmanagedSources :=
       (srcRoot ** "*.scala").get.filter(isTestSource),
 
-    // coralnpu.ScmInfo: the git revision, as the old stamped Bazel build did.
+    // coralnpu.ScmInfo: the git revision.
     Compile / sourceGenerators += Def.task {
       import scala.sys.process._
       val rev = scala.util.Try(Seq("git", "rev-parse", "HEAD").!!.trim)

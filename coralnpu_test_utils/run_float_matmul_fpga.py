@@ -19,7 +19,7 @@ import os
 import sys
 import numpy as np
 
-# To support execution without Bazel runfiles:
+# To support execution without the runfiles tree:
 _script_dir = os.path.dirname(os.path.abspath(__file__))
 _project_root = os.path.dirname(_script_dir)
 if _project_root not in sys.path:

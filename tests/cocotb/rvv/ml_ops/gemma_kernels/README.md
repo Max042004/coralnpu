@@ -17,10 +17,10 @@ The test suite in [`cocotb_tests/rvv_flashattention_cocotb_test.py`](cocotb_test
 
 In automated CI and offline airgapped presubmit pipelines, the test suite does not require external model downloads. If real model tensors are not present in `test_data/`, the test automatically generates deterministic synthetic float32 vectors (`np.random.seed(42); np.random.normal(...)`) to verify numerical correctness against a NumPy golden reference model.
 
-Run the test suite via Bazel:
+Run the test suite via make:
 
 ```bash
-bazel test //tests/cocotb/rvv/ml_ops/gemma_kernels:rvv_flashattention_cocotb_test
+make cocotb-suite SUITE=tests_cocotb_rvv_ml_ops_gemma_kernels_rvv_flashattention_cocotb_test
 ```
 
 ### Manual Reference Tensor Extraction (Real Weights)
@@ -44,10 +44,10 @@ To evaluate the kernels against real weights extracted from `google/gemma-3-270m
 3. Re-run the Cocotb test suite:
 
    ```bash
-   bazel test //tests/cocotb/rvv/ml_ops/gemma_kernels:rvv_flashattention_cocotb_test
+   make cocotb-suite SUITE=tests_cocotb_rvv_ml_ops_gemma_kernels_rvv_flashattention_cocotb_test
    ```
 
    The test will automatically detect the real Gemma tensors in `test_data/` and compute the unmasked multi-head golden model against the real extracted weights.
 
-> **Note on De-Bazeling**:
-> The `@gemma_deps` Bazel pip hub was removed during the Bzlmod airgap migration (September 2026). Because `bazel vendor //...` vendors all external dependencies across the repository for offline airgap CI, including heavy PyTorch/Transformers wheels in the Bazel module graph would add multi-gigabyte bloat for dependencies that cannot run in airgapped environments (since model downloading requires public internet access). The extraction script is therefore maintained as a standalone manual utility.
+> **Note**:
+> The extraction script needs heavy PyTorch/Transformers wheels and public internet access to download the model, so it is maintained as a standalone manual utility and is not part of `requirements.txt`.

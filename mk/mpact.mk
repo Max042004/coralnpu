@@ -17,9 +17,8 @@
 #   make mpact          build build/mpact/bin/<coralnpu_v2_sim> (and the libraries)
 #   make mpact-run ELF=tests/cocotb/wfi_slot_0
 #
-# mk/mpact_rules.mk is generated from the vendored Bazel build graphs by
-# utils/bazel2make.py (see its docstring); this file supplies the variables it
-# uses and the third-party pieces: antlr4 runtime + tool jar, linenoise, elfio.
+# mk/mpact_rules.mk holds the MPACT/coralnpu-mpact compile and generator rules;
+# this file supplies the variables it uses and the third-party pieces: antlr4 runtime + tool jar, linenoise, elfio.
 
 MPACT_OUT := $(BUILD)/mpact
 MPACT_GEN := $(MPACT_OUT)/gen
@@ -29,7 +28,7 @@ ANTLR4_SRC = $(call dep_src,antlr4)
 ELFIO_SRC = $(call dep_src,elfio)
 LINENOISE_SRC = $(call dep_src,linenoise)
 
-# The Bazel build compiled MPACT with clang (it needs -ffp-model=strict).
+# MPACT is compiled with clang (it needs -ffp-model=strict).
 MPACT_CXX ?= clang++
 MPACT_CC  ?= clang
 MPACT_INCS =-Ivendor/mpact-sim -Ivendor/mpact-riscv -Ivendor/coralnpu-mpact \
@@ -96,5 +95,12 @@ mpact-pytest: $(PYBIND_SO) $(ELF_DIR)/tests/cocotb/rvv/arithmetics/rvv_add_int8_
               $(ELF_DIR)/tests/cocotb/rvv/vrgather_test.elf \
               $(ELF_DIR)/tests/verilator_sim/htif_semihosting_test.elf
 	CORALNPU_RUNFILES=$(BUILD)/runfiles CORALNPU_ROOT=$(ROOT) \
-	PYTHONPATH=$(MPACT_OUT)/python:$(ROOT)/sw/coralnpu_sim:$(ROOT)/utils/pyshim \
+	PYTHONPATH=$(MPACT_OUT)/python:$(ROOT)/sw/coralnpu_sim:$(ROOT) \
 	$(PYTHON) sw/coralnpu_sim/coralnpu_v2_sim_test.py
+
+# MobileNet v1 on the MPACT ISS through the python binding (tests/npusim_examples).
+.PHONY: npusim-mobilenet
+npusim-mobilenet: $(PYBIND_SO) $(ELF_DIR)/tests/npusim_examples/run_full_mobilenet_v1_binary.elf
+	CORALNPU_RUNFILES=$(BUILD)/runfiles CORALNPU_ROOT=$(ROOT) \
+	PYTHONPATH=$(MPACT_OUT)/python:$(ROOT)/sw/coralnpu_sim:$(ROOT) \
+	$(PYTHON) tests/npusim_examples/npusim_run_mobilenet.py

@@ -41,6 +41,13 @@ class FstQueryTest : public ::testing::Test {
   }
 
   static std::string FindRunfile(const std::string &rel_path) {
+    // Built artifacts (firmware ELFs, simulators) are staged under $CORALNPU_RUNFILES.
+    if (const char *staged = std::getenv("CORALNPU_RUNFILES")) {
+      std::filesystem::path p = std::filesystem::path(staged) / rel_path;
+      if (std::filesystem::exists(p)) {
+        return p.string();
+      }
+    }
     const char *srcdir = std::getenv("TEST_SRCDIR");
     if (srcdir != nullptr) {
       for (const char *workspace : {"coralnpu_hw", "_main", ""}) {

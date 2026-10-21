@@ -12,30 +12,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Drop-in stand-in for bazel_tools' Python runfiles library.
+"""Locate data files (firmware ELFs, test inputs) from tests and helpers.
 
-The cocotb tests and helpers were written against Bazel runfiles and ask for
-files as `r.Rlocation("coralnpu_hw/tests/cocotb/foo.elf")`. Without Bazel the
-same path is resolved by looking in, in order:
+    from coralnpu_test_utils import runfiles
+    r = runfiles.Create()
+    elf = r.Rlocation("coralnpu_hw/tests/cocotb/foo.elf")
 
-  1. each directory in $CORALNPU_RUNFILES (os.pathsep separated; the Makefile
+A path `<workspace>/<repo path>` is resolved by looking, in order, in
+
+  1. each directory of $CORALNPU_RUNFILES (os.pathsep separated; the Makefile
      points this at build/runfiles, where built artifacts such as firmware
      ELFs are staged), then
-  2. the source tree ($CORALNPU_ROOT, defaulting to this checkout).
+  2. the source tree ($CORALNPU_ROOT, default: this checkout).
 
-The leading workspace name (`coralnpu_hw`, or any other repo name) is dropped.
+The leading workspace component (conventionally `coralnpu_hw`) is dropped. A
+path that exists nowhere still maps to a location under the source tree, so
+callers can probe with os.path.exists() to skip binaries that were not built.
 """
 
 import os
 
 _ROOT = os.environ.get(
     "CORALNPU_ROOT",
-    os.path.abspath(
-        os.path.join(os.path.dirname(__file__), *([os.pardir] * 6))),
+    os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)),
 )
 
 
-class _Runfiles:
+class Runfiles:
 
     def _roots(self):
         extra = os.environ.get("CORALNPU_RUNFILES", "")
@@ -53,8 +56,6 @@ class _Runfiles:
                 full = os.path.join(root, rel)
                 if os.path.exists(full):
                     return full
-        # Like a directory-based Bazel runfiles tree, a missing entry still maps
-        # to a path (callers probe with os.path.exists to skip absent binaries).
         return os.path.join(_ROOT, candidates[-1])
 
     def EnvVars(self):
@@ -65,4 +66,4 @@ class _Runfiles:
 
 
 def Create(env=None):
-    return _Runfiles()
+    return Runfiles()

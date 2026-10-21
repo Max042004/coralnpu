@@ -9,7 +9,7 @@ We provide a scalar-only CoralNPU configuration that can integrate with an AXI
 based system. The SystemVerilog can be generated with:
 
 ``` bash
-bazel build //hdl/chisel/src/coralnpu:core_mini_axi_cc_library_emit_verilog
+make rtl DESIGN=CoreMiniAxi
 ```
 
 ### Module interfaces

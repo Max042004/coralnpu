@@ -1,5 +1,4 @@
-# Python environment for simulation/cocotb tests (pins from the former Bazel
-# pip repos). Installed into $TOOLS/venv by utils/setup_vm.sh.
+# Python environment for simulation/cocotb tests (pinned versions). Installed into $TOOLS/venv by utils/setup_vm.sh.
 cocotb==2.0.0
 find_libpython==0.4.0
 numpy==2.3.4

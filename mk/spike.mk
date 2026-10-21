@@ -42,7 +42,7 @@ VERILATOR_INC ?= $(TOOLS_DIR)/verilator/share/verilator/include
 # Spike's own headers are included as <fesvr/htif.h>, so its root is a normal -I;
 # the sub-directories are -iquote only, otherwise fesvr/syscall.h shadows the
 # system <syscall.h> (SYS_futex).
-SPIKE_INCS := -isystem $(VERILATOR_INC)/vltstd -isystem utils/cppshim -iquote $(ROOT) -I$(SPIKE_SRC) \
+SPIKE_INCS := -isystem $(VERILATOR_INC)/vltstd -iquote $(ROOT) -I$(SPIKE_SRC) \
               -iquote $(SPIKE_SRC)/riscv -iquote $(SPIKE_SRC)/fesvr \
               -iquote $(SPIKE_SRC)/softfloat -iquote $(SPIKE_BUILD) -iquote $(SPIKE_SRC)/fdt
 # Link the static archives explicitly (spike also builds libriscv.so, which -l would prefer).

@@ -89,7 +89,6 @@ vendor_package:
       - portable/MemMang/heap_4.c
       - LICENSE.md
   # TensorFlow Lite Micro and its header/source dependencies (firmware only).
-  # The Bazel-only patches (visibility, pthread link flags) are not needed here.
   - name: tflite_micro
     target_dir: vendor/tflite_micro
     upstream:

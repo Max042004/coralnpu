@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Recompute the line counts in unified-diff hunk headers.
 
-Some of the old patches were edited by hand and carry wrong counts; Bazel's
-patcher tolerated that, `git apply` (used by `bender vendor`) does not.
+Some patches were edited by hand and carry wrong counts; `patch` tolerates
+that, `git apply` (used by `bender vendor`) does not.
     fix_hunk_counts.py <patch> [<patch>...]    (rewrites in place)
 """
 import re

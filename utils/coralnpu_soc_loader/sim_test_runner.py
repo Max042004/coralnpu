@@ -29,7 +29,7 @@ import sys
 import threading
 import time
 
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 
 
 def find_free_port():
@@ -340,7 +340,7 @@ class SimTestRunner:
             if self.trace_file:
                 logging.warning(
                     f"SIM_TEST: Tracing enabled. Waveform can be found in "
-                    f"bazel-testlogs/<target_path>/test.outputs/outputs.zip "
+                    f"the test's output directory "
                     f"as {os.path.basename(self.trace_file)}"
                 )
 

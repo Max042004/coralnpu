@@ -22,7 +22,7 @@ import subprocess
 import sys
 import threading
 import time
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 
 
 def find_free_port():

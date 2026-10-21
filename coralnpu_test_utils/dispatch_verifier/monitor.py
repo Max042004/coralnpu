@@ -62,8 +62,8 @@ Quick Start:
               f"Total instructions traced: {len(monitor.history)}"
           )
 
-  3. Run the test directly with `bazel run`:
-     `bazel run //tests/cocotb:rvv_assembly_cocotb_test_vgather_test`
+  3. Run the suite directly with Make:
+     `utils/run_cocotb_suites.sh <suite>` (see `make help`)
 
 Environment Variables:
   DISPATCH_UI: Defaults to `1` (enabled). Set `DISPATCH_UI=0` to disable the
@@ -172,7 +172,7 @@ class DispatchMonitor:
         self.cycle_count = 0
         self._task = None
 
-        # Resolve log_file path: write directly to workspace root if under bazel run
+        # Resolve log_file path: write directly to the workspace root
         self.log_path = None
         self._log_handle = None
         if self.log_file:

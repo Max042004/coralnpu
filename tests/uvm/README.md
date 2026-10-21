@@ -18,18 +18,19 @@ This testbench provides a basic UVM environment to:
 
 ## Prerequisites
 
-* **Synopsys VCS:** This testbench is configured to run with Synopsys VCS.
-* **UVM:** VCS needs to be configured with UVM 1.2 support enabled.
+* **Verilator (default):** The testbench runs on Verilator 5 with the vendored
+  `uvm-verilator` UVM library (installed by `utils/setup_vm.sh`).
+* **Synopsys VCS (optional):** `make uvm-model-vcs` builds a VCS model; it
+  needs a licence and UVM 1.2 support, and is untested in CI.
 * **CoralNPU Hardware Repository:** Access to the repository containing the
   `RvvCoreMiniVerificationAxi` source code is required to generate the DUT
   Verilog and the test binary.
-* **Bazel:** The build system used to generate the Verilog from the Chisel
-  source in the CoralNPU HW repository.
+* **Bender, sbt, firtool:** Used by `make` to generate the Verilog from the
+  Chisel source (see `doc/build.md`).
 * **RISC-V Toolchain:** A RISC-V toolchain compatible with the CoralNPU
   project is needed to generate the `.elf` file.
-* **CoralNPU MPACT Repository:** Set the `CORALNPU_MPACT` environment
-  variable to the absolute path of the `coralnpu-mpact` repository. This
-  is required for co-simulation.
+* **MPACT co-simulation:** MPACT comes from `vendor/` and is built by `make`;
+  no environment variable is needed.
 
 ## Generating the Test Binary (program.elf)
 
@@ -41,13 +42,13 @@ The test program run by the DUT needs to be compiled to an elf format.
    cd /path/to/your/coralnpu/hw/repo
    ```
 
-2. Run the Bazel build command to compile the test program:
+2. Build the test program with Make:
 
    ```bash
-   bazel build //tests/cocotb/tutorial:coralnpu_v2_program
+   make elf T=tests/cocotb/tutorial/coralnpu_v2_program
    ```
 
-3. The `coralnpu_v2_program.elf` file is generated in the bazel output directory.
+3. The `coralnpu_v2_program.elf` file is generated in `build/runfiles/tests/cocotb/tutorial/`.
 4. Copy this `coralnpu_v2_program.elf` file to the `bin/` directory of this UVM testbench structure (or update the `TEST_ELF` path in the `Makefile` or run command).
 
 ## Directory Structure
@@ -79,77 +80,49 @@ The testbench follows a standard UVM directory structure:
     └── program.elf          # (Needs to be generated and copied here)
 ```
 
-## Running the Testbench using Bazel
+## Running the Testbench using Make
 
-The UVM testbench models and regressions are built and run directly using Bazel.
+The UVM testbench models and regressions are built and run with Make
+(targets live in `mk/uvm.mk`; `DUT=rvv` is the default, `DUT=vme` selects the
+VME toplevel).
 
 **1. Compiling the Simulator Models:**
 
 * **Verilator Model:**
 
   ```bash
-  bazel build //tests/uvm:uvm_sim_verilator
+  make uvm-model [DUT=rvv|vme]       # -> build/uvm/<dut>/Vuvm
   ```
 
-* **VCS Model:**
+* **VCS Model (requires a Synopsys licence, untested):**
 
   ```bash
-  bazel build --config=vcs //tests/uvm:uvm_sim_vcs
+  make uvm-model-vcs [DUT=rvv|vme]
   ```
 
-**2. Running UVM Regressions via Bazel:**
+**2. Running Tests:**
 
-* **Verilator Single Test:**
+* **Specific binaries (optionally checked against Spike):**
 
   ```bash
-  bazel test //tests/cocotb:uvm_regression_nop_test
+  make uvm-test ELFS="tests/cocotb/nop_test tests/cocotb/math" [SPIKE=1] [TIMEOUT=100000]
   ```
 
-* **VCS Single Test:**
+* **Full Regression Suite** (firmware and riscv-tests listed in
+  `mk/uvm_regression.tsv`, run in batches):
 
   ```bash
-  bazel test --config=vcs //tests/cocotb:vcs_uvm_regression_nop_test
+  make uvm-regression
   ```
 
-* **Full Regression Suite:**
-
-  ```bash
-  # Verilator
-  bazel test --test_tag_filters=uvm-regression //tests/cocotb:all
-
-  # VCS
-  bazel test --config=vcs --test_tag_filters=vcs-uvm-regression //tests/cocotb:all
-  ```
-
-**3. Running Regressions via `run_uvm_regression.py`:**
-
-You can also run batch or targeted regressions using the Python runner:
-
-```bash
-# Run with Verilator
-python3 utils/run_uvm_regression.py --simulator=verilator --target=//tests/cocotb:nop_test
-
-# Run with VCS
-python3 utils/run_uvm_regression.py --simulator=vcs --target=//tests/cocotb:nop_test
-```
-
-**4. Running on the VME (Zvt) Toplevel:**
+**3. Running on the VME (Zvt) Toplevel:**
 
 The bench can instantiate `VmeCoreMiniVerificationAxi` (RVV plus the Zvt
-matrix extension) instead of `RvvCoreMiniVerificationAxi`. The VME models
-(`//tests/uvm:uvm_sim_verilator_vme`, `//tests/uvm:uvm_sim_vcs_vme`) are built
-with `+define+ZVT_ON`, which enables the Zvt datapath in the RTL, selects the
-VME DUT in `coralnpu_tb_top`, and configures the MPACT co-simulator for the
-M4 (Zvt) architecture.
-
-All generated regression targets pick their model through the
-`//tests/uvm:dut` flag (`rvv` by default), so the existing regressions can be
-rerun on the VME toplevel without separate targets:
+matrix extension) instead of `RvvCoreMiniVerificationAxi`. The VME model is
+built with `+define+ZVT_ON`, which enables the Zvt datapath in the RTL, selects
+the VME DUT in `coralnpu_tb_top`, and configures the MPACT co-simulator for the
+M4 (Zvt) architecture. Rerun any of the above with `DUT=vme`:
 
 ```bash
-# Verilator
-bazel test --//tests/uvm:dut=vme --test_tag_filters=verilator-uvm-regression //...
-
-# Python runner
-python3 utils/run_uvm_regression.py --simulator=verilator --dut=vme --target=//tests/cocotb:nop_test
+make uvm-regression DUT=vme
 ```

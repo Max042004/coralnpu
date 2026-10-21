@@ -18,7 +18,7 @@ import subprocess
 import tempfile
 import threading
 
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 from enum import Enum
 from cocotb.triggers import ClockCycles
 from pyocd.board.board import Board

@@ -1,14 +1,18 @@
 #!/bin/bash
 set -e
 
-TRACE_ARG=""
+# Runs the ISP camera demo on the SoC Verilator model:
+#   ./run_isp_cam_sim.sh [--trace] [--run_time SECONDS]
+# This is a thin wrapper around `make isp-cam-sim` (see mk/fpga.mk).
+
+TRACE=""
 RUN_TIME=10
 
 while [[ $# -gt 0 ]]; do
   case $1 in
     --trace)
-      TRACE_ARG="--trace isp_cam_trace.fst"
-      echo "Tracing enabled. Waveform will be saved to isp_cam_trace.fst"
+      TRACE=1
+      echo "Tracing enabled. Waveform will be saved to build/fpga/run/isp_cam/isp_cam_trace.fst"
       shift
       ;;
     --run_time)
@@ -23,21 +27,5 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-echo "Building ISP Camera software test..."
-bazel build //fpga:isp_cam_test
-ELF_PATH=$(bazel cquery //fpga:isp_cam_test --output=files | grep ".elf$")
-EXEC_ROOT=$(bazel info execution_root)
-cp -f "${EXEC_ROOT}/${ELF_PATH}" ./isp_cam_test.elf
-
-echo "Generating test pattern..."
-python3 fpga/ip/ispyocto/dv/camera_model/gen_test_pattern.py
-mv test_pattern_320x240.raw grey_bars_320x240.raw
-
-echo "Building simulation model..."
-bazel build //fpga:build_chip_verilator
-
-echo "Running simulation..."
-bazel build //utils/coralnpu_soc_loader:run_simulation
-./bazel-bin/utils/coralnpu_soc_loader/run_simulation --elf_file ./isp_cam_test.elf --run_time $RUN_TIME $TRACE_ARG
-
-echo "Simulation Finished."
+cd "$(dirname "$0")"
+exec make isp-cam-sim RUN_TIME="${RUN_TIME}" TRACE="${TRACE}"

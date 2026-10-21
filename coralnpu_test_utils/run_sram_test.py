@@ -43,7 +43,7 @@ class SimSpiMaster:
         try:
             from spi_driver import SPIDriver
         except ImportError:
-            # Fallback for bazel run where imports might be different
+            # Fallback when imports might be different
             try:
                 from utils.coralnpu_soc_loader.spi_driver import SPIDriver
             except ImportError:

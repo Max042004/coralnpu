@@ -82,8 +82,8 @@ The core will halt when returning from `main`.
 
 ### Compiling the program
 
-Run `bazel build tests/cocotb/tutorial:coralnpu_v2_program`
-to generate `coralnpu_v2_program.elf`.
+Run `make elf T=tests/cocotb/tutorial/coralnpu_v2_program`
+to generate `build/runfiles/tests/cocotb/tutorial/coralnpu_v2_program.elf`.
 
 ## Creating the test bench
 
@@ -219,7 +219,7 @@ async def core_mini_axi_tutorial(dut):
 You can run the test bench with:
 
 ```bash
-bazel run //tests/cocotb/tutorial:tutorial
+make cocotb-suite SUITE=tests_cocotb_tutorial_tutorial
 ```
 
 You should see the following in the console output:

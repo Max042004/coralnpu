@@ -98,11 +98,10 @@ endif
 	  UVM_ENABLE_SPIKE=$(SPIKE) UVM_SPIKE_RLOCATION=$(if $(filter 1,$(SPIKE)),SPIKE) \
 	  UVM_CORALNPU_ELFS="$$(for e in $(ELFS); do \
 	    printf '%s\t%s\t%s\t%s\n' $(ELF_DIR)/$$e.elf $$e $(TIMEOUT) $(if $(filter 1,$(SPIKE)),True,False); done)" \
-	  CORALNPU_RUNFILES=$(ELF_DIR) PYTHONPATH=$(ROOT)/utils:$(ROOT)/utils/pyshim \
+	  CORALNPU_RUNFILES=$(ELF_DIR) PYTHONPATH=$(ROOT)/utils:$(ROOT) \
 	  $(PYTHON) utils/uvm_batch_runner.py
 
-# Full regression: every firmware binary / riscv-test that was a UVM regression target in the
-# Bazel build (list: mk/uvm_regression.tsv, from utils/gen_uvm_regression.py).
+# Full regression: every firmware binary / riscv-test that is a UVM regression target (list: mk/uvm_regression.tsv).
 UVM_REG_TSV  := mk/uvm_regression.tsv
 UVM_REG_FW   := $(addprefix $(ELF_DIR)/,$(filter-out third_party/%,$(shell cut -f1 $(UVM_REG_TSV))))
 
@@ -114,5 +113,5 @@ uvm-regression: $(UVM_OUT)/$(DUT)/Vuvm $(UVM_REG_FW) riscv-tests $(SPIKE_BUILD)/
 	cd $(ROOT) && UVM_MODEL_RLOCATION=$(UVM_OUT)/$(DUT)/Vuvm \
 	  UVM_ENABLE_SPIKE=$(SPIKE) UVM_SPIKE_RLOCATION=$(if $(filter 1,$(SPIKE)),SPIKE) \
 	  UVM_CORALNPU_ELFS_FILE=$(UVM_OUT)/regression_list.txt \
-	  CORALNPU_RUNFILES=$(ELF_DIR) PYTHONPATH=$(ROOT)/utils:$(ROOT)/utils/pyshim \
+	  CORALNPU_RUNFILES=$(ELF_DIR) PYTHONPATH=$(ROOT)/utils:$(ROOT) \
 	  $(PYTHON) utils/uvm_batch_runner.py

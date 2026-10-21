@@ -32,11 +32,14 @@ Coral NPU offers the following top-level feature set:
 
 ## System Requirements
 
-* Bazel 8.6.0
-* Python 3.9-3.13
+* Linux x86_64 (Ubuntu 22.04 is what the build is verified on)
+* [Bender](https://github.com/pulp-platform/bender), GNU Make, JDK 17 + sbt,
+  Verilator 5.052, Python 3.11, and the CoralNPU RISC-V toolchain
 
-See [coralnpu.dockerfile](utils/coralnpu.dockerfile) for a detailed list of
-requirements.  Our CI systems run most builds and tests using this image.
+`utils/setup_vm.sh` installs all of them (pinned versions) on a bare Ubuntu
+22.04 machine or VM; see [coralnpu.dockerfile](utils/coralnpu.dockerfile) for the
+equivalent container. Our CI systems run builds and tests in that image.
+See [doc/build.md](doc/build.md) for the build system in detail.
 
 ## Verification & Testing
 
@@ -49,17 +52,24 @@ corresponding test READMEs:
 ## Quick Start
 
 ```bash
-# Ensure that test suite passes
-bazel run //tests/cocotb:core_mini_axi_sim_cocotb
+# One-time: install the toolchain (Ubuntu 22.04), then put ~/bin on PATH
+bash utils/setup_vm.sh
+export PATH="$HOME/bin:$PATH"
+
+# Ensure that a test suite passes (generates the RTL, Verilates it, builds the
+# firmware and runs the cocotb tests)
+make cocotb-suite SUITE=tests_cocotb_core_mini_axi_sim_cocotb
 
 # Build a binary
-bazel build //examples:coralnpu_v2_hello_world_add_floats
+make elf T=examples/coralnpu_v2_hello_world_add_floats
 
 # Build the Simulator (non-RVV for shorter build time):
-bazel build //tests/verilator_sim:core_mini_axi_sim
+make sim SIM=core_mini_axi_sim
 
 # Run the binary on the simulator:
-bazel-bin/tests/verilator_sim/core_mini_axi_sim --binary bazel-out/k8-fastbuild-ST-dd8dc713f32d/bin/examples/coralnpu_v2_hello_world_add_floats.elf
+build/sim/core_mini_axi_sim --binary build/runfiles/examples/coralnpu_v2_hello_world_add_floats.elf
 ```
+
+`make help` lists the main targets.
 
 ![](doc/images/Coral_Logo_200px-2x.png)

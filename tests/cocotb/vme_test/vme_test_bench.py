@@ -28,7 +28,7 @@ import cocotb
 import numpy as np
 from coralnpu_test_utils.core_mini_axi_interface import CoreMiniAxiInterface
 from coralnpu_test_utils.sim_backends.verilator_test_fixture import VerilatorTestFixture
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 from tqdm import tqdm
 
 # struct VmeMsetCase   = 5 x uint32  (mtype, vtype, msettn_avl, msettm, msettk)

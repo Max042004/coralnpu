@@ -16,7 +16,7 @@ import threading
 import time
 import unittest
 
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 from coralnpu_v2_sim_utils import CoralNPUV2Simulator
 import numpy as np
 
@@ -506,7 +506,7 @@ if __name__ == "__main__":
     import sys
     import os
 
-    # Bazel passes the test filter in the TESTBRIDGE_TEST_ONLY environment variable.
+    # A test filter may be passed in the TESTBRIDGE_TEST_ONLY environment variable.
     # If it's set, we can use it to filter the tests.
     if "TESTBRIDGE_TEST_ONLY" in os.environ:
         test_filter = os.environ["TESTBRIDGE_TEST_ONLY"]

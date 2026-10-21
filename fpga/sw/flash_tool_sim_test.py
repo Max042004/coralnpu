@@ -24,7 +24,7 @@ import threading
 import time
 
 from elftools.elf.elffile import ELFFile
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 try:
     from coralnpu_hw.utils.coralnpu_soc_loader.spi_driver import SPIDriver
 except ImportError:

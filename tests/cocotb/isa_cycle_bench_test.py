@@ -5,7 +5,7 @@ import os
 import json
 
 import cocotb
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 
 from coralnpu_test_utils.sim_backends.verilator_test_fixture import VerilatorTestFixture
 

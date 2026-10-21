@@ -45,5 +45,5 @@ uint64_t cycle_count = cycle_end - cycle_start;
 ## Run the example
 
 ```bash
-bazel run -c opt tests/cocotb/tutorial/counters:cocotb_counter_test
+utils/run_cocotb_suites.sh tests_cocotb_tutorial_counters_cocotb_counter_test
 ```

@@ -15,7 +15,7 @@
 import cocotb
 from cocotb.triggers import ClockCycles
 from cocotb.clock import Clock
-from bazel_tools.tools.python.runfiles import runfiles
+from coralnpu_test_utils import runfiles
 import os
 import sys
 

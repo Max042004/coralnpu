@@ -23,9 +23,9 @@
 
 #include "gtest/gtest.h"
 #include "sw/coralnpu_sim/spike_cosim_dpi.h"
-#include "tools/cpp/runfiles/runfiles.h"
+#include "coralnpu_test_utils/runfiles.h"
 
-using bazel::tools::cpp::runfiles::Runfiles;
+using coralnpu::testing::Runfiles;
 using coralnpu::sim::SpikeSimulator;
 using coralnpu::sim::SpikeSimulatorOptions;
 

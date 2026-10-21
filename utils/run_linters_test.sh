@@ -72,7 +72,7 @@ EOF
 
 # Mock all required linters
 mock_linter "yapf"
-mock_linter "buildifier"
+mock_linter "yapf3"
 mock_linter "verible-verilog-lint"
 mock_linter "verible-verilog-format"
 mock_linter "verible-verilog-syntax"
@@ -231,10 +231,10 @@ else
     FAILED_TESTS=$((FAILED_TESTS + 1))
 fi
 
-# 13. --fix flag (Target file, buildifier)
+# 13. --fix flag (Target file, scalafmt)
 setup_repo
-echo "# build file" > BUILD
-run_test "Fix mode buildifier" "" "--fix BUILD" "/dev/null" 0 "MOCK: buildifier running on -mode=fix.*BUILD" || FAILED_TESTS=$((FAILED_TESTS + 1))
+echo "// scala file" > Foo.scala
+run_test "Fix mode scalafmt" "" "--fix Foo.scala" "/dev/null" 0 "MOCK: scalafmt running on --config .scalafmt.*Foo.scala" || FAILED_TESTS=$((FAILED_TESTS + 1))
 
 # 14. --fix flag (Local Staged Changes, diff mode git-clang-format-19)
 setup_repo

@@ -28,7 +28,7 @@ RT_ROOT := $(BUILD)/riscv-tests
 RT_ENV  := $(RT_ROOT)/env
 RT_OUT  := $(ELF_DIR)/third_party/riscv-tests
 
-# Mirrors COMMON_ARGS of the former Bazel target.
+# Arguments shared by every riscv-test.
 RT_GCC_OPTS := -march=rv32imf_zve32x_zicsr_zifencei_zbb -mabi=ilp32 -mcmodel=medany -nostdlib
 
 .PHONY: riscv-tests

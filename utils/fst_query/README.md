@@ -146,7 +146,7 @@ cat queries.txt | fst_query sim.fst --batch -
 ### Build the Tool
 
 ```bash
-bazel build //utils/fst_query:fst_query
+make fst-query          # -> build/tools/fst_query
 ```
 
 ### Run Unit Tests
@@ -154,7 +154,7 @@ bazel build //utils/fst_query:fst_query
 The test suite includes tests against both synthetic waveforms and real simulation vectors generated at test time:
 
 ```bash
-bazel test //utils/fst_query:fst_query_test
+make tool-tests
 ```
 
 ### Verify Against a Real Simulation Trace
@@ -162,8 +162,9 @@ bazel test //utils/fst_query:fst_query_test
 Run a simulation using `core_mini_axi_sim` and `math.elf` to generate a waveform trace:
 
 ```bash
-bazel run //tests/verilator_sim:core_mini_axi_sim -- \
-    --binary=$(pwd)/$(bazel cquery --output=files //tests/cocotb:math.elf) \
+make build/sim/core_mini_axi_sim build/runfiles/tests/cocotb/math.elf
+build/sim/core_mini_axi_sim \
+    --binary=$(pwd)/build/runfiles/tests/cocotb/math.elf \
     --trace --trace_file=/tmp/VCoreMiniAxi.core.fst \
     --backdoor_load --cycles=50
 ```
@@ -171,20 +172,7 @@ bazel run //tests/verilator_sim:core_mini_axi_sim -- \
 Then inspect and sample the generated waveform:
 
 ```bash
-bazel run //utils/fst_query:fst_query -- /tmp/VCoreMiniAxi.core.fst --info
-bazel run //utils/fst_query:fst_query -- /tmp/VCoreMiniAxi.core.fst \
+build/tools/fst_query /tmp/VCoreMiniAxi.core.fst --info
+build/tools/fst_query /tmp/VCoreMiniAxi.core.fst \
     --exact --sample_at 45,90 VCoreMiniAxi.core.CoreMiniAxi.io_aclk
-```
-
-### Generate Code Coverage
-
-Run Bazel with LLVM native source-based coverage:
-
-```bash
-bazel coverage \
-    --repo_env=BAZEL_USE_LLVM_NATIVE_COVERAGE=1 \
-    --repo_env=BAZEL_LLVM_PROFDATA=/usr/lib/llvm-21/bin/llvm-profdata \
-    --repo_env=BAZEL_LLVM_COV=/usr/lib/llvm-21/bin/llvm-cov \
-    --combined_report=lcov \
-    //utils/fst_query:fst_query_test
 ```

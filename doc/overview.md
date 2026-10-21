@@ -227,27 +227,23 @@ flowchart TD
 
 ## Build Targets & Output Artifacts
 
-CoralNPU provides direct `.zip` (multi-file package with topological `filelist.f`) and `.sv` (monolithic SystemVerilog) build targets:
+CoralNPU generates a multi-file SystemVerilog package (`.zip`, with a topological
+`filelist.f`) and a monolithic single-file SystemVerilog file (`.sv`) per design.
+`make rtl` writes both to `build/rtl/<design>/`:
 
 ```bash
+make list-designs                    # every design that can be generated
+
 # --- CoreMini (Scalar + FPU AXI) ---
-# Multi-file SystemVerilog package with filelist.f
-bazel build //hdl/chisel/src/coralnpu:CoreMiniAxi.zip
-# Monolithic single-file SystemVerilog
-bazel build //hdl/chisel/src/coralnpu:CoreMiniAxi.sv
+make rtl DESIGN=CoreMiniAxi          # build/rtl/CoreMiniAxi/CoreMiniAxi.{zip,sv}
 
 # --- RvvCoreMini (Scalar + FPU + RVV 1.0 AXI) ---
-# Multi-file SystemVerilog package with filelist.f
-bazel build //hdl/chisel/src/coralnpu:RvvCoreMiniAxi.zip
-# Monolithic single-file SystemVerilog
-bazel build //hdl/chisel/src/coralnpu:RvvCoreMiniAxi.sv
+make rtl DESIGN=RvvCoreMiniAxi
 
 # --- VmeCoreMini (Scalar + FPU + RVV + Matrix AXI) ---
-# Multi-file SystemVerilog package with filelist.f
-bazel build //hdl/chisel/src/coralnpu:VmeCoreMiniAxi.zip
-# Monolithic single-file SystemVerilog
-bazel build //hdl/chisel/src/coralnpu:VmeCoreMiniAxi.sv
+make rtl DESIGN=VmeCoreMiniAxi
 ```
+
 
 ---
 
@@ -285,37 +281,26 @@ For accurate instruction disassembly and trace logs with `--instr_trace`, you **
 | `--debug_axi` | `false` | Enables verbose debug logging of AXI bus transactions across TLM-to-AXI bridges. |
 | `--cycles=<N>` | `100000000` | Maximum simulation cycle budget before aborting with timeout. |
 
-### 3. Toolchain Transition & Locating Target ELFs
+### 3. Locating Target ELFs
 
-When building both the simulator (a host executable) and the target RISC-V software in Bazel, keep in mind that target ELFs undergo a platform transition:
-
-- Host simulator binaries (e.g. `core_mini_axi_sim`) are built for the host architecture and placed under the standard `bazel-bin/` symlink (e.g. `bazel-bin/tests/verilator_sim/core_mini_axi_sim`).
-- Target RISC-V executables built with `coralnpu_v2_binary` (e.g. `//tests/cocotb:math.elf`) undergo a toolchain transition (`_coralnpu_v2_transition` to `//platforms:coralnpu_v2`). Bazel writes transitioned artifacts into a hashed output directory such as `bazel-out/k8-fastbuild-ST-<hash>/bin/...`, which is **not** symlinked into `bazel-bin/`.
-
-Attempting to run `./bazel-bin/.../sim --binary=bazel-bin/tests/cocotb/math.elf` will fail with "No such file or directory".
-
-To locate the actual path of any target ELF, query Bazel using `bazel cquery --output=files`:
-
-```bash
-# Query the transitioned output path for a target ELF
-bazel cquery --output=files //tests/cocotb:math.elf
-# Output: bazel-out/k8-fastbuild-ST-dd8dc713f32d/bin/tests/cocotb/math.elf
-```
+Host simulator binaries (e.g. `core_mini_axi_sim`) are built for the host and
+land in `build/sim/`. Target RISC-V firmware built with `make elf T=<package>/<name>`
+(or `make elfs-cocotb`) is staged as `build/runfiles/<package>/<name>.elf`, for
+example `build/runfiles/tests/cocotb/math.elf`. `make list-elfs` lists every
+firmware target.
 
 ### 4. Complete End-to-End Workflow Example
 
 The following example builds both the verification simulator and the `math.elf` sample program, then executes the simulation with high-speed backdoor loading and instruction tracing:
 
 ```bash
-# 1. Build the verification simulator and target ELF
-bazel build //tests/verilator_sim:core_mini_verification_axi_sim //tests/cocotb:math.elf
+# 1. Build the verification simulator and the target ELF
+make sim SIM=core_mini_verification_axi_sim
+make elf T=tests/cocotb/math
 
-# 2. Resolve the transitioned ELF path
-TARGET_ELF=$(bazel cquery --output=files //tests/cocotb:math.elf)
-
-# 3. Execute the simulation
-./bazel-bin/tests/verilator_sim/core_mini_verification_axi_sim \
-  --binary="${TARGET_ELF}" \
+# 2. Execute the simulation
+build/sim/core_mini_verification_axi_sim \
+  --binary=build/runfiles/tests/cocotb/math.elf \
   --backdoor_load \
   --instr_trace
 ```

@@ -42,55 +42,37 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  macro-signatures:
+  # Every job below runs `make <target>` (see mk/ci.mk) inside the image.
+  make:
     needs: build-docker
     runs-on: ubuntu-24.04
     permissions:
       contents: read
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - ci-lint
+          - ci-chisel
+          - ci-sim
+          - ci-cocotb
+          - ci-uvm
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
-          fetch-depth: 1
-          ssh-key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          persist-credentials: false
-      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
-      - id: id
-        run: |
-          echo "uid=$(id -u)" >> $GITHUB_OUTPUT
-          echo "gid=$(id -g)" >> $GITHUB_OUTPUT
-      - name: Load Docker image from cache
-        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
-        with:
-          context: .
-          file: utils/coralnpu.dockerfile
-          push: false
-          load: true
-          tags: coralnpu:latest
-          build-args: |
-            _UID=${{ steps.id.outputs.uid }}
-            _GID=${{ steps.id.outputs.gid }}
-          cache-from: type=gha
-      - name: Check Macro Signatures
-        run: |
-          docker run --rm --init --ipc=host \
-            -v ${{ github.workspace }}:${{ github.workspace }} \
-            -w ${{ github.workspace }} \
-            -v $HOME:/home/runner \
-            -v $HOME:/home/builder \
-            coralnpu:latest \
-            python3 utils/check_macro_signatures.py
-
-  lint:
-    needs: build-docker
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
-        with:
+          # ci-lint diffs against the base branch.
           fetch-depth: 0
           ssh-key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           persist-credentials: false
+      - name: Free Disk Space
+        run: |
+          set -x
+          sudo rm -rf /opt/hostedtoolcache "$AGENT_TOOLSDIRECTORY" || true
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost || true
+          sudo rm -rf /usr/local/share/powershell /usr/share/swift || true
+          sudo docker system prune -af --volumes || true
+          df -h
       - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
       - id: id
         run: |
@@ -108,7 +90,7 @@ jobs:
             _UID=${{ steps.id.outputs.uid }}
             _GID=${{ steps.id.outputs.gid }}
           cache-from: type=gha
-      - name: Run Linters
+      - name: make ${{ matrix.target }}
         run: |
           docker run --rm --init --ipc=host \
             -e GITHUB_ACTIONS="${{ env.GITHUB_ACTIONS }}" \
@@ -119,132 +101,9 @@ jobs:
             -v $HOME:/home/runner \
             -v $HOME:/home/builder \
             coralnpu:latest \
-            utils/run_linters.sh
-
-  bazel-test-exclusive:
-    needs: build-docker
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: read
-    timeout-minutes: 360
-    steps:
-      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
-        with:
-          fetch-depth: 1
-          ssh-key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          persist-credentials: false
-      - name: Free Disk Space
-        run: |
-          set -x
-          sudo rm -rf /opt/hostedtoolcache "$AGENT_TOOLSDIRECTORY" || true
-          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost || true
-          sudo rm -rf /usr/local/share/powershell /usr/share/swift || true
-          sudo docker system prune -af --volumes || true
-          df -h
-          df -i
-      - uses: bazel-contrib/setup-bazel@4fd964a13a440a8aeb0be47350db2fc640f19ca8 # 0.15.0
-        with:
-          bazelisk-cache: true
-          disk-cache: false
-          repository-cache: true
-      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
-      - id: id
-        run: |
-          echo "uid=$(id -u)" >> $GITHUB_OUTPUT
-          echo "gid=$(id -g)" >> $GITHUB_OUTPUT
-      - name: Load Docker image from cache
-        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
-        with:
-          context: .
-          file: utils/coralnpu.dockerfile
-          push: false
-          load: true
-          tags: coralnpu:latest
-          build-args: |
-            _UID=${{ steps.id.outputs.uid }}
-            _GID=${{ steps.id.outputs.gid }}
-          cache-from: type=gha
-      - name: Run Exclusive Bazel Tests
-        run: |
-          docker run --rm --init --ipc=host \
-            -v ${{ github.workspace }}:${{ github.workspace }} \
-            -w ${{ github.workspace }} \
-            -v $HOME:/home/runner \
-            -v $HOME:/home/builder \
-            coralnpu:latest \
-            bazel test \
-              --test_tag_filters=exclusive,-vcs,-synthesis,-power \
-              --verbose_failures \
-              --noshow_progress \
-              --test_summary=terse \
-              //...
-      - name: Report Disk Space After Exclusive Tests
+            make ${{ matrix.target }}
+      - name: Report Disk Space
         if: always()
         run: |
-          set -x
-          df -i
-          df -h
-
-  bazel-test-parallel:
-    needs: build-docker
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: read
-    timeout-minutes: 360
-    steps:
-      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
-        with:
-          fetch-depth: 1
-          ssh-key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          persist-credentials: false
-      - name: Free Disk Space
-        run: |
-          set -x
-          sudo rm -rf /opt/hostedtoolcache "$AGENT_TOOLSDIRECTORY" || true
-          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost || true
-          sudo rm -rf /usr/local/share/powershell /usr/share/swift || true
-          sudo docker system prune -af --volumes || true
-          df -h
-          df -i
-      - uses: bazel-contrib/setup-bazel@4fd964a13a440a8aeb0be47350db2fc640f19ca8 # 0.15.0
-        with:
-          bazelisk-cache: true
-          disk-cache: false
-          repository-cache: true
-      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
-      - id: id
-        run: |
-          echo "uid=$(id -u)" >> $GITHUB_OUTPUT
-          echo "gid=$(id -g)" >> $GITHUB_OUTPUT
-      - name: Load Docker image from cache
-        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
-        with:
-          context: .
-          file: utils/coralnpu.dockerfile
-          push: false
-          load: true
-          tags: coralnpu:latest
-          build-args: |
-            _UID=${{ steps.id.outputs.uid }}
-            _GID=${{ steps.id.outputs.gid }}
-          cache-from: type=gha
-      - name: Run Non-Exclusive Bazel Tests
-        run: |
-          docker run --rm --init --ipc=host \
-            -v ${{ github.workspace }}:${{ github.workspace }} \
-            -w ${{ github.workspace }} \
-            -v $HOME:/home/runner \
-            -v $HOME:/home/builder \
-            coralnpu:latest \
-            bazel test \
-              --test_tag_filters=-exclusive,-vcs,-synthesis,-power \
-              --verbose_failures \
-              --noshow_progress \
-              --test_summary=terse \
-              //...
-      - name: Report Disk Space After Non-Exclusive Tests
-        if: always()
-        run: |
-          set -x
           df -i
           df -h

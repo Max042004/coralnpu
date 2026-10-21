@@ -13,15 +13,11 @@
 # limitations under the License.
 """Manual utility to extract reference Attention and RMSNorm tensors from Gemma.
 
-Why this script is not executed via Bazel:
-    During the pure Bzlmod airgap migration (September 2026), the `@gemma_deps`
-    pip hub and its manual Bazel targets were de-Bazel'd. Because `bazel vendor //...`
-    vendors all declared dependencies across the workspace for offline airgapped
-    CI, keeping PyTorch and Hugging Face Transformers in the
-    Bazel build graph would unnecessarily bloat the vendored dataset by multiple
-    gigabytes for dependencies never used by CI (which uses deterministic synthetic
-    vectors). Furthermore, this script downloads weights from Hugging Face over
-    the public internet, which cannot function in airgapped environments.
+Why this script is a standalone utility:
+    It needs PyTorch and Hugging Face Transformers (multiple gigabytes) which
+    the rest of the repository never uses (CI uses deterministic synthetic
+    vectors), and it downloads weights from Hugging Face over the public
+    internet.
 
 Manual Execution Instructions:
     1. Create and activate a Python virtual environment:

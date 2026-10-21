@@ -20,7 +20,7 @@ build: every firmware binary that uses the default linker script and is not on
 the UVM denylist, plus the riscv-tests ELFs. Columns: ELF path relative to
 build/runfiles, Bazel-style label, timeout (cycles), run Spike co-sim (True/False).
 
-The denylists and timeouts come from the (pure Python) rules/uvm_denylist.bzl;
+The denylists and timeouts come from tests/uvm/denylist.py;
 the firmware table from mk/sw_targets.mk. Re-run after either changes:
 
     python3 utils/gen_uvm_regression.py
@@ -38,7 +38,7 @@ def load_py(path):
 
 
 def main():
-    deny = load_py(ROOT / "rules/uvm_denylist.bzl")
+    deny = load_py(ROOT / "tests/uvm/denylist.py")
     # SPIKE_DENYLIST / DENYLIST / TIMEOUT_MAP / is_uvm_denylisted
     is_denied = deny["is_uvm_denylisted"]
     timeout_map = deny["TIMEOUT_MAP"]

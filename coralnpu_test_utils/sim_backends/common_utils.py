@@ -19,7 +19,7 @@ import os
 import struct
 from typing import Any
 try:
-    from bazel_tools.tools.python.runfiles import runfiles
+    from coralnpu_test_utils import runfiles
 except ImportError:
     runfiles = None
 from elftools.common.exceptions import ELFError
@@ -41,7 +41,7 @@ _RUNFILES_INSTANCE = None
 
 
 def get_runfiles():
-    """Returns a cached Bazel runfiles instance if available."""
+    """Returns a cached runfiles instance if available."""
     global _RUNFILES_INSTANCE
     if _RUNFILES_INSTANCE is None and runfiles is not None:
         try:
@@ -52,7 +52,7 @@ def get_runfiles():
 
 
 def resolve_runfile_path(path: str | os.PathLike) -> str:
-    """Resolves a filesystem or Bazel runfile path, supporting TEST_XLEN=64 and coralnpu_hw/ prefixes."""
+    """Resolves a filesystem or runfile path, supporting TEST_XLEN=64 and coralnpu_hw/ prefixes."""
     if not path:
         return ""
     path_str = os.fspath(path)

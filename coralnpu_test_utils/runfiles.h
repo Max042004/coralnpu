@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Minimal stand-in for Bazel's C++ runfiles library (see
-// utils/pyshim/bazel_tools/tools/python/runfiles for the Python twin).
-// `Rlocation("coralnpu_hw/<path>")` is looked up in each directory of
-// $CORALNPU_RUNFILES (colon separated) and then in $CORALNPU_ROOT.
-#ifndef CORALNPU_CPPSHIM_TOOLS_CPP_RUNFILES_RUNFILES_H_
-#define CORALNPU_CPPSHIM_TOOLS_CPP_RUNFILES_RUNFILES_H_
+// Locates data files (firmware ELFs, ...) for C++ tests; the C++ twin of
+// coralnpu_test_utils/runfiles.py. `Rlocation("coralnpu_hw/<path>")` is looked
+// up in each directory of $CORALNPU_RUNFILES (colon separated), then in
+// $CORALNPU_ROOT.
+#ifndef CORALNPU_TEST_UTILS_RUNFILES_H_
+#define CORALNPU_TEST_UTILS_RUNFILES_H_
 
 #include <cstdlib>
 #include <fstream>
@@ -26,10 +26,8 @@
 #include <string>
 #include <vector>
 
-namespace bazel {
-namespace tools {
-namespace cpp {
-namespace runfiles {
+namespace coralnpu {
+namespace testing {
 
 class Runfiles {
  public:
@@ -61,9 +59,7 @@ class Runfiles {
   }
 };
 
-}  // namespace runfiles
-}  // namespace cpp
-}  // namespace tools
-}  // namespace bazel
+}  // namespace testing
+}  // namespace coralnpu
 
-#endif  // CORALNPU_CPPSHIM_TOOLS_CPP_RUNFILES_RUNFILES_H_
+#endif  // CORALNPU_TEST_UTILS_RUNFILES_H_
