@@ -74,3 +74,26 @@ $(MPACT_SIM_BIN): $(MPACT_LINENOISE) $(DEPS_PREFIX)/lib/libantlr4-runtime.a $(AN
 
 mpact-run: mpact
 	$(MPACT_SIM_BIN) $(ROOT)/build/runfiles/$(ELF).elf
+
+# ---- Python binding (coralnpu_v2_sim_pybind) and its test ----
+PY_INCLUDE = $(shell $(PYTHON) -c "import sysconfig;print(sysconfig.get_paths()['include'])")
+PY_EXT     = $(shell $(PYTHON) -c "import sysconfig;print(sysconfig.get_config_var('EXT_SUFFIX'))")
+PYBIND_SO  = $(MPACT_OUT)/python/coralnpu_v2_sim_pybind$(PY_EXT)
+
+.PHONY: mpact-pybind mpact-pytest
+mpact-pybind: $(PYBIND_SO)
+
+$(PYBIND_SO): sw/coralnpu_sim/coralnpu_v2_sim_pybind.cc $(MPACT_ARCHIVES_coralnpu_mpact_sim_coralnpu_simulator) \
+              $(MPACT_LINENOISE) $(DEPS_PREFIX)/lib/libantlr4-runtime.a $(ROOT)/tools/.bender/.checked_out
+	@mkdir -p $(dir $@)
+	$(MPACT_CXX) -std=c++17 -O2 -fPIC -fexceptions -shared $(MPACT_WARN) $(MPACT_INCS) \
+	  -isystem $(PY_INCLUDE) -isystem $(call dep_src,pybind11)/include -I$(ROOT) \
+	  $< -o $@ $(MPACT_LINK_coralnpu_mpact_sim_coralnpu_simulator) $(MPACT_LDLIBS)
+
+# The test imports coralnpu_v2_sim_pybind and coralnpu_v2_sim_utils from sw/coralnpu_sim.
+mpact-pytest: $(PYBIND_SO) $(ELF_DIR)/tests/cocotb/rvv/arithmetics/rvv_add_int8_m1.elf \
+              $(ELF_DIR)/tests/cocotb/rvv/vrgather_test.elf \
+              $(ELF_DIR)/tests/verilator_sim/htif_semihosting_test.elf
+	CORALNPU_RUNFILES=$(BUILD)/runfiles CORALNPU_ROOT=$(ROOT) \
+	PYTHONPATH=$(MPACT_OUT)/python:$(ROOT)/sw/coralnpu_sim:$(ROOT)/utils/pyshim \
+	$(PYTHON) sw/coralnpu_sim/coralnpu_v2_sim_test.py
