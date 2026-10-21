@@ -5791,5 +5791,41 @@
    "{W_LMUL}": "m8"
   },
   "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "genfiles/tests/cocotb/tutorial/hello_world_tflite.cc",
+  "section": "",
+  "src": "vendor/tflite_micro/tensorflow/lite/micro/examples/hello_world/models/hello_world_int8.tflite",
+  "tool": "cc_array"
+ },
+ {
+  "output": "genfiles/tests/cocotb/tutorial/hello_world_tflite.h",
+  "section": "",
+  "src": "vendor/tflite_micro/tensorflow/lite/micro/examples/hello_world/models/hello_world_int8.tflite",
+  "tool": "cc_array"
+ },
+ {
+  "output": "genfiles/tests/cocotb/tutorial/tfmicro/mobilenet_v1_025_partial_layers.cc",
+  "section": "",
+  "src": "tests/cocotb/tutorial/tfmicro/models/mobilenet_v1_025_partial_layers.tflite",
+  "tool": "cc_array"
+ },
+ {
+  "output": "genfiles/tests/cocotb/tutorial/tfmicro/mobilenet_v1_025_partial_layers.h",
+  "section": "",
+  "src": "tests/cocotb/tutorial/tfmicro/models/mobilenet_v1_025_partial_layers.tflite",
+  "tool": "cc_array"
+ },
+ {
+  "output": "genfiles/tests/cocotb/tutorial/tfmicro/mobilenet_v1_025_224_int8_dummy.cc",
+  "section": "",
+  "src": "tests/cocotb/tutorial/tfmicro/models/mobilenet_v1_0.25_224_int8_dummy.tflite",
+  "tool": "cc_array"
+ },
+ {
+  "output": "genfiles/tests/cocotb/tutorial/tfmicro/mobilenet_v1_025_224_int8_dummy.h",
+  "section": "",
+  "src": "tests/cocotb/tutorial/tfmicro/models/mobilenet_v1_0.25_224_int8_dummy.tflite",
+  "tool": "cc_array"
  }
 ]

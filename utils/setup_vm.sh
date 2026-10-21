@@ -40,7 +40,7 @@ step_apt() {
   sudo apt-get update
   sudo DEBIAN_FRONTEND=noninteractive apt-get install -f -y
   sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    build-essential git curl unzip ca-certificates \
+    build-essential git curl wget unzip ca-certificates \
     openjdk-17-jdk-headless \
     flex bison autoconf automake libtool help2man perl \
     libfl2 libfl-dev zlib1g-dev ccache \

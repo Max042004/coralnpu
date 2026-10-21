@@ -55,7 +55,7 @@ help:
 
 # vendor/ is committed, as is usual for Bender vendor_package; this target is
 # only needed after changing a pinned revision in Bender.yml or a patch.
-VENDOR_PKGS := common_cells fpu_div_sqrt_mvp cvfpu RVVI rocket_chip diplomacy riscv-tests freertos
+VENDOR_PKGS := common_cells fpu_div_sqrt_mvp cvfpu RVVI rocket_chip diplomacy riscv-tests freertos tflite_micro flatbuffers gemmlowp ruy kissfft
 
 vendor-update:
 	rm -rf $(addprefix vendor/,$(VENDOR_PKGS))

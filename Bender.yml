@@ -88,6 +88,55 @@ vendor_package:
       - portable/GCC/RISC-V
       - portable/MemMang/heap_4.c
       - LICENSE.md
+  # TensorFlow Lite Micro and its header/source dependencies (firmware only).
+  # The Bazel-only patches (visibility, pthread link flags) are not needed here.
+  - name: tflite_micro
+    target_dir: vendor/tflite_micro
+    upstream:
+      git: "https://github.com/tensorflow/tflite-micro.git"
+      rev: b75c6ff4e2270047f2b48fa01f833c8101c31f43
+    include_from_upstream:
+      - tensorflow/lite
+      - tensorflow/compiler/mlir/lite
+      - signal
+      - LICENSE
+    exclude_from_upstream:
+      - tensorflow/lite/python
+      - tensorflow/lite/micro/integration_tests
+      - tensorflow/lite/micro/docs
+  - name: flatbuffers
+    target_dir: vendor/flatbuffers
+    upstream:
+      git: "https://github.com/google/flatbuffers.git"
+      rev: 0100f6a5779831fa7a651e4b67ef389a8752bd9b  # v23.5.26
+    include_from_upstream:
+      - include
+      - LICENSE
+  - name: gemmlowp
+    target_dir: vendor/gemmlowp
+    upstream:
+      git: "https://github.com/google/gemmlowp.git"
+      rev: fda83bdc38b118cc6b56753bd540caa49e570745
+    include_from_upstream:
+      - fixedpoint
+      - internal
+      - public
+      - profiling
+      - LICENSE
+  - name: ruy
+    target_dir: vendor/ruy
+    upstream:
+      git: "https://github.com/google/ruy.git"
+      rev: 54774a7a2cf85963777289193629d4bd42de4a59
+    include_from_upstream:
+      - ruy
+      - LICENSE
+  - name: kissfft
+    target_dir: vendor/kissfft
+    upstream:
+      git: "https://github.com/mborgerding/kissfft.git"
+      rev: 918336beac80868ad3011cb283063bb224e3e5da  # v130
+    patch_dir: vendor/patches/kissfft
   # RISC-V ISA tests; `env/` is a submodule upstream and lives in
   # third_party/riscv-tests/env (CoralNPU-specific).
   - name: riscv-tests

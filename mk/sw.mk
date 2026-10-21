@@ -59,14 +59,16 @@ ELF_DIR := $(BUILD)/runfiles
 # Sources generated from templates (RVV arithmetic tests, ...): mk/gen_sources.json.
 GEN_DIR   := $(BUILD)/gen
 GEN_STAMP := $(GEN_DIR)/.stamp
-GEN_TEMPLATES := $(shell python3 -c "import json;print(' '.join(sorted({j['template'] for j in json.load(open('mk/gen_sources.json'))})))")
+GEN_INPUTS := $(shell python3 -c "import json;print(' '.join(sorted({j.get('template') or j['src'] for j in json.load(open('mk/gen_sources.json'))})))")
 
-$(GEN_STAMP): mk/gen_sources.json utils/expand_templates.py $(GEN_TEMPLATES)
+# Templates are expanded literally; "cc_array" jobs turn .tflite files into C arrays
+# with TFLM's generate_cc_arrays.py (needs numpy/PIL, hence the venv python).
+$(GEN_STAMP): mk/gen_sources.json utils/expand_templates.py $(GEN_INPUTS)
 	@mkdir -p $(GEN_DIR)
-	python3 utils/expand_templates.py --spec mk/gen_sources.json --outdir $(GEN_DIR)
+	$(PYTHON) utils/expand_templates.py --spec mk/gen_sources.json --outdir $(GEN_DIR)
 	@touch $@
 
-$(GEN_DIR)/%.cc: $(GEN_STAMP)
+$(GEN_DIR)/%.cc $(GEN_DIR)/%.h: $(GEN_STAMP)
 	@:
 
 # Generated headers (genrules of the Bazel build); compiled sources see them via -iquote $(GEN_DIR).
@@ -78,13 +80,29 @@ $(GEN_DIR)/coralnpu_test_utils/rvv_cpp_util.h: coralnpu_test_utils/rvv_cpp_util_
 
 # $(call sw_compile,<src path>,<obj>,<extra flags>)
 define sw_cc_rule
-$(2): $(1) | $$(GEN_HDRS)
+$(2): $(1) | $$(GEN_HDRS) $$(GEN_STAMP)
 	@mkdir -p $$(dir $$@)
-	$$(if $$(filter %.cc %.cpp,$(1)),$$(RV_CXX) $$(SW_CXXFLAGS),$$(RV_CC) $$(SW_CFLAGS)) -iquote $$(GEN_DIR) $(3) -MMD -MP -c $$< -o $$@
+	$$(if $$(filter %.cc %.cpp,$(1)),$$(RV_CXX) $$(SW_CXXFLAGS),$$(RV_CC) $$(SW_CFLAGS)) -iquote $$(GEN_DIR) -iquote $$(GEN_DIR)/genfiles $(3) -MMD -MP -c $$< -o $$@
 endef
+
+# ---- TensorFlow Lite Micro (vendor/tflite_micro) as a static library ----
+include mk/tflm_sources.mk
+TFLM_LIB   := $(SW_OUT)/libtflm.a
+TFLM_FLAGS := -Ivendor/tflite_micro -Ivendor/flatbuffers/include -Ivendor/gemmlowp \
+              -Ivendor/ruy -Ivendor/kissfft \
+              -fno-asynchronous-unwind-tables -Wno-unused-parameter -Wnon-virtual-dtor \
+              -DFLATBUFFERS_LOCALE_INDEPENDENT=0 -DTF_LITE_STATIC_MEMORY=1 -DTF_LITE_USE_CTIME
+TFLM_OBJS  := $(addprefix $(SW_OUT)/tflm/,$(addsuffix .o,$(subst /,_,$(TFLM_SRCS))))
+$(foreach s,$(TFLM_SRCS),$(eval $(call sw_cc_rule,$(s),$(SW_OUT)/tflm/$(subst /,_,$(s)).o,$(TFLM_FLAGS))))
+
+$(TFLM_LIB): $(TFLM_OBJS)
+	@mkdir -p $(dir $@)
+	rm -f $@
+	$(RV_PREFIX)ar rcs $@ $^
 
 define sw_rule
 $(1)_OBJDIR := $(SW_OUT)/$(1)
+$(1)_FLAGS  := $$($(1)_COPTS) $$(addprefix -D,$$($(1)_DEFS)) $$(if $$($(1)_TFLM),$$(TFLM_FLAGS))
 $(1)_ELF    := $(ELF_DIR)/$$($(1)_PKG)/$$($(1)_NAME).elf
 $(1)_LD     := $(SW_OUT)/$(1)/link.ld
 $(1)_CRT    := $$(if $$($(1)_NOCRT),,$$(if $$($(1)_SEMIHOSTING),$$(CRT_SRCS_HTIF),$$(CRT_SRCS)))
@@ -98,13 +116,13 @@ $$($(1)_LD): toolchain/coralnpu_tcm.ld.tpl utils/gen_linker_script.py
 	  --itcm $$(word 1,$$($(1)_LDS)) --dtcm $$(word 2,$$($(1)_LDS)) --stack $$(word 3,$$($(1)_LDS)) \
 	  --heap-size $$(word 4,$$($(1)_LDS)) --heap-location $$(word 5,$$($(1)_LDS))
 
-$$(foreach s,$$($(1)_SRCS),$$(eval $$(call sw_cc_rule,$$(s),$$($(1)_OBJDIR)/$$(subst /,_,$$(s)).o,$$($(1)_COPTS) $$(addprefix -D,$$($(1)_DEFS)))))
-$$(foreach s,$$($(1)_GENSRCS),$$(eval $$(call sw_cc_rule,$$(GEN_DIR)/$$(s),$$($(1)_OBJDIR)/$$(subst /,_,$$(s)).o,$$($(1)_COPTS) $$(addprefix -D,$$($(1)_DEFS)) -iquote $$(dir $$(GEN_DIR)/$$(s)))))
+$$(foreach s,$$($(1)_SRCS),$$(eval $$(call sw_cc_rule,$$(s),$$($(1)_OBJDIR)/$$(subst /,_,$$(s)).o,$$($(1)_FLAGS))))
+$$(foreach s,$$($(1)_GENSRCS),$$(eval $$(call sw_cc_rule,$$(GEN_DIR)/$$(s),$$($(1)_OBJDIR)/$$(subst /,_,$$(s)).o,$$($(1)_FLAGS) -iquote $$(dir $$(GEN_DIR)/$$(s)))))
 $$(foreach s,$$($(1)_CRT),$$(eval $$(call sw_cc_rule,$$(CRT_DIR)/$$(s),$$($(1)_OBJDIR)/crt_$$(s).o,$$($(1)_CRTDEF))))
 
-$$($(1)_ELF): $$($(1)_OBJS) $$($(1)_LD)
+$$($(1)_ELF): $$($(1)_OBJS) $$($(1)_LD) $$(if $$($(1)_TFLM),$$(TFLM_LIB))
 	@mkdir -p $$(dir $$@)
-	$$(RV_CXX) $$(SW_CXXFLAGS) $$($(1)_OBJS) -o $$@ -Wl,-T,$$($(1)_LD) \
+	$$(RV_CXX) $$(SW_CXXFLAGS) $$($(1)_OBJS) $$(if $$($(1)_TFLM),$$(TFLM_LIB)) -o $$@ -Wl,-T,$$($(1)_LD) \
 	  $$(if $$($(1)_SEMIHOSTING),$$(SW_LDFLAGS_HTIF),$$(SW_LDFLAGS_NANO))
 	$$(RV_OBJCOPY) -O binary $$@ $$(basename $$@).bin
 endef

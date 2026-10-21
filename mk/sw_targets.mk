@@ -74,6 +74,27 @@ hw_sim_mailbox_example_NAME := mailbox_example
 hw_sim_mailbox_example_SRCS := hw_sim/mailbox_example.cc
 hw_sim_mailbox_example_LDS := 8 32 128 - DTCM
 
+SW_TARGETS += sw_opt_litert_micro_test_max_pool_test
+sw_opt_litert_micro_test_max_pool_test_PKG  := sw/opt/litert-micro/test
+sw_opt_litert_micro_test_max_pool_test_NAME := max_pool_test
+sw_opt_litert_micro_test_max_pool_test_SRCS := sw/opt/litert-micro/test/max_pool_test.cc sw/opt/litert-micro/pooling.cc
+sw_opt_litert_micro_test_max_pool_test_TFLM := 1
+sw_opt_litert_micro_test_max_pool_test_LDS := 1024 1024 128 - DTCM
+
+SW_TARGETS += sw_opt_litert_micro_test_conv_test
+sw_opt_litert_micro_test_conv_test_PKG  := sw/opt/litert-micro/test
+sw_opt_litert_micro_test_conv_test_NAME := conv_test
+sw_opt_litert_micro_test_conv_test_SRCS := sw/opt/litert-micro/test/conv_test.cc sw/opt/litert-micro/conv.cc
+sw_opt_litert_micro_test_conv_test_TFLM := 1
+sw_opt_litert_micro_test_conv_test_LDS := 1024 1024 128 - DTCM
+
+SW_TARGETS += sw_utils_tflite_runner_tflite_runner
+sw_utils_tflite_runner_tflite_runner_PKG  := sw/utils/tflite_runner
+sw_utils_tflite_runner_tflite_runner_NAME := tflite_runner
+sw_utils_tflite_runner_tflite_runner_SRCS := sw/utils/tflite_runner/tflite_runner.cc sw/opt/litert-micro/conv.cc sw/opt/litert-micro/depthwise_conv.cc sw/opt/litert-micro/fully_connected.cc sw/opt/litert-micro/logistic.cc sw/opt/litert-micro/pooling.cc
+sw_utils_tflite_runner_tflite_runner_TFLM := 1
+sw_utils_tflite_runner_tflite_runner_LDS := 1024 1024 131072 - DTCM
+
 SW_TARGETS += tests_cocotb_loop
 tests_cocotb_loop_PKG  := tests/cocotb
 tests_cocotb_loop_NAME := loop
@@ -4891,11 +4912,62 @@ tests_cocotb_tutorial_coralnpu_v2_program_NAME := coralnpu_v2_program
 tests_cocotb_tutorial_coralnpu_v2_program_SRCS := tests/cocotb/tutorial/program.cc
 tests_cocotb_tutorial_coralnpu_v2_program_LDS := 8 32 128 - DTCM
 
+SW_TARGETS += tests_cocotb_tutorial_tflite_micro_test
+tests_cocotb_tutorial_tflite_micro_test_PKG  := tests/cocotb/tutorial
+tests_cocotb_tutorial_tflite_micro_test_NAME := tflite_micro_test
+tests_cocotb_tutorial_tflite_micro_test_SRCS := tests/cocotb/tutorial/tflite_micro_test.cc
+tests_cocotb_tutorial_tflite_micro_test_GENSRCS := genfiles/tests/cocotb/tutorial/hello_world_tflite.cc
+tests_cocotb_tutorial_tflite_micro_test_TFLM := 1
+tests_cocotb_tutorial_tflite_micro_test_LDS := 1024 1024 128 - DTCM
+
 SW_TARGETS += tests_cocotb_tutorial_counters_inst_cycle_counter_example
 tests_cocotb_tutorial_counters_inst_cycle_counter_example_PKG  := tests/cocotb/tutorial/counters
 tests_cocotb_tutorial_counters_inst_cycle_counter_example_NAME := inst_cycle_counter_example
 tests_cocotb_tutorial_counters_inst_cycle_counter_example_SRCS := tests/cocotb/tutorial/counters/inst_cycle_counter_example.cc
 tests_cocotb_tutorial_counters_inst_cycle_counter_example_LDS := 8 32 128 - DTCM
+
+SW_TARGETS += tests_cocotb_tutorial_tfmicro_run_mobilenet_v1_025_partial_binary
+tests_cocotb_tutorial_tfmicro_run_mobilenet_v1_025_partial_binary_PKG  := tests/cocotb/tutorial/tfmicro
+tests_cocotb_tutorial_tfmicro_run_mobilenet_v1_025_partial_binary_NAME := run_mobilenet_v1_025_partial_binary
+tests_cocotb_tutorial_tfmicro_run_mobilenet_v1_025_partial_binary_SRCS := tests/cocotb/tutorial/tfmicro/run_partial_mobilenet.cc sw/opt/litert-micro/depthwise_conv.cc
+tests_cocotb_tutorial_tfmicro_run_mobilenet_v1_025_partial_binary_GENSRCS := genfiles/tests/cocotb/tutorial/tfmicro/mobilenet_v1_025_partial_layers.cc
+tests_cocotb_tutorial_tfmicro_run_mobilenet_v1_025_partial_binary_TFLM := 1
+tests_cocotb_tutorial_tfmicro_run_mobilenet_v1_025_partial_binary_LDS := 1024 1024 128 - DTCM
+
+SW_TARGETS += tests_cocotb_tutorial_tfmicro_depthwise_conv_test
+tests_cocotb_tutorial_tfmicro_depthwise_conv_test_PKG  := tests/cocotb/tutorial/tfmicro
+tests_cocotb_tutorial_tfmicro_depthwise_conv_test_NAME := depthwise_conv_test
+tests_cocotb_tutorial_tfmicro_depthwise_conv_test_SRCS := tests/cocotb/tutorial/tfmicro/depthwise_conv_test.cc sw/opt/litert-micro/depthwise_conv.cc
+tests_cocotb_tutorial_tfmicro_depthwise_conv_test_TFLM := 1
+tests_cocotb_tutorial_tfmicro_depthwise_conv_test_LDS := 1024 1024 128 - DTCM
+
+SW_TARGETS += tests_cocotb_tutorial_tfmicro_conv2d_test
+tests_cocotb_tutorial_tfmicro_conv2d_test_PKG  := tests/cocotb/tutorial/tfmicro
+tests_cocotb_tutorial_tfmicro_conv2d_test_NAME := conv2d_test
+tests_cocotb_tutorial_tfmicro_conv2d_test_SRCS := tests/cocotb/tutorial/tfmicro/conv2d_test.cc sw/opt/litert-micro/conv.cc
+tests_cocotb_tutorial_tfmicro_conv2d_test_TFLM := 1
+tests_cocotb_tutorial_tfmicro_conv2d_test_LDS := 1024 1024 128 - DTCM
+
+SW_TARGETS += tests_cocotb_tutorial_tfmicro_pooling_test
+tests_cocotb_tutorial_tfmicro_pooling_test_PKG  := tests/cocotb/tutorial/tfmicro
+tests_cocotb_tutorial_tfmicro_pooling_test_NAME := pooling_test
+tests_cocotb_tutorial_tfmicro_pooling_test_SRCS := tests/cocotb/tutorial/tfmicro/pooling_test.cc sw/opt/litert-micro/pooling.cc
+tests_cocotb_tutorial_tfmicro_pooling_test_TFLM := 1
+tests_cocotb_tutorial_tfmicro_pooling_test_LDS := 1024 1024 128 - DTCM
+
+SW_TARGETS += tests_cocotb_tutorial_tfmicro_fully_connected_test
+tests_cocotb_tutorial_tfmicro_fully_connected_test_PKG  := tests/cocotb/tutorial/tfmicro
+tests_cocotb_tutorial_tfmicro_fully_connected_test_NAME := fully_connected_test
+tests_cocotb_tutorial_tfmicro_fully_connected_test_SRCS := tests/cocotb/tutorial/tfmicro/fully_connected_test.cc sw/opt/litert-micro/fully_connected.cc
+tests_cocotb_tutorial_tfmicro_fully_connected_test_TFLM := 1
+tests_cocotb_tutorial_tfmicro_fully_connected_test_LDS := 1024 1024 128 - DTCM
+
+SW_TARGETS += tests_cocotb_tutorial_tfmicro_logistic_test
+tests_cocotb_tutorial_tfmicro_logistic_test_PKG  := tests/cocotb/tutorial/tfmicro
+tests_cocotb_tutorial_tfmicro_logistic_test_NAME := logistic_test
+tests_cocotb_tutorial_tfmicro_logistic_test_SRCS := tests/cocotb/tutorial/tfmicro/logistic_test.cc sw/opt/litert-micro/logistic.cc
+tests_cocotb_tutorial_tfmicro_logistic_test_TFLM := 1
+tests_cocotb_tutorial_tfmicro_logistic_test_LDS := 1024 1024 128 - DTCM
 
 SW_TARGETS += tests_cocotb_vme_test_vme_altfmt_test
 tests_cocotb_vme_test_vme_altfmt_test_PKG  := tests/cocotb/vme_test
@@ -4951,6 +5023,15 @@ tests_cocotb_vme_test_vme_mstatus_ms_test_NAME := vme_mstatus_ms_test
 tests_cocotb_vme_test_vme_mstatus_ms_test_SRCS := tests/cocotb/vme_test/vme_mstatus_ms_test.cc
 tests_cocotb_vme_test_vme_mstatus_ms_test_LDS := 8 32 128 - DTCM
 
+SW_TARGETS += tests_npusim_examples_run_full_mobilenet_v1_binary
+tests_npusim_examples_run_full_mobilenet_v1_binary_PKG  := tests/npusim_examples
+tests_npusim_examples_run_full_mobilenet_v1_binary_NAME := run_full_mobilenet_v1_binary
+tests_npusim_examples_run_full_mobilenet_v1_binary_SRCS := tests/npusim_examples/run_full_mobilenet_v1.cc sw/opt/litert-micro/conv.cc sw/opt/litert-micro/depthwise_conv.cc
+tests_npusim_examples_run_full_mobilenet_v1_binary_GENSRCS := genfiles/tests/cocotb/tutorial/tfmicro/mobilenet_v1_025_224_int8_dummy.cc
+tests_npusim_examples_run_full_mobilenet_v1_binary_TFLM := 1
+tests_npusim_examples_run_full_mobilenet_v1_binary_LDS := 1024 1024 128 - DTCM
+tests_npusim_examples_run_full_mobilenet_v1_binary_SEMIHOSTING := 1
+
 SW_TARGETS += tests_verilator_sim_htif_semihosting_test
 tests_verilator_sim_htif_semihosting_test_PKG  := tests/verilator_sim
 tests_verilator_sim_htif_semihosting_test_NAME := htif_semihosting_test
@@ -4962,14 +5043,3 @@ tests_verilator_sim_htif_semihosting_test_SEMIHOSTING := 1
 # UNSUPPORTED fpga:display_test  deps=[':display_hal', ':gpio', ':spi', '//third_party/waveshare_display']
 # UNSUPPORTED fpga:rom_test  crt=:rom_boot_crt0 ld=sw/rom_boot/rom.ld
 # UNSUPPORTED fpga:rom_test_highmem  crt=:rom_boot_crt0 ld=sw/rom_boot/rom_highmem.ld
-# UNSUPPORTED sw/opt/litert-micro/test:max_pool_test  deps=['//sw/opt/litert-micro:pooling', '//sw/utils', '@tflite_micro//tensorflow/lite/kernels/internal:reference_base']
-# UNSUPPORTED sw/opt/litert-micro/test:conv_test  deps=['//sw/opt/litert-micro:conv', '//sw/utils', '@tflite_micro//tensorflow/lite/kernels/internal:reference_base']
-# UNSUPPORTED sw/utils/tflite_runner:tflite_runner  deps=[':tflite_runner_deps']
-# UNSUPPORTED tests/cocotb/tutorial:tflite_micro_test  deps=['@tflite_micro//tensorflow/lite/micro:micro_framework', '@tflite_micro//tensorflow/lite/micro:micro_log', '@tflite_micro//tensorflow/lite/micro:micro_profiler', '@tflite_micro//tensorflow/lite/micro:op_resolvers', '@tflite_micro//tensorflow/lite/micro:system_setup']
-# UNSUPPORTED tests/cocotb/tutorial/tfmicro:run_mobilenet_v1_025_partial_binary  deps=['//sw/opt/litert-micro:depthwise_conv', '@tflite_micro//tensorflow/lite/micro:micro_framework', '@tflite_micro//tensorflow/lite/micro:micro_log', '@tflite_micro//tensorflow/lite/micro:micro_profiler', '@tflite_micro//tensorflow/lite/micro:op_resolvers', '@tflite_micro//tensorflow/lite/micro:system_setup']
-# UNSUPPORTED tests/cocotb/tutorial/tfmicro:depthwise_conv_test  deps=['//sw/opt/litert-micro:depthwise_conv', '@tflite_micro//tensorflow/lite/kernels/internal:reference_base']
-# UNSUPPORTED tests/cocotb/tutorial/tfmicro:conv2d_test  deps=['//sw/opt/litert-micro:conv', '@tflite_micro//tensorflow/lite/kernels/internal:reference_base']
-# UNSUPPORTED tests/cocotb/tutorial/tfmicro:pooling_test  deps=['//sw/opt/litert-micro:pooling', '//sw/utils', '@tflite_micro//tensorflow/lite/kernels/internal:reference_base']
-# UNSUPPORTED tests/cocotb/tutorial/tfmicro:fully_connected_test  deps=['//sw/opt/litert-micro:fully_connected', '//sw/utils', '@tflite_micro//tensorflow/lite/kernels/internal:reference_base']
-# UNSUPPORTED tests/cocotb/tutorial/tfmicro:logistic_test  deps=['//sw/opt/litert-micro:logistic', '//sw/utils', '@tflite_micro//tensorflow/lite/kernels/internal:reference_base']
-# UNSUPPORTED tests/npusim_examples:run_full_mobilenet_v1_binary  deps=['//sw/opt:rvv_opt', '//sw/opt/litert-micro:conv', '//sw/opt/litert-micro:depthwise_conv', '//tests/cocotb/tutorial/tfmicro:mobilenet_v1_025_224_int8_dummy_lib', '@tflite_micro//tensorflow/lite/micro:micro_framework', '@tflite_micro//tensorflow/lite/micro:micro_log', '@tflite_micro//tensorflow/lite/micro:op_resolvers', '@tflite_micro//tensorflow/lite/micro:system_setup']

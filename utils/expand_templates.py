@@ -24,6 +24,25 @@ keeping their repo-relative path.
 import argparse
 import json
 import pathlib
+import subprocess
+import sys
+
+
+def cc_array(root, job, dst):
+    """Run TFLM's generate_cc_arrays.py (.tflite -> C array), as the Bazel genrule did.
+
+    The generator derives the #include of the header from the part of the output
+    path after `genfiles/`, hence the outputs live under <outdir>/genfiles/.
+    """
+    tool = root / "vendor/tflite_micro/tensorflow/lite/micro/tools/generate_cc_arrays.py"
+    subprocess.run([sys.executable, str(tool), str(dst), str(root / job["src"])], check=True)
+    text = dst.read_text()
+    section = job.get("section")
+    if section:
+        text = text.replace(
+            "const unsigned char",
+            'const unsigned char __attribute__((section(".%s"), aligned(16)))' % section)
+    return text
 
 
 def main():
@@ -37,11 +56,14 @@ def main():
     out = pathlib.Path(a.outdir)
     n = 0
     for job in json.loads(pathlib.Path(a.spec).read_text()):
-        text = (root / job["template"]).read_text()
-        for key, value in job["substitutions"].items():
-            text = text.replace(key, value)
         dst = out / job["output"]
         dst.parent.mkdir(parents=True, exist_ok=True)
+        if job.get("tool") == "cc_array":
+            text = cc_array(root, job, dst)
+        else:
+            text = (root / job["template"]).read_text()
+            for key, value in job["substitutions"].items():
+                text = text.replace(key, value)
         if not dst.exists() or dst.read_text() != text:  # keep mtimes stable
             dst.write_text(text)
         n += 1
