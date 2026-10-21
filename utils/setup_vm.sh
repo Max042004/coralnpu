@@ -45,7 +45,9 @@ step_apt() {
     flex bison autoconf automake libtool help2man perl \
     libfl2 libfl-dev zlib1g-dev ccache \
     cmake ninja-build clang \
-    python3-venv python3-pip
+    python3-venv python3-pip \
+    device-tree-compiler libboost-dev libboost-system-dev libboost-regex-dev libelf-dev liblz4-dev libmpfr-dev \
+    libgtest-dev libgmock-dev gawk xxd srecord zip
 }
 
 step_bender() {

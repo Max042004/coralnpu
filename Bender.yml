@@ -137,6 +137,13 @@ vendor_package:
       git: "https://github.com/mborgerding/kissfft.git"
       rev: 918336beac80868ad3011cb283063bb224e3e5da  # v130
     patch_dir: vendor/patches/kissfft
+  # Spike (RISC-V ISA simulator) with the CoralNPU deviations; used for co-simulation.
+  - name: riscv-isa-sim
+    target_dir: vendor/riscv-isa-sim
+    upstream:
+      git: "https://github.com/riscv-software-src/riscv-isa-sim.git"
+      rev: 93a10ae685ac85bd3d8a62054f8f180a4f76fc82
+    patch_dir: vendor/patches/riscv-isa-sim
   # RISC-V ISA tests; `env/` is a submodule upstream and lives in
   # third_party/riscv-tests/env (CoralNPU-specific).
   - name: riscv-tests

@@ -1,0 +1,188 @@
+// See LICENSE for license details.
+#ifndef _RISCV_ISA_PARSER_H
+#define _RISCV_ISA_PARSER_H
+
+#include "decode.h"
+
+#include <bitset>
+#include <string>
+#include <set>
+
+typedef enum {
+  // 65('A') ~ 90('Z') is reserved for standard isa in misa
+  EXT_ZFH = 'Z' + 1,
+  EXT_ZFHMIN,
+  EXT_ZBA,
+  EXT_ZBB,
+  EXT_ZBC,
+  EXT_ZBS,
+  EXT_ZBKB,
+  EXT_ZBKC,
+  EXT_ZBKX,
+  EXT_ZCA,
+  EXT_ZCB,
+  EXT_ZCD,
+  EXT_ZCE,
+  EXT_ZCF,
+  EXT_ZCLSD,
+  EXT_ZCMP,
+  EXT_ZCMT,
+  EXT_ZKND,
+  EXT_ZKNE,
+  EXT_ZKNH,
+  EXT_ZKSED,
+  EXT_ZKSH,
+  EXT_ZKR,
+  EXT_ZMMUL,
+  EXT_ZVFH,
+  EXT_ZVFBFA,
+  EXT_ZVFHMIN,
+  EXT_ZVFOFP4MIN,
+  EXT_ZVFOFP8MIN,
+  EXT_SMEPMP,
+  EXT_SMPMPMT,
+  EXT_SMRNMI,
+  EXT_SMSTATEEN,
+  EXT_SSPMP,
+  EXT_SMPMPDELEG,
+  EXT_SSPMPEN,
+  EXT_SSCOFPMF,
+  EXT_SVADU,
+  EXT_SVADE,
+  EXT_SVNAPOT,
+  EXT_SVPBMT,
+  EXT_SVINVAL,
+  EXT_SVUKTE,
+  EXT_SVRSW60T59B,
+  EXT_ZDINX,
+  EXT_ZFA,
+  EXT_ZFBFMIN,
+  EXT_ZFINX,
+  EXT_ZHINX,
+  EXT_ZHINXMIN,
+  EXT_ZIBI,
+  EXT_ZICCID,
+  EXT_ZICBOM,
+  EXT_ZICBOZ,
+  EXT_ZICCLSM,
+  EXT_ZICNTR,
+  EXT_ZICOND,
+  EXT_ZIHPM,
+  EXT_ZILSD,
+  EXT_ZVABD,
+  EXT_ZVBB,
+  EXT_ZVKB,
+  EXT_ZVBC,
+  EXT_ZVFBFMIN,
+  EXT_ZVFBFWMA,
+  EXT_ZVKG,
+  EXT_ZVKNED,
+  EXT_ZVKNHA,
+  EXT_ZVKNHB,
+  EXT_ZVKSED,
+  EXT_ZVKSH,
+  EXT_ZVDOT4A,
+  EXT_ZVQWBDOTA8I,
+  EXT_ZVQWBDOTA16I,
+  EXT_ZVFQWBDOTA8F,
+  EXT_ZVFWBDOTA16BF,
+  EXT_ZVFBDOTA32F,
+  EXT_ZVQWDOTA8I,
+  EXT_ZVQWDOTA16I,
+  EXT_ZVFQWDOTA8F,
+  EXT_ZVFWDOTA16BF,
+  EXT_ZVTBASE,
+  EXT_ZVT8T,
+  EXT_ZVT16T,
+  EXT_ZVT32T,
+  EXT_ZVT64T,
+  EXT_ZVT128T,
+  EXT_ZVT256T,
+  EXT_ZVT8E,
+  EXT_ZVT16E,
+  EXT_ZVT64E,
+  EXT_ZVTI8I32MM,
+  EXT_ZVTOFP8FMM,
+  EXT_ZVTFP16FMM,
+  EXT_ZVTBF16FMM,
+  EXT_ZVTFMM,
+  EXT_ZVTDMM,
+  EXT_ZVZIP,
+  EXT_SSTC,
+  EXT_ZAAMO,
+  EXT_ZALRSC,
+  EXT_ZACAS,
+  EXT_ZABHA,
+  EXT_ZAWRS,
+  EXT_ZAMA16B,
+  EXT_INTERNAL_ZFH_MOVE,
+  EXT_SMCSRIND,
+  EXT_SSCSRIND,
+  EXT_SMCDELEG,
+  EXT_SSCCFG,
+  EXT_SMCNTRPMF,
+  EXT_ZIMOP,
+  EXT_ZCMOP,
+  EXT_ZALASR,
+  EXT_SSQOSID,
+  EXT_ZICFILP,
+  EXT_ZICFISS,
+  EXT_SSDBLTRP,
+  EXT_SMDBLTRP,
+  EXT_SMMPM,
+  EXT_SMNPM,
+  EXT_SSNPM,
+  EXT_SMAIA,
+  EXT_SSAIA,
+  EXT_ZA64RS,
+  EXT_ZA128RS,
+  EXT_ZILX,
+  NUM_ISA_EXTENSIONS
+} isa_extension_t;
+
+typedef enum {
+  IMPL_MMU_VMID,
+  IMPL_MMU_ASID,
+} impl_extension_t;
+
+class isa_parser_t {
+public:
+  isa_parser_t(const char* str, const char *priv);
+  ~isa_parser_t() {};
+  unsigned get_max_xlen() const { return max_xlen; }
+  reg_t get_max_isa() const { return max_isa; }
+  std::string get_isa_string() const { return isa_string; }
+  reg_t get_vlen() const { return vlen; }
+  reg_t get_elen() const { return elen; }
+  reg_t get_te() const;
+  bool get_zvf() const { return zvf; }
+  bool get_zvd() const { return zvd; }
+  bool extension_enabled(unsigned char ext) const {
+    return extension_enabled(isa_extension_t(ext));
+  }
+  bool extension_enabled(isa_extension_t ext) const {
+    return extension_table[ext];
+  }
+  bool has_any_vector() const { return vlen > 0; }
+
+  std::bitset<NUM_ISA_EXTENSIONS> get_extension_table() const { return extension_table; }
+
+  const std::set<std::string> &get_extensions() const { return extensions; }
+
+protected:
+  unsigned max_xlen;
+  reg_t max_isa;
+  reg_t vlen;
+  reg_t elen;
+  bool zvf;
+  bool zvd;
+  std::bitset<NUM_ISA_EXTENSIONS> extension_table;
+  std::string isa_string;
+  std::set<std::string> extensions;
+
+private:
+  void add_extension(const std::string&, const char*);
+  void apply_zve_properties(const std::string&, const char*);
+};
+
+#endif

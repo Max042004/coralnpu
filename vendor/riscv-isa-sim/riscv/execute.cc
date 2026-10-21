@@ -1,0 +1,363 @@
+// See LICENSE for license details.
+
+#include "config.h"
+#include "processor.h"
+#include "mmu.h"
+#include "disasm.h"
+#include "decode_macros.h"
+#include <cassert>
+
+static void commit_log_reset(processor_t* p)
+{
+  p->get_state()->log_reg_write.clear();
+  p->get_state()->log_mem_read.clear();
+  p->get_state()->log_mem_write.clear();
+}
+
+static void commit_log_stash_privilege(processor_t* p)
+{
+  state_t* state = p->get_state();
+  state->last_inst_priv = state->prv;
+  state->last_inst_xlen = p->get_xlen();
+  state->last_inst_flen = p->get_flen();
+}
+
+static void commit_log_print_value(FILE *log_file, int width, const void *data)
+{
+  assert(log_file);
+
+  switch (width) {
+    case 8:
+      fprintf(log_file, "0x%02" PRIx8, *(const uint8_t *)data);
+      break;
+    case 16:
+      fprintf(log_file, "0x%04" PRIx16, *(const uint16_t *)data);
+      break;
+    case 32:
+      fprintf(log_file, "0x%08" PRIx32, *(const uint32_t *)data);
+      break;
+    case 64:
+      fprintf(log_file, "0x%016" PRIx64, *(const uint64_t *)data);
+      break;
+    default:
+      if (width % 8 == 0) {
+        const uint8_t *arr = (const uint8_t *)data;
+
+        fprintf(log_file, "0x");
+        for (int idx = width / 8 - 1; idx >= 0; --idx) {
+          fprintf(log_file, "%02" PRIx8, arr[idx]);
+        }
+      } else {
+        abort();
+      }
+      break;
+  }
+}
+
+static void commit_log_print_value(FILE *log_file, int width, uint64_t val)
+{
+  commit_log_print_value(log_file, width, &val);
+}
+
+static void commit_log_print_insn(processor_t *p, reg_t pc, insn_t insn)
+{
+  FILE *log_file = p->get_log_file();
+
+  auto& reg = p->get_state()->log_reg_write;
+  auto& load = p->get_state()->log_mem_read;
+  auto& store = p->get_state()->log_mem_write;
+  int priv = p->get_state()->last_inst_priv;
+  int xlen = p->get_state()->last_inst_xlen;
+  int flen = p->get_state()->last_inst_flen;
+
+  // print core id on all lines so it is easy to grep
+  fprintf(log_file, "core%4" PRId32 ": ", p->get_id());
+
+  fprintf(log_file, "%1d ", priv);
+  commit_log_print_value(log_file, xlen, pc);
+  fprintf(log_file, " (");
+  commit_log_print_value(log_file, insn.length() * 8, insn.bits());
+  fprintf(log_file, ")");
+  bool show_vec = false;
+
+  for (auto item : reg) {
+    if (item.first == 0)
+      continue;
+
+    char prefix = ' ';
+    int size;
+    int rd = item.first >> 4;
+    bool is_vec = false;
+    bool is_vreg = false;
+    switch (item.first & 0xf) {
+    case 0:
+      size = xlen;
+      prefix = 'x';
+      break;
+    case 1:
+      size = flen;
+      prefix = 'f';
+      break;
+    case 2:
+      size = p->VU.VLEN;
+      prefix = 'v';
+      is_vreg = true;
+      break;
+    case 3:
+      is_vec = true;
+      break;
+    case 4:
+      size = xlen;
+      prefix = 'c';
+      break;
+    default:
+      assert("can't been here" && 0);
+      break;
+    }
+
+    if (!show_vec && (is_vreg || is_vec)) {
+        fprintf(log_file, " e%ld %s%ld l%ld",
+                (long)p->VU.vsew,
+                p->VU.vflmul < 1 ? "mf" : "m",
+                p->VU.vflmul < 1 ? (long)(1 / p->VU.vflmul) : (long)p->VU.vflmul,
+                (long)p->VU.vl->read());
+        show_vec = true;
+    }
+
+    if (!is_vec) {
+      if (prefix == 'c')
+        fprintf(log_file, " c%d_%s ", rd, csr_name(rd));
+      else
+        fprintf(log_file, " %c%-2d ", prefix, rd);
+      if (is_vreg)
+        commit_log_print_value(log_file, size, &p->VU.elt<uint8_t>(rd, 0));
+      else
+        commit_log_print_value(log_file, size, item.second.v);
+    }
+  }
+
+  for (auto item : load) {
+    fprintf(log_file, " mem ");
+    commit_log_print_value(log_file, xlen, std::get<0>(item));
+  }
+
+  for (auto item : store) {
+    fprintf(log_file, " mem ");
+    commit_log_print_value(log_file, xlen, std::get<0>(item));
+    fprintf(log_file, " ");
+    commit_log_print_value(log_file, std::get<2>(item) << 3, std::get<1>(item));
+  }
+  fprintf(log_file, "\n");
+}
+
+inline void processor_t::update_histogram(reg_t pc)
+{
+  if (histogram_enabled)
+    pc_histogram[pc]++;
+}
+
+// These two functions are expected to be inlined by the compiler separately in
+// the processor_t::step() loop. The logged variant is used in the slow path
+static inline reg_t execute_insn_fast(processor_t* p, reg_t pc, insn_fetch_t fetch) {
+  return fetch.func(p, fetch.insn, pc);
+}
+static inline reg_t execute_insn_logged(processor_t* p, reg_t pc, insn_fetch_t fetch)
+{
+  if (p->get_log_commits_enabled()) {
+    commit_log_reset(p);
+    commit_log_stash_privilege(p);
+  }
+
+  reg_t npc;
+
+  try {
+    npc = fetch.func(p, fetch.insn, pc);
+    if (npc != PC_SERIALIZE_BEFORE) {
+      if (p->get_log_commits_enabled()) {
+        commit_log_print_insn(p, pc, fetch.insn);
+      }
+     }
+  } catch(mem_trap_t& t) {
+      //handle segfault in midlle of vector load/store
+      if (p->get_log_commits_enabled()) {
+        for (auto item : p->get_state()->log_reg_write) {
+          if ((item.first & 3) == 3) {
+            commit_log_print_insn(p, pc, fetch.insn);
+            break;
+          }
+        }
+      }
+      throw;
+  } catch(...) {
+    throw;
+  }
+  p->update_histogram(pc);
+
+  return npc;
+}
+
+bool processor_t::slow_path() const
+{
+  return debug || state.single_step != state.STEP_NONE || state.debug_mode ||
+         log_commits_enabled || histogram_enabled || is_waiting_for_interrupt() || check_triggers_icount;
+}
+
+// fetch/decode/execute loop
+void processor_t::step(size_t n)
+{
+  mmu_t* _mmu = mmu;
+
+  if (!state.debug_mode) {
+    if (halt_request == HR_REGULAR) {
+      enter_debug_mode(DCSR_CAUSE_DEBUGINT, 0);
+    } else if (halt_request == HR_GROUP) {
+      enter_debug_mode(DCSR_CAUSE_GROUP, 0);
+    } else if (halt_on_reset) {
+      halt_on_reset = false;
+      enter_debug_mode(DCSR_CAUSE_HALT, 0);
+    }
+  }
+
+  while (n > 0) {
+    size_t instret = 0;
+    state.prv_changed = false;
+    state.v_changed = false;
+    reg_t mcountinhibit = state.mcountinhibit->read();
+    _mmu->reset_triggers();
+
+    #define retire_one() { \
+      ++instret; \
+      _mmu->check_triggers_after(); \
+    }
+
+    #define advance_pc(npc) { \
+      if (unlikely(invalid_pc(npc))) { \
+        switch (npc) { \
+          case PC_SERIALIZE_BEFORE: state.serialized = true; goto serialize; \
+          case PC_SERIALIZE_AFTER: retire_one(); goto serialize; \
+          case PC_YIELD: retire_one(); n = instret; goto serialize; \
+          default: abort(); \
+        } \
+      } else { \
+        state.pc = npc; \
+        retire_one(); \
+      }}
+
+    try
+    {
+      take_pending_interrupt();
+
+      check_if_lpad_required();
+
+      if (unlikely(slow_path()))
+      {
+        // Main simulation loop, slow path.
+        while (instret < n)
+        {
+          if (unlikely(!state.serialized && state.single_step == state.STEP_STEPPED)) {
+            state.single_step = state.STEP_NONE;
+            if (!state.debug_mode) {
+              enter_debug_mode(DCSR_CAUSE_STEP, 0);
+              goto serialize;
+            }
+          }
+
+          if (unlikely(state.single_step == state.STEP_STEPPING)) {
+            state.single_step = state.STEP_STEPPED;
+          }
+
+          if (!state.serialized && check_triggers_icount) {
+            auto match = TM.detect_icount_match();
+            if (match.has_value()) {
+              assert(match->timing == triggers::TIMING_BEFORE);
+              throw triggers::matched_t((triggers::operation_t)0, 0, match->action, state.v);
+            }
+          }
+
+          if (unlikely(is_waiting_for_interrupt()))
+            return;
+
+          insn_fetch_t fetch = mmu->load_insn(state.pc);
+          if (debug && !state.serialized)
+            disasm(fetch.insn);
+          auto new_pc = execute_insn_logged(this, state.pc, fetch);
+          advance_pc(new_pc);
+
+          // Resume from debug mode in critical error
+          if (state.critical_error && !state.debug_mode) {
+            if (state.dcsr->read() & DCSR_CETRIG) {
+              enter_debug_mode(DCSR_CAUSE_EXTCAUSE, DCSR_EXTCAUSE_CRITERR);
+            } else {
+              // Handling of critical error is implementation defined
+              // For now just enter debug mode
+              enter_debug_mode(DCSR_CAUSE_HALT, 0);
+            }
+          }
+        }
+      }
+      else while (instret < n)
+      {
+        // Main simulation loop, fast path.
+        for (auto ic_entry = _mmu->access_icache(state.pc); instret < n; instret++) {
+          auto fetch = ic_entry->data;
+          ic_entry = ic_entry->next;
+          auto new_pc = execute_insn_fast(this, state.pc, fetch);
+          if (unlikely(ic_entry->tag != new_pc)) {
+            ic_entry = &_mmu->icache[_mmu->icache_index(new_pc)];
+            _mmu->icache[_mmu->icache_index(state.pc)].next = ic_entry;
+            if (ic_entry->tag != new_pc) {
+              advance_pc(new_pc);
+              break;
+            }
+          }
+          state.pc = ic_entry->tag;
+        }
+      }
+    }
+    catch(trap_t& t)
+    {
+      take_trap(t, state.pc);
+      n = instret;
+
+      // If critical error then enter debug mode critical error trigger enabled
+      if (state.critical_error && !state.debug_mode) {
+        if (state.dcsr->read() & DCSR_CETRIG) {
+          enter_debug_mode(DCSR_CAUSE_EXTCAUSE, DCSR_EXTCAUSE_CRITERR);
+        } else {
+          // Handling of critical error is implementation defined
+          // For now just enter debug mode
+          enter_debug_mode(DCSR_CAUSE_HALT, 0);
+        }
+      }
+      // Trigger action takes priority over single step
+      auto match = TM.detect_trap_match(t);
+      if (match.has_value())
+        take_trigger_action(match->action, 0, state.pc, 0);
+      else if (unlikely(state.single_step == state.STEP_STEPPED)) {
+        state.single_step = state.STEP_NONE;
+        if (!state.debug_mode)
+          enter_debug_mode(DCSR_CAUSE_STEP, 0);
+      }
+    }
+    catch (triggers::matched_t& t)
+    {
+      take_trigger_action(t.action, t.address, state.pc, t.gva);
+      // End this step at the trigger boundary.  In particular, a timing-before
+      // trigger retires no instruction, so continuing would immediately execute
+      // from the debug ROM or trap vector to consume the remaining step count.
+      n = instret;
+    }
+    catch(trap_debug_mode&)
+    {
+      enter_debug_mode(DCSR_CAUSE_SWBP, 0);
+    }
+
+serialize:
+    state.minstret->bump((mcountinhibit & MCOUNTINHIBIT_IR) ? 0 : instret);
+
+    // Model a hart whose CPI is 1.
+    state.mcycle->bump((mcountinhibit & MCOUNTINHIBIT_CY) ? 0 : instret);
+
+    n -= instret;
+  }
+}

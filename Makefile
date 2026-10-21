@@ -44,6 +44,7 @@ include mk/designs.mk
 include mk/model.mk
 include mk/sw.mk
 include mk/riscv_tests.mk
+include mk/spike.mk
 
 .DEFAULT_GOAL := help
 .PHONY: help vendor-update flist rtl rtl-all list-designs chisel-compile chisel-test clean
@@ -55,7 +56,7 @@ help:
 
 # vendor/ is committed, as is usual for Bender vendor_package; this target is
 # only needed after changing a pinned revision in Bender.yml or a patch.
-VENDOR_PKGS := common_cells fpu_div_sqrt_mvp cvfpu RVVI rocket_chip diplomacy riscv-tests freertos tflite_micro flatbuffers gemmlowp ruy kissfft
+VENDOR_PKGS := common_cells fpu_div_sqrt_mvp cvfpu RVVI rocket_chip diplomacy riscv-tests freertos tflite_micro flatbuffers gemmlowp ruy kissfft riscv-isa-sim
 
 vendor-update:
 	rm -rf $(addprefix vendor/,$(VENDOR_PKGS))

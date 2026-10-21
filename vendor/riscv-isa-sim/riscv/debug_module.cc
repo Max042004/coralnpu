@@ -1,0 +1,1294 @@
+#include <algorithm>
+#include <array>
+#include <cassert>
+#include <iterator>
+#include <limits>
+
+#include "decode.h"
+#include "simif.h"
+#include "devices.h"
+#include "debug_module.h"
+#include "debug_defines.h"
+#include "opcodes.h"
+#include "mmu.h"
+
+#include "debug_rom/debug_rom.h"
+#include "debug_rom_defines.h"
+
+#if 0
+#  define D(x) x
+#else
+#  define D(x) (void) 0
+#endif
+
+// Return the number of bits wide that a field has to be to encode up to n
+// different values.
+// 1->0, 2->1, 3->2, 4->2
+static unsigned field_width(unsigned n)
+{
+  unsigned i = 0;
+  n -= 1;
+  while (n) {
+    i++;
+    n >>= 1;
+  }
+  return i;
+}
+
+///////////////////////// debug_module_t
+
+static bool region_descriptor_comparator(const region_descriptor &lhs,
+                                  const region_descriptor &rhs) {
+  return lhs.addr < rhs.addr || (lhs.addr == rhs.addr && lhs.len < rhs.len);
+}
+
+template <typename It>
+static bool has_intersection(It begin, It end) {
+  assert(std::is_sorted(begin, end, region_descriptor_comparator));
+
+  // If current interval's end > next interval's start, they intersect
+  auto intersecion =
+      std::adjacent_find(begin, end, [](const auto &lhs, const auto &rhs) {
+        assert(std::numeric_limits<reg_t>::max() - lhs.addr >= lhs.len);
+        return lhs.addr + lhs.len > rhs.addr;
+      });
+
+  return intersecion != end;
+}
+
+debug_module_t::debug_module_t(simif_t *sim, const debug_module_config_t &config) :
+  config(config),
+  program_buffer_bytes((config.support_impebreak ? 4 : 0) + 4*config.progbufsize),
+  debug_progbuf_start(debug_data_start - program_buffer_bytes),
+  debug_abstract_start(debug_progbuf_start - debug_abstract_size*4),
+  custom_base(0),
+  sim(sim),
+  // The spec lets a debugger select nonexistent harts. Create hart_state for
+  // them because I'm too lazy to add the code to just ignore accesses.
+  hart_state(1 << field_width(sim->get_cfg().max_hartid() + 1)),
+  hart_array_mask(sim->get_cfg().max_hartid() + 1),
+  rti_remaining(0),
+  sb_read_wait(0), sb_write_wait(0)
+{
+  D(fprintf(stderr, "debug_data_start=0x%x\n", debug_data_start));
+  D(fprintf(stderr, "debug_progbuf_start=0x%x\n", debug_progbuf_start));
+  D(fprintf(stderr, "debug_abstract_start=0x%x\n", debug_abstract_start));
+
+  const unsigned max_procs = 1024;
+  if (sim->get_cfg().max_hartid() >= max_procs) {
+    fprintf(stderr, "Hart IDs must not exceed %u (%zu harts with max hart ID %zu requested)\n",
+            max_procs - 1, sim->get_cfg().nprocs(), sim->get_cfg().max_hartid());
+    exit(1);
+  }
+
+  constexpr unsigned max_data_reg = 12;
+  constexpr unsigned min_data_reg = 1;
+  if (config.datacount < min_data_reg || config.datacount > max_data_reg) {
+    fprintf(stderr, "dm-datacount must be between 1 and 12 (got %u)\n", config.datacount);
+    exit(1);
+  }
+
+  dmdata.resize(config.datacount * dmdata_reg_size);
+  program_buffer = new uint8_t[program_buffer_bytes];
+
+  memset(debug_rom_flags, 0, sizeof(debug_rom_flags));
+  memset(debug_rom_saved_state, 0, sizeof(debug_rom_saved_state));
+  memset(program_buffer, 0, program_buffer_bytes);
+
+  if (config.support_impebreak) {
+    program_buffer[4*config.progbufsize] = ebreak();
+    program_buffer[4*config.progbufsize+1] = ebreak() >> 8;
+    program_buffer[4*config.progbufsize+2] = ebreak() >> 16;
+    program_buffer[4*config.progbufsize+3] = ebreak() >> 24;
+  }
+
+  write32(debug_rom_whereto, 0,
+          jal(ZERO, debug_abstract_start - DEBUG_ROM_WHERETO));
+
+  memset(debug_abstract, 0, sizeof(debug_abstract));
+  for (unsigned i = 0; i < sizeof(hart_available_state) / sizeof(*hart_available_state); i++) {
+    hart_available_state[i] = true;
+  }
+
+  debug_memory_regions = {
+      region_descriptor{DEBUG_ROM_ENTRY, debug_rom_raw_len, debug_rom_raw},
+      region_descriptor{DEBUG_ROM_WHERETO, sizeof(debug_rom_whereto), debug_rom_whereto},
+      region_descriptor{DEBUG_ROM_FLAGS, sizeof(debug_rom_flags), debug_rom_flags},
+      region_descriptor{DEBUG_ROM_SAVED_STATE, sizeof(debug_rom_saved_state), debug_rom_saved_state},
+      region_descriptor{debug_data_start, dmdata.size(), dmdata.data()},
+      region_descriptor{debug_abstract_start, sizeof(debug_abstract), debug_abstract},
+      region_descriptor{debug_progbuf_start, program_buffer_bytes, program_buffer},
+  };
+
+  std::sort(debug_memory_regions.begin(), debug_memory_regions.end(),
+            region_descriptor_comparator);
+  assert(!has_intersection(debug_memory_regions.begin(),
+                           debug_memory_regions.end()));
+
+  reset();
+}
+
+debug_module_t::~debug_module_t()
+{
+  delete[] program_buffer;
+}
+
+void debug_module_t::reset()
+{
+  for (const auto& [hart_id, hart] : sim->get_harts()) {
+    hart->halt_request = hart->HR_NONE;
+  }
+
+  memset(&dmcontrol, 0, sizeof(dmcontrol));
+
+  memset(&dmstatus, 0, sizeof(dmstatus));
+  dmstatus.impebreak = config.support_impebreak;
+  dmstatus.authenticated = !config.require_authentication;
+  dmstatus.version = 2;
+
+  memset(&abstractcs, 0, sizeof(abstractcs));
+  abstractcs.datacount = config.datacount;
+  abstractcs.progbufsize = config.progbufsize;
+
+  memset(&abstractauto, 0, sizeof(abstractauto));
+
+  memset(&sbcs, 0, sizeof(sbcs));
+  if (config.max_sba_data_width > 0) {
+    sbcs.version = 1;
+    sbcs.asize = sizeof(reg_t) * 8;
+  }
+  if (config.max_sba_data_width >= 64)
+    sbcs.access64 = true;
+  if (config.max_sba_data_width >= 32)
+    sbcs.access32 = true;
+  if (config.max_sba_data_width >= 16)
+    sbcs.access16 = true;
+  if (config.max_sba_data_width >= 8)
+    sbcs.access8 = true;
+
+  challenge = random();
+}
+
+static bool belongs_to_range(reg_t access_addr, size_t access_len,
+                             reg_t range_addr, size_t range_len)
+{
+  assert(std::numeric_limits<reg_t>::max() - access_addr >= access_len);
+  assert(std::numeric_limits<reg_t>::max() - range_addr >= range_len);
+  return access_addr >= range_addr && (access_addr < range_addr + range_len) &&
+         ((access_addr + access_len) <= (range_addr + range_len));
+}
+
+bool debug_module_t::load(reg_t addr, size_t len, uint8_t* bytes)
+{
+  addr = DEBUG_START + addr;
+
+  const auto interval_ptr =
+      std::find_if(debug_memory_regions.begin(), debug_memory_regions.end(),
+                   [addr, len](const auto &range) {
+                     return belongs_to_range(addr, len, range.addr, range.len);
+                   });
+
+  if (interval_ptr != debug_memory_regions.end()) {
+    std::copy_n(std::next(interval_ptr->bytes, addr - interval_ptr->addr), len, bytes);
+    return true;
+  }
+
+  D(fprintf(stderr, "ERROR: invalid load from debug module: %zd bytes at 0x%016"
+          PRIx64 "\n", len, addr));
+
+  return false;
+}
+
+static bool handle_range_store(reg_t input_addr, size_t input_len, const uint8_t *bytes,
+                               reg_t range_addr, size_t range_len, uint8_t *data)
+{
+  if (!belongs_to_range(input_addr, input_len, range_addr, range_len))
+    return false;
+  std::copy_n(bytes, input_len, std::next(data, input_addr - range_addr));
+  return true;
+}
+
+bool debug_module_t::store(reg_t addr, size_t len, const uint8_t* bytes)
+{
+  D(
+    switch (len) {
+      case 4:
+        fprintf(stderr, "store(addr=0x%lx, len=%d, bytes=0x%08x); "
+            "hartsel=0x%x\n", addr, (unsigned) len, *(uint32_t *) bytes,
+            dmcontrol.hartsel);
+        break;
+      default:
+        fprintf(stderr, "store(addr=0x%lx, len=%d, bytes=...); "
+            "hartsel=0x%x\n", addr, (unsigned) len, dmcontrol.hartsel);
+        break;
+    }
+  );
+
+  uint8_t id_bytes[4];
+  uint32_t id = 0;
+  if (len == 4) {
+    memcpy(id_bytes, bytes, 4);
+    id = read32(id_bytes, 0);
+  }
+
+  addr = DEBUG_START + addr;
+
+  if (handle_range_store(addr, len, bytes, debug_data_start, dmdata.size(), dmdata.data()))
+    return true;
+
+  if (handle_range_store(addr, len, bytes, debug_progbuf_start, program_buffer_bytes, program_buffer))
+    return true;
+
+  if (handle_range_store(addr, len, bytes, DEBUG_ROM_SAVED_STATE,
+                         sizeof(debug_rom_saved_state), debug_rom_saved_state))
+    return true;
+
+  if (addr == DEBUG_ROM_HALTED) {
+    assert (len == 4);
+    if (!hart_state[id].halted) {
+      hart_state[id].halted = true;
+      if (hart_state[id].haltgroup) {
+        for (const auto& [hart_id, hart] : sim->get_harts()) {
+          if (!hart_state[hart_id].halted &&
+              hart_state[hart_id].haltgroup == hart_state[id].haltgroup &&
+              hart_available(hart_id)) {
+            hart->halt_request = hart->HR_GROUP;
+            // TODO: What if the debugger comes and writes dmcontrol before the
+            // halt occurs?
+          }
+        }
+      }
+    }
+    if (selected_hart_id() == id) {
+      if (0 == (debug_rom_flags[id] & (1 << DEBUG_ROM_FLAG_GO))) {
+        abstract_command_completed = true;
+      }
+    }
+    return true;
+  }
+
+  if (addr == DEBUG_ROM_GOING) {
+    assert(len == 4);
+    debug_rom_flags[id] &= ~(1 << DEBUG_ROM_FLAG_GO);
+    return true;
+  }
+
+  if (addr == DEBUG_ROM_RESUMING) {
+    assert (len == 4);
+    hart_state[id].halted = false;
+    hart_state[id].resumeack = true;
+    debug_rom_flags[id] &= ~(1 << DEBUG_ROM_FLAG_RESUME);
+    return true;
+  }
+
+  if (addr == DEBUG_ROM_EXCEPTION) {
+    if (abstractcs.cmderr == CMDERR_NONE) {
+      abstractcs.cmderr = CMDERR_EXCEPTION;
+    }
+    return true;
+  }
+
+  D(fprintf(stderr, "ERROR: invalid store to debug module: %zd bytes at 0x%016"
+          PRIx64 "\n", len, addr));
+  return false;
+}
+
+reg_t debug_module_t::size()
+{
+  return PGSIZE;
+}
+
+void debug_module_t::write32(uint8_t *memory, unsigned int index, uint32_t value)
+{
+  uint8_t* base = memory + index * 4;
+  base[0] = value & 0xff;
+  base[1] = (value >> 8) & 0xff;
+  base[2] = (value >> 16) & 0xff;
+  base[3] = (value >> 24) & 0xff;
+}
+
+uint32_t debug_module_t::read32(uint8_t *memory, unsigned int index)
+{
+  uint8_t* base = memory + index * 4;
+  uint32_t value = ((uint32_t) base[0]) |
+    (((uint32_t) base[1]) << 8) |
+    (((uint32_t) base[2]) << 16) |
+    (((uint32_t) base[3]) << 24);
+  return value;
+}
+
+bool debug_module_t::hart_selected(unsigned hartid) const
+{
+  return hartid == selected_hart_id() || (dmcontrol.hasel && hart_array_mask[hartid]);
+}
+
+unsigned debug_module_t::sb_access_bits()
+{
+  return 8 << sbcs.sbaccess;
+}
+
+uint8_t *debug_module_t::get_dmdata_checked(size_t required_registers)
+{
+  const size_t register_count = dmdata.size() / dmdata_reg_size;
+  if (register_count < required_registers) {
+    fprintf(stderr, "dmdata register count (%zu) less than required (%zu)\n",
+            register_count, required_registers);
+    exit(1);
+  }
+  return dmdata.data();
+}
+
+void debug_module_t::sb_autoincrement()
+{
+  if (!sbcs.autoincrement || !config.max_sba_data_width)
+    return;
+
+  uint64_t value = sbaddress[0] + sb_access_bits() / 8;
+  sbaddress[0] = value;
+  uint32_t carry = value >> 32;
+
+  value = sbaddress[1] + carry;
+  sbaddress[1] = value;
+  carry = value >> 32;
+
+  value = sbaddress[2] + carry;
+  sbaddress[2] = value;
+  carry = value >> 32;
+
+  sbaddress[3] += carry;
+}
+
+bool debug_module_t::sb_busy() const
+{
+  return sb_read_wait > 0 || sb_write_wait > 0;
+}
+
+void debug_module_t::sb_read_start()
+{
+  if (sb_busy() || sbcs.sbbusyerror) {
+    if (!sbcs.sbbusyerror)
+      D(fprintf(stderr, "Set sbbusyerror because read start while busy\n"));
+    sbcs.sbbusyerror = true;
+    return;
+  }
+  /* Insert artificial delay, so debuggers can test how they handle that
+   * sbbusyerror being set. */
+  sb_read_wait = 20;
+}
+
+void debug_module_t::sb_read()
+{
+  reg_t address = ((uint64_t) sbaddress[1] << 32) | sbaddress[0];
+  try {
+    if (sbcs.sbaccess == 0 && config.max_sba_data_width >= 8) {
+      sbdata[0] = sim->debug_mmu->load<uint8_t>(address);
+    } else if (sbcs.sbaccess == 1 && config.max_sba_data_width >= 16) {
+      sbdata[0] = sim->debug_mmu->load<uint16_t>(address);
+    } else if (sbcs.sbaccess == 2 && config.max_sba_data_width >= 32) {
+      sbdata[0] = sim->debug_mmu->load<uint32_t>(address);
+    } else if (sbcs.sbaccess == 3 && config.max_sba_data_width >= 64) {
+      uint64_t value = sim->debug_mmu->load<uint64_t>(address);
+      sbdata[0] = value;
+      sbdata[1] = value >> 32;
+    } else {
+      sbcs.error = 3;
+    }
+    D(fprintf(stderr, "sb_read() 0x%x @ 0x%lx\n", sbdata[0], address));
+  } catch (const mem_trap_t& ) {
+    sbcs.error = 2;
+  }
+}
+
+void debug_module_t::sb_write_start()
+{
+  if (sb_busy() || sbcs.sbbusyerror) {
+    if (!sbcs.sbbusyerror)
+      D(fprintf(stderr, "Set sbbusyerror because write start while busy\n"));
+    sbcs.sbbusyerror = true;
+    return;
+  }
+  /* Insert artificial delay, so debuggers can test how they handle that
+   * sbbusyerror being set. */
+  sb_write_wait = 20;
+}
+
+void debug_module_t::sb_write()
+{
+  reg_t address = ((uint64_t) sbaddress[1] << 32) | sbaddress[0];
+  D(fprintf(stderr, "sb_write() 0x%x @ 0x%lx\n", sbdata[0], address));
+  try {
+    if (sbcs.sbaccess == 0 && config.max_sba_data_width >= 8) {
+      sim->debug_mmu->store<uint8_t>(address, sbdata[0]);
+    } else if (sbcs.sbaccess == 1 && config.max_sba_data_width >= 16) {
+      sim->debug_mmu->store<uint16_t>(address, sbdata[0]);
+    } else if (sbcs.sbaccess == 2 && config.max_sba_data_width >= 32) {
+      sim->debug_mmu->store<uint32_t>(address, sbdata[0]);
+    } else if (sbcs.sbaccess == 3 && config.max_sba_data_width >= 64) {
+      sim->debug_mmu->store<uint64_t>(address,
+          (((uint64_t) sbdata[1]) << 32) | sbdata[0]);
+    } else {
+      sbcs.error = 3;
+    }
+  } catch (const mem_trap_t& ) {
+    sbcs.error = 2;
+  }
+}
+
+bool debug_module_t::hart_available(unsigned hart_id) const
+{
+  if (hart_id < sizeof(hart_available_state) / sizeof(*hart_available_state))
+    return hart_available_state[hart_id];
+  return true;
+}
+
+bool debug_module_t::dmi_read(unsigned address, uint32_t *value)
+{
+  uint32_t result = 0;
+  D(fprintf(stderr, "dmi_read(0x%x) -> ", address));
+  if (address >= DM_DATA0 && address < DM_DATA0 + abstractcs.datacount) {
+    unsigned i = address - DM_DATA0;
+    assert(dmdata.size() >= 4);
+    result = read32(get_dmdata_checked(i + 1), i);
+    if (abstractcs.busy) {
+      result = -1;
+      D(fprintf(stderr, "\ndmi_read(0x%02x (data[%d]) -> -1 because abstractcs.busy==true\n", address, i));
+    }
+
+    if (abstractcs.busy && abstractcs.cmderr == CMDERR_NONE) {
+      abstractcs.cmderr = CMDERR_BUSY;
+    }
+
+    if (!abstractcs.busy && ((abstractauto.autoexecdata >> i) & 1)) {
+      perform_abstract_command();
+    }
+  } else if (address >= DM_PROGBUF0 && address < DM_PROGBUF0 + config.progbufsize) {
+    unsigned i = address - DM_PROGBUF0;
+    result = read32(program_buffer, i);
+    if (abstractcs.busy) {
+      result = -1;
+      D(fprintf(stderr, "\ndmi_read(0x%02x (progbuf[%d]) -> -1 because abstractcs.busy==true\n", address, i));
+    }
+    if (!abstractcs.busy && ((abstractauto.autoexecprogbuf >> i) & 1)) {
+      perform_abstract_command();
+    }
+
+  } else {
+    switch (address) {
+      case DM_DMCONTROL:
+        {
+          result = set_field(result, DM_DMCONTROL_HALTREQ, dmcontrol.haltreq);
+          result = set_field(result, DM_DMCONTROL_RESUMEREQ, dmcontrol.resumereq);
+          result = set_field(result, DM_DMCONTROL_HARTSELHI,
+              dmcontrol.hartsel >> DM_DMCONTROL_HARTSELLO_LENGTH);
+          result = set_field(result, DM_DMCONTROL_HASEL, dmcontrol.hasel);
+          result = set_field(result, DM_DMCONTROL_HARTSELLO, dmcontrol.hartsel);
+          result = set_field(result, DM_DMCONTROL_HARTRESET, dmcontrol.hartreset);
+          result = set_field(result, DM_DMCONTROL_NDMRESET, dmcontrol.ndmreset);
+          result = set_field(result, DM_DMCONTROL_DMACTIVE, dmcontrol.dmactive);
+        }
+        break;
+      case DM_DMSTATUS:
+        {
+          dmstatus.allhalted = true;
+          dmstatus.anyhalted = false;
+          dmstatus.allrunning = true;
+          dmstatus.anyrunning = false;
+          dmstatus.allnonexistant = true;
+          dmstatus.allresumeack = true;
+          dmstatus.anyresumeack = false;
+          dmstatus.allunavail = true;
+          dmstatus.anyunavail = false;
+          for (const auto& [hart_id, hart] : sim->get_harts()) {
+            if (hart_selected(hart_id)) {
+              dmstatus.allnonexistant = false;
+              if (hart_state[hart_id].resumeack) {
+                dmstatus.anyresumeack = true;
+              } else {
+                dmstatus.allresumeack = false;
+              }
+              if (!hart_available(hart_id)) {
+                dmstatus.allrunning = false;
+                dmstatus.allhalted = false;
+                dmstatus.anyunavail = true;
+              } else if (hart_state[hart_id].halted) {
+                dmstatus.allrunning = false;
+                dmstatus.anyhalted = true;
+                dmstatus.allunavail = false;
+              } else {
+                dmstatus.allhalted = false;
+                dmstatus.anyrunning = true;
+                dmstatus.allunavail = false;
+              }
+            }
+          }
+
+          // We don't allow selecting non-existent harts through
+          // hart_array_mask, so the only way it's possible is by writing a
+          // non-existent hartsel.
+          dmstatus.anynonexistant = dmcontrol.hartsel >= sim->get_cfg().nprocs();
+
+          result = set_field(result, DM_DMSTATUS_IMPEBREAK,
+              dmstatus.impebreak);
+          result = set_field(result, DM_DMSTATUS_ALLHAVERESET, selected_hart_state().havereset);
+          result = set_field(result, DM_DMSTATUS_ANYHAVERESET, selected_hart_state().havereset);
+          result = set_field(result, DM_DMSTATUS_ALLNONEXISTENT, dmstatus.allnonexistant);
+          result = set_field(result, DM_DMSTATUS_ALLUNAVAIL, dmstatus.allunavail);
+          result = set_field(result, DM_DMSTATUS_ALLRUNNING, dmstatus.allrunning);
+          result = set_field(result, DM_DMSTATUS_ALLHALTED, dmstatus.allhalted);
+          result = set_field(result, DM_DMSTATUS_ALLRESUMEACK, dmstatus.allresumeack);
+          result = set_field(result, DM_DMSTATUS_ANYNONEXISTENT, dmstatus.anynonexistant);
+          result = set_field(result, DM_DMSTATUS_ANYUNAVAIL, dmstatus.anyunavail);
+          result = set_field(result, DM_DMSTATUS_ANYRUNNING, dmstatus.anyrunning);
+          result = set_field(result, DM_DMSTATUS_ANYHALTED, dmstatus.anyhalted);
+          result = set_field(result, DM_DMSTATUS_ANYRESUMEACK, dmstatus.anyresumeack);
+          result = set_field(result, DM_DMSTATUS_AUTHENTICATED, dmstatus.authenticated);
+          result = set_field(result, DM_DMSTATUS_AUTHBUSY, dmstatus.authbusy);
+          result = set_field(result, DM_DMSTATUS_VERSION, dmstatus.version);
+        }
+      	break;
+      case DM_ABSTRACTCS:
+        result = set_field(result, DM_ABSTRACTCS_CMDERR, abstractcs.cmderr);
+        result = set_field(result, DM_ABSTRACTCS_BUSY, abstractcs.busy);
+        result = set_field(result, DM_ABSTRACTCS_DATACOUNT, abstractcs.datacount);
+        result = set_field(result, DM_ABSTRACTCS_PROGBUFSIZE,
+            abstractcs.progbufsize);
+        break;
+      case DM_ABSTRACTAUTO:
+        result = set_field(result, DM_ABSTRACTAUTO_AUTOEXECPROGBUF, abstractauto.autoexecprogbuf);
+        result = set_field(result, DM_ABSTRACTAUTO_AUTOEXECDATA, abstractauto.autoexecdata);
+        break;
+      case DM_COMMAND:
+        result = 0;
+        break;
+      case DM_HARTINFO:
+        result = set_field(result, DM_HARTINFO_NSCRATCH, 1);
+        result = set_field(result, DM_HARTINFO_DATAACCESS, 1);
+        result = set_field(result, DM_HARTINFO_DATASIZE, abstractcs.datacount);
+        result = set_field(result, DM_HARTINFO_DATAADDR, debug_data_start);
+        break;
+      case DM_HAWINDOWSEL:
+        result = hawindowsel;
+        break;
+      case DM_HAWINDOW:
+        {
+          unsigned base = hawindowsel * 32;
+          for (unsigned i = 0; i < 32; i++) {
+            unsigned n = base + i;
+            if (n < sim->get_cfg().nprocs() && hart_array_mask[sim->get_cfg().hartids[n]]) {
+              result |= 1 << i;
+            }
+          }
+        }
+        break;
+      case DM_SBCS:
+        result = set_field(result, DM_SBCS_SBVERSION, sbcs.version);
+        result = set_field(result, DM_SBCS_SBREADONADDR, sbcs.readonaddr);
+        result = set_field(result, DM_SBCS_SBACCESS, sbcs.sbaccess);
+        result = set_field(result, DM_SBCS_SBAUTOINCREMENT, sbcs.autoincrement);
+        result = set_field(result, DM_SBCS_SBREADONDATA, sbcs.readondata);
+        result = set_field(result, DM_SBCS_SBERROR, sbcs.error);
+        result = set_field(result, DM_SBCS_SBBUSY, sb_busy());
+        result = set_field(result, DM_SBCS_SBBUSYERROR, sbcs.sbbusyerror);
+        result = set_field(result, DM_SBCS_SBASIZE, sbcs.asize);
+        result = set_field(result, DM_SBCS_SBACCESS128, sbcs.access128);
+        result = set_field(result, DM_SBCS_SBACCESS64, sbcs.access64);
+        result = set_field(result, DM_SBCS_SBACCESS32, sbcs.access32);
+        result = set_field(result, DM_SBCS_SBACCESS16, sbcs.access16);
+        result = set_field(result, DM_SBCS_SBACCESS8, sbcs.access8);
+        break;
+      case DM_SBADDRESS0:
+        result = sbaddress[0];
+        break;
+      case DM_SBADDRESS1:
+        result = sbaddress[1];
+        break;
+      case DM_SBADDRESS2:
+        result = sbaddress[2];
+        break;
+      case DM_SBADDRESS3:
+        result = sbaddress[3];
+        break;
+      case DM_SBDATA0:
+        result = sbdata[0];
+        if (sb_busy()) {
+          sbcs.sbbusyerror = true;
+        } else if (sbcs.error == 0) {
+          if (sbcs.readondata) {
+            sb_read_start();
+          }
+        }
+        break;
+      case DM_SBDATA1:
+        result = sbdata[1];
+        if (sb_busy()) {
+          sbcs.sbbusyerror = true;
+        }
+        break;
+      case DM_SBDATA2:
+        result = sbdata[2];
+        if (sb_busy()) {
+          sbcs.sbbusyerror = true;
+        }
+        break;
+      case DM_SBDATA3:
+        result = sbdata[3];
+        if (sb_busy()) {
+          sbcs.sbbusyerror = true;
+        }
+        break;
+      case DM_AUTHDATA:
+        result = challenge;
+        break;
+      case DM_DMCS2:
+        result = set_field(result, DM_DMCS2_GROUP, selected_hart_state().haltgroup);
+        break;
+      case DM_CUSTOM:
+        for (unsigned i = 0; i < sizeof(hart_available_state) / sizeof(*hart_available_state); i++) {
+          result |= hart_available_state[i] << i;
+        }
+        break;
+      default:
+        result = 0;
+        D(fprintf(stderr, "Unexpected. Returning Error."));
+        return false;
+    }
+  }
+  D(fprintf(stderr, "0x%x\n", result));
+  *value = result;
+  return true;
+}
+
+void debug_module_t::run_test_idle()
+{
+  if (rti_remaining > 0) {
+    rti_remaining--;
+  }
+  if (rti_remaining == 0 && abstractcs.busy && abstract_command_completed) {
+    abstractcs.busy = false;
+  }
+  if (sb_read_wait > 0) {
+    sb_read_wait--;
+    if (sb_read_wait == 0) {
+      sb_read();
+      if (sbcs.error == 0) {
+        sb_autoincrement();
+      }
+    }
+  }
+  if (sb_write_wait > 0) {
+    sb_write_wait--;
+    if (sb_write_wait == 0) {
+      sb_write();
+      if (sbcs.error == 0) {
+        sb_autoincrement();
+      }
+    }
+  }
+}
+
+static bool is_fpu_reg(unsigned regno)
+{
+  return (regno >= 0x1020 && regno <= 0x103f) || regno == CSR_FFLAGS ||
+    regno == CSR_FRM || regno == CSR_FCSR;
+}
+
+using handle_memory_func = std::uint32_t (*)(std::uint32_t src, std::uint32_t base, std::int32_t offset);
+using handle_mstatus_func = std::uint32_t (*)(std::uint32_t rd, std::uint32_t rs1, std::uint32_t csr);
+
+// Access Register aarsize: 2 and 3 are the 32- and 64-bit accesses. The only
+// other defined value is 128-bit, and nothing here is a register that wide.
+static bool reg_size_supported(unsigned size)
+{
+  return size >= AC_ACCESS_REGISTER_AARSIZE_32BIT &&
+         size <= AC_ACCESS_REGISTER_AARSIZE_64BIT;
+}
+
+static unsigned size2index(unsigned size)
+{
+  assert(reg_size_supported(size));
+  return size - 2;
+}
+
+// Both fields must sit above bit 12: lui only carries the upper 20 bits.
+static constexpr std::uint32_t saved_mstatus_mask = MSTATUS_MPRV | MSTATUS_FS;
+
+static constexpr std::array<handle_memory_func, 2> aar_lx = {&lw, &ld};
+static constexpr std::array<handle_memory_func, 2> aar_sx = {&sw, &sd};
+static constexpr std::array<handle_memory_func, 2> aar_flx = {&flw, &fld};
+static constexpr std::array<handle_memory_func, 2> aar_fsx = {&fsw, &fsd};
+
+bool debug_module_t::perform_abstract_command()
+{
+  if (abstractcs.cmderr != CMDERR_NONE)
+    return true;
+  if (abstractcs.busy) {
+    abstractcs.cmderr = CMDERR_BUSY;
+    return true;
+  }
+  if (!hart_available(dmcontrol.hartsel)) {
+    abstractcs.cmderr = CMDERR_HALTRESUME;
+    return true;
+  }
+
+  auto cmdtype = get_field(command, DM_COMMAND_CMDTYPE);
+  constexpr decltype(cmdtype) CMDTYPE_ACCESS_REGISTER = 0ULL;
+  constexpr decltype(cmdtype) CMDTYPE_ACCESS_MEMORY = 2ULL;
+
+  if (cmdtype == CMDTYPE_ACCESS_REGISTER)
+    return perform_abstract_register_access();
+
+  if (cmdtype == CMDTYPE_ACCESS_MEMORY)
+    return perform_abstract_memory_access();
+
+  abstractcs.cmderr = CMDERR_NOTSUP;
+  return true;
+}
+
+bool debug_module_t::perform_abstract_register_access()
+{
+  bool write = get_field(command, AC_ACCESS_REGISTER_WRITE);
+  bool transfer = get_field(command, AC_ACCESS_REGISTER_TRANSFER);
+  bool postexec = get_field(command, AC_ACCESS_REGISTER_POSTEXEC);
+  unsigned size = get_field(command, AC_ACCESS_REGISTER_AARSIZE);
+  unsigned regno = get_field(command, AC_ACCESS_REGISTER_REGNO);
+
+  if (!selected_hart_state().halted) {
+    abstractcs.cmderr = CMDERR_HALTRESUME;
+    return true;
+  }
+
+  assert(size < 8);
+  if ((1U << size) > dmdata.size()) {
+    abstractcs.cmderr = CMDERR_NOTSUP;
+    return true;
+  }
+
+  // Support odd-numbered custom registers, to allow for debugger testing.
+  if (transfer && regno >= 0xc000 && (regno & 1))
+    return aar_handle_custom_register(regno, write);
+
+  if (transfer && !aar_transfer_supported(regno, size)) {
+    abstractcs.cmderr = CMDERR_NOTSUP;
+    return true;
+  }
+
+  // Nothing is emitted without a transfer.
+  bool fpu_reg = transfer && is_fpu_reg(regno);
+  unsigned offset = 0;
+
+  if (transfer) {
+    aar_emit_prologue(offset, fpu_reg);
+    aar_handle_register_transfer(regno, size, write, offset);
+    emit_epilogue(offset, fpu_reg);
+  }
+
+  emit_terminator(offset, postexec);
+
+  assert(offset <= debug_abstract_size);
+  start_command_execution();
+
+  abstractcs.cmderr = CMDERR_NONE;
+  return true;
+}
+
+// Everything a transfer can reject, so that nothing is emitted for a command
+// that is going to fail.
+bool debug_module_t::aar_transfer_supported(unsigned regno, unsigned size) const
+{
+  if (!reg_size_supported(size))
+    return false;
+
+  if (regno < 0x1000)
+    return config.support_abstract_csr_access;
+
+  if (regno < 0x1020)
+    return true;
+
+  if (regno < 0x1040)
+    return config.support_abstract_fpr_access;
+
+  return false;
+}
+
+void debug_module_t::aar_handle_register_transfer(unsigned regno,
+    unsigned size, bool write, unsigned &offset)
+{
+  assert(aar_transfer_supported(regno, size));
+
+  if (regno < 0x1000)
+    aar_emit_csr_transfer(regno, size, write, offset);
+  else if (regno < 0x1020)
+    aar_emit_gpr_transfer(regno, size, write, offset);
+  else
+    aar_emit_fpr_transfer(regno, size, write, offset);
+}
+
+void debug_module_t::aar_emit_csr_transfer(unsigned regno, unsigned size, bool write, unsigned &offset)
+{
+  auto size_index = size2index(size);
+
+  if (write) {
+    write32(debug_abstract, offset++, aar_lx[size_index](S0, ZERO, debug_data_start));
+    if (regno == CSR_DCSR) {
+      // Update the saved dcsr value.
+      write32(debug_abstract, offset++, andi(S1, S0, DCSR_MPRVEN));
+      write32(debug_abstract, offset++, ori(S1, S1, DEBUG_ROM_SAVED_STATE_VALID));
+      write32(debug_abstract, offset++, sw(S1, ZERO, DEBUG_ROM_SAVED_STATE));
+      // Keep mprven clear for the rest of the sequence: the epilogue puts the
+      // requested value back from the record.
+      write32(debug_abstract, offset++, andi(S0, S0, ~DCSR_MPRVEN));
+    }
+    write32(debug_abstract, offset++, csrw(S0, regno));
+    return;
+  }
+
+  write32(debug_abstract, offset++, csrr(S0, regno));
+  if (regno == CSR_DCSR) {
+    // The prologue has already cleared mprven, so report what it recorded.
+    write32(debug_abstract, offset++, lw(S1, ZERO, DEBUG_ROM_SAVED_STATE));
+    write32(debug_abstract, offset++, andi(S1, S1, DCSR_MPRVEN));
+    write32(debug_abstract, offset++, or_(S0, S0, S1));
+  }
+  write32(debug_abstract, offset++, aar_sx[size_index](S0, ZERO, debug_data_start));
+}
+
+void debug_module_t::aar_emit_gpr_transfer(unsigned regno, unsigned size, bool write,
+    unsigned &offset)
+{
+  auto regnum = regno - 0x1000;
+  auto size_index = size2index(size);
+  auto op = write ? aar_lx[size_index] : aar_sx[size_index];
+
+  if (regnum != S0 && regnum != S1) {
+    write32(debug_abstract, offset++, op(regnum, ZERO, debug_data_start));
+    return;
+  }
+
+  // s0 and s1 are scratch registers.
+  auto dscratchx = (regnum == S0) ? CSR_DSCRATCH0 : CSR_DSCRATCH1;
+  aar_emit_csr_transfer(dscratchx, size, write, offset);
+}
+
+void debug_module_t::aar_emit_fpr_transfer(unsigned regno,
+    unsigned size, bool write, unsigned &offset)
+{
+  auto fprnum = regno - 0x1020;
+  auto size_index = size2index(size);
+  auto op = write ? aar_flx[size_index] : aar_fsx[size_index];
+  write32(debug_abstract, offset++, op(fprnum, ZERO, debug_data_start));
+}
+
+bool debug_module_t::aar_handle_custom_register(unsigned regno, bool write)
+{
+  unsigned custom_number = regno - 0xc000;
+  abstractcs.cmderr = CMDERR_NONE;
+  if (write) {
+    // Writing V to custom register N will cause future reads of N to
+    // return V, reads of N-1 will return V-1, etc.
+    assert(dmdata.size() >= 4);
+    custom_base = read32(get_dmdata_checked(1), 0) - custom_number;
+  } else {
+    write32(get_dmdata_checked(1), 0, custom_number + custom_base);
+    write32(get_dmdata_checked(2), 1, 0);
+  }
+  return true;
+}
+
+void debug_module_t::emit_save_state(unsigned &offset, bool save_mstatus)
+{
+  const std::uint32_t flags = DEBUG_ROM_SAVED_STATE_VALID |
+    (save_mstatus ? DEBUG_ROM_SAVED_STATE_MSTATUS : 0);
+
+  if (save_mstatus) {
+    // s0 takes the masked mstatus, so s1 serves twice: first as the temporary
+    // for the mask, then as the destination of the dcsr read.
+    write32(debug_abstract, offset++, lui(S1, saved_mstatus_mask >> 12));
+    write32(debug_abstract, offset++, csrr(S0, CSR_MSTATUS));
+    write32(debug_abstract, offset++, and_(S0, S0, S1));
+    write32(debug_abstract, offset++, csrrci(S1, DCSR_MPRVEN, CSR_DCSR));
+    write32(debug_abstract, offset++, andi(S1, S1, DCSR_MPRVEN));
+    write32(debug_abstract, offset++, or_(S1, S1, S0));
+  } else {
+    write32(debug_abstract, offset++, csrrci(S1, DCSR_MPRVEN, CSR_DCSR));
+    write32(debug_abstract, offset++, andi(S1, S1, DCSR_MPRVEN));
+  }
+
+  write32(debug_abstract, offset++, ori(S1, S1, flags));
+  write32(debug_abstract, offset++, sw(S1, ZERO, DEBUG_ROM_SAVED_STATE));
+}
+
+void debug_module_t::emit_prologue(unsigned &offset, bool save_mstatus)
+{
+  write32(debug_abstract, offset++, csrw(S0, CSR_DSCRATCH0));
+  write32(debug_abstract, offset++, csrw(S1, CSR_DSCRATCH1));
+
+  emit_save_state(offset, save_mstatus);
+}
+
+// Undo emit_save_state and drop the record. The Debug ROM exception handler
+// does the same for a sequence that trapped earlier.
+void debug_module_t::emit_restore_state(unsigned &offset, bool restore_mstatus)
+{
+  write32(debug_abstract, offset++, lw(S0, ZERO, DEBUG_ROM_SAVED_STATE));
+  write32(debug_abstract, offset++, sw(ZERO, ZERO, DEBUG_ROM_SAVED_STATE));
+
+  // s0 keeps the record for the mstatus part below.
+  write32(debug_abstract, offset++, andi(S1, S0, DCSR_MPRVEN));
+  write32(debug_abstract, offset++, csrrci(ZERO, DCSR_MPRVEN, CSR_DCSR));
+  write32(debug_abstract, offset++, csrrs(ZERO, S1, CSR_DCSR));
+
+  if (restore_mstatus) {
+    write32(debug_abstract, offset++, lui(S1, saved_mstatus_mask >> 12));
+    write32(debug_abstract, offset++, csrrc(ZERO, S1, CSR_MSTATUS));
+    write32(debug_abstract, offset++, and_(S1, S0, S1));
+    write32(debug_abstract, offset++, csrrs(ZERO, S1, CSR_MSTATUS));
+  }
+}
+
+void debug_module_t::emit_epilogue(unsigned &offset, bool restore_mstatus)
+{
+  emit_restore_state(offset, restore_mstatus);
+
+  write32(debug_abstract, offset++, csrr(S0, CSR_DSCRATCH0));
+  write32(debug_abstract, offset++, csrr(S1, CSR_DSCRATCH1));
+}
+
+void debug_module_t::aar_emit_prologue(unsigned &offset, bool fpu_reg)
+{
+  emit_prologue(offset, fpu_reg);
+
+  if (!fpu_reg)
+    return;
+
+  // Force MSTATUS.FS dirty so that the transfer does not trap.
+  write32(debug_abstract, offset++, lui(S1, MSTATUS_FS >> 12));
+  write32(debug_abstract, offset++, csrrs(ZERO, S1, CSR_MSTATUS));
+}
+
+void debug_module_t::emit_terminator(unsigned &offset, bool postexec)
+{
+  if (!postexec) {
+    write32(debug_abstract, offset++, ebreak());
+    return;
+  }
+
+  write32(debug_abstract, offset,
+      jal(ZERO, debug_progbuf_start - debug_abstract_start - 4 * offset));
+  offset++;
+}
+
+static unsigned idx(unsigned xlen)
+{
+  return field_width(xlen) - 3U;
+}
+
+bool debug_module_t::perform_abstract_memory_access() {
+  unsigned aamsize = get_field(command, AC_ACCESS_MEMORY_AAMSIZE);
+  bool aampostincrement = get_field(command, AC_ACCESS_MEMORY_AAMPOSTINCREMENT);
+  bool aamvirtual = get_field(command, AC_ACCESS_MEMORY_AAMVIRTUAL);
+  bool is_write = get_field(command, AC_ACCESS_MEMORY_WRITE);
+  auto xlen = sim->get_harts().at(selected_hart_id())->get_xlen();
+
+  if (!selected_hart_state().halted) {
+    abstractcs.cmderr = CMDERR_HALTRESUME;
+    return true;
+  }
+
+  if (aamsize > idx(xlen)) {
+    abstractcs.cmderr = CMDERR_NOTSUP;
+    return true;
+  }
+
+  unsigned offset = 0;
+  aam_emit_prologue(aamvirtual, offset);
+  is_write ? aam_emit_memory_write(xlen, aamsize, aampostincrement, offset)
+           : aam_emit_memory_read(xlen, aamsize, aampostincrement, offset);
+
+  emit_epilogue(offset, /* restore_mstatus */ true);
+  emit_terminator(offset, /* postexec */ false);
+  assert(offset <= debug_abstract_size);
+  start_command_execution();
+
+  abstractcs.cmderr = CMDERR_NONE;
+  return true;
+}
+
+static constexpr std::array<handle_memory_func, 4> aam_lx = {&lb, &lh, &lw, &ld};
+static constexpr std::array<handle_memory_func, 4> aam_sx = {&sb, &sh, &sw, &sd};
+static constexpr std::array<handle_mstatus_func, 2> aam_csrrx = {&csrrc, &csrrs};
+
+unsigned debug_module_t::arg(unsigned xlen, unsigned idx)
+{
+  return debug_data_start + idx * xlen / 8;
+}
+
+void debug_module_t::aam_emit_memory_read(size_t xlen,
+    unsigned aamsize, bool aampostincrement, unsigned &offset)
+{
+  write32(debug_abstract, offset++, aam_lx[idx(xlen)](S1, ZERO, arg(xlen, 1)));
+
+  write32(debug_abstract, offset++, csrrsi(ZERO, DCSR_MPRVEN, CSR_DCSR));
+  write32(debug_abstract, offset++, aam_lx[aamsize](S1, S1, 0));
+  write32(debug_abstract, offset++, csrrci(ZERO, DCSR_MPRVEN, CSR_DCSR));
+
+  write32(debug_abstract, offset++, aam_sx[idx(xlen)](S1, ZERO, arg(xlen, 0)));
+
+  if (!aampostincrement)
+    return;
+
+  // Increment after the access: a fault leaves arg1 as the debugger set it.
+  write32(debug_abstract, offset++, aam_lx[idx(xlen)](S1, ZERO, arg(xlen, 1)));
+  write32(debug_abstract, offset++, addi(S1, S1, 1U << aamsize));
+  write32(debug_abstract, offset++, aam_sx[idx(xlen)](S1, ZERO, arg(xlen, 1)));
+}
+
+void debug_module_t::aam_emit_memory_write(size_t xlen,
+    unsigned aamsize, bool aampostincrement, unsigned &offset)
+{
+  write32(debug_abstract, offset++, aam_lx[idx(xlen)](S1, ZERO, arg(xlen, 1)));
+  write32(debug_abstract, offset++, aam_lx[idx(xlen)](S0, ZERO, arg(xlen, 0)));
+
+  write32(debug_abstract, offset++, csrrsi(ZERO, DCSR_MPRVEN, CSR_DCSR));
+  write32(debug_abstract, offset++, aam_sx[aamsize](S0, S1, 0));
+  write32(debug_abstract, offset++, csrrci(ZERO, DCSR_MPRVEN, CSR_DCSR));
+
+  if (!aampostincrement)
+    return;
+
+  write32(debug_abstract, offset++, addi(S1, S1, 1U << aamsize));
+  write32(debug_abstract, offset++, aam_sx[idx(xlen)](S1, ZERO, arg(xlen, 1)));
+}
+
+void debug_module_t::aam_emit_prologue(bool aamvirtual, unsigned &offset)
+{
+  // The sequence moves mstatus.MPRV around the access.
+  emit_prologue(offset, /* save_mstatus */ true);
+
+  // Set MPRV for a virtual access, clear it for a physical one.
+  write32(debug_abstract, offset++, lui(S0, MSTATUS_MPRV >> 12));
+  write32(debug_abstract, offset++, aam_csrrx[aamvirtual](ZERO, S0, CSR_MSTATUS));
+}
+
+void debug_module_t::start_command_execution()
+{
+  debug_rom_flags[selected_hart_id()] |= 1 << DEBUG_ROM_FLAG_GO;
+  rti_remaining = config.abstract_rti;
+  abstract_command_completed = false;
+  abstractcs.busy = true;
+}
+
+bool debug_module_t::dmi_write(unsigned address, uint32_t value)
+{
+  D(fprintf(stderr, "dmi_write(0x%x, 0x%x)\n", address, value));
+
+  if (!dmstatus.authenticated && address != DM_AUTHDATA &&
+      address != DM_DMCONTROL)
+    return false;
+
+  if (address >= DM_DATA0 && address < DM_DATA0 + abstractcs.datacount) {
+    unsigned i = address - DM_DATA0;
+    if (!abstractcs.busy)
+      write32(get_dmdata_checked(i + 1), i, value);
+
+    if (abstractcs.busy && abstractcs.cmderr == CMDERR_NONE) {
+      abstractcs.cmderr = CMDERR_BUSY;
+    }
+
+    if (!abstractcs.busy && ((abstractauto.autoexecdata >> i) & 1)) {
+      perform_abstract_command();
+    }
+    return true;
+
+  } else if (address >= DM_PROGBUF0 && address < DM_PROGBUF0 + config.progbufsize) {
+    unsigned i = address - DM_PROGBUF0;
+
+    if (!abstractcs.busy)
+      write32(program_buffer, i, value);
+
+    if (!abstractcs.busy && ((abstractauto.autoexecprogbuf >> i) & 1)) {
+      perform_abstract_command();
+    }
+    return true;
+
+  } else {
+    switch (address) {
+      case DM_DMCONTROL:
+        {
+          if (!dmcontrol.dmactive && get_field(value, DM_DMCONTROL_DMACTIVE))
+            reset();
+          dmcontrol.dmactive = get_field(value, DM_DMCONTROL_DMACTIVE);
+          if (!dmstatus.authenticated || !dmcontrol.dmactive)
+            return true;
+
+          dmcontrol.haltreq = get_field(value, DM_DMCONTROL_HALTREQ);
+          dmcontrol.resumereq = get_field(value, DM_DMCONTROL_RESUMEREQ);
+          dmcontrol.hartreset = get_field(value, DM_DMCONTROL_HARTRESET);
+          dmcontrol.ndmreset = get_field(value, DM_DMCONTROL_NDMRESET);
+          if (config.support_hasel)
+            dmcontrol.hasel = get_field(value, DM_DMCONTROL_HASEL);
+          dmcontrol.hartsel = get_field(value, DM_DMCONTROL_HARTSELHI) <<
+            DM_DMCONTROL_HARTSELLO_LENGTH;
+          dmcontrol.hartsel |= get_field(value, DM_DMCONTROL_HARTSELLO);
+          dmcontrol.hartsel = std::min(size_t(dmcontrol.hartsel), sim->get_cfg().nprocs() - 1);
+          for (const auto& [hart_id, hart] : sim->get_harts()) {
+            if (hart_selected(hart_id)) {
+              if (get_field(value, DM_DMCONTROL_ACKHAVERESET)) {
+                hart_state[hart_id].havereset = false;
+              }
+              if (dmcontrol.haltreq && hart_available(hart_id)) {
+                hart->halt_request = hart->HR_REGULAR;
+                D(fprintf(stderr, "halt hart %d\n", hart_id));
+              } else {
+                hart->halt_request = hart->HR_NONE;
+              }
+              if (dmcontrol.resumereq && hart_available(hart_id)) {
+                D(fprintf(stderr, "resume hart %d\n", hart_id));
+                debug_rom_flags[hart_id] |= (1 << DEBUG_ROM_FLAG_RESUME);
+                hart_state[hart_id].resumeack = false;
+              }
+              if (dmcontrol.hartreset && hart_available(hart_id)) {
+                hart->reset();
+              }
+            }
+          }
+
+          if (dmcontrol.ndmreset) {
+            for (const auto& [hart_id, hart] : sim->get_harts()) {
+              hart->reset();
+            }
+          }
+        }
+        return true;
+
+      case DM_COMMAND:
+        command = value;
+        return perform_abstract_command();
+
+      case DM_HAWINDOWSEL:
+        hawindowsel = value & ((1U<<field_width(hart_array_mask.size()))-1);
+        return true;
+
+      case DM_HAWINDOW:
+        {
+          unsigned base = hawindowsel * 32;
+          for (unsigned i = 0; i < 32; i++) {
+            unsigned n = base + i;
+            if (n < sim->get_cfg().nprocs()) {
+              hart_array_mask[sim->get_cfg().hartids[n]] = (value >> i) & 1;
+            }
+          }
+        }
+        return true;
+
+      case DM_ABSTRACTCS:
+        abstractcs.cmderr = (cmderr_t) (((uint32_t) (abstractcs.cmderr)) & (~(uint32_t)(get_field(value, DM_ABSTRACTCS_CMDERR))));
+        return true;
+
+      case DM_ABSTRACTAUTO:
+        if (config.support_abstractauto) {
+          abstractauto.autoexecprogbuf = get_field(value,
+              DM_ABSTRACTAUTO_AUTOEXECPROGBUF);
+          abstractauto.autoexecdata = get_field(value,
+              DM_ABSTRACTAUTO_AUTOEXECDATA);
+        }
+        return true;
+      case DM_SBCS:
+        sbcs.readonaddr = get_field(value, DM_SBCS_SBREADONADDR);
+        sbcs.sbaccess = get_field(value, DM_SBCS_SBACCESS);
+        sbcs.autoincrement = get_field(value, DM_SBCS_SBAUTOINCREMENT);
+        sbcs.readondata = get_field(value, DM_SBCS_SBREADONDATA);
+        sbcs.error &= ~get_field(value, DM_SBCS_SBERROR);
+        if (get_field(value, DM_SBCS_SBBUSYERROR))
+          sbcs.sbbusyerror = false;
+        return true;
+      case DM_SBADDRESS0:
+      case DM_SBADDRESS1:
+      case DM_SBADDRESS2:
+      case DM_SBADDRESS3:
+      case DM_SBDATA0:
+      case DM_SBDATA1:
+      case DM_SBDATA2:
+      case DM_SBDATA3:
+        /* These all set busyerror if already busy. */
+        if (sb_busy()) {
+          sbcs.sbbusyerror = true;
+        } else {
+          switch (address) {
+            case DM_SBADDRESS0:
+              sbaddress[0] = value;
+              if (sbcs.error == 0 && sbcs.readonaddr) {
+                sb_read_start();
+              }
+              return true;
+            case DM_SBADDRESS1:
+              sbaddress[1] = value;
+              return true;
+            case DM_SBADDRESS2:
+              sbaddress[2] = value;
+              return true;
+            case DM_SBADDRESS3:
+              sbaddress[3] = value;
+              return true;
+            case DM_SBDATA0:
+              sbdata[0] = value;
+              if (sbcs.error == 0) {
+                sb_write_start();
+              }
+              return true;
+            case DM_SBDATA1:
+              sbdata[1] = value;
+              return true;
+            case DM_SBDATA2:
+              sbdata[2] = value;
+              return true;
+            case DM_SBDATA3:
+              sbdata[3] = value;
+              return true;
+          }
+        }
+        return true;
+      case DM_AUTHDATA:
+        D(fprintf(stderr, "debug authentication: got 0x%x; 0x%x unlocks\n", value,
+            challenge + secret));
+        if (config.require_authentication) {
+          if (value == challenge + secret) {
+            dmstatus.authenticated = true;
+          } else {
+            dmstatus.authenticated = false;
+            challenge = random();
+          }
+        }
+        return true;
+      case DM_DMCS2:
+        if (config.support_haltgroups &&
+            get_field(value, DM_DMCS2_HGWRITE) &&
+            get_field(value, DM_DMCS2_GROUPTYPE) == 0) {
+          selected_hart_state().haltgroup = get_field(value, DM_DMCS2_GROUP);
+        }
+        return true;
+      case DM_CUSTOM:
+        for (unsigned i = 0; i < sizeof(hart_available_state) / sizeof(*hart_available_state); i++) {
+          hart_available_state[i] = get_field(value, 1<<i);
+        }
+        return true;
+    }
+  }
+  return false;
+}
+
+void debug_module_t::proc_reset(unsigned id)
+{
+  hart_state[id].havereset = true;
+  hart_state[id].halted = false;
+  hart_state[id].haltgroup = 0;
+}
+
+hart_debug_state_t& debug_module_t::selected_hart_state()
+{
+  return hart_state[selected_hart_id()];
+}
+
+size_t debug_module_t::selected_hart_id() const
+{
+  return sim->get_cfg().hartids.at(dmcontrol.hartsel);
+}
