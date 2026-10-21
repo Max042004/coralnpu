@@ -1,0 +1,94 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Build Renode interface for coralnpu
+
+# load("@rules_cc//cc:defs.bzl", "cc_library")
+
+package(
+    default_visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "renode_mpact",
+    srcs = [
+        "renode_mpact.cc",
+    ],
+    hdrs = [
+        "renode_mpact.h",
+    ],
+    deps = [
+        ":renode_debug_interface",
+        "//sim:coralnpu_top",
+        "@abseil-cpp//absl/container:flat_hash_map",
+        "@abseil-cpp//absl/log",
+        "@abseil-cpp//absl/strings",
+        "@mpact-sim//mpact/sim/generic:type_helpers",
+        "@mpact-sim//mpact/sim/util/program_loader:elf_loader",
+    ],
+    alwayslink = True,
+)
+
+cc_library(
+    name = "renode_debug_interface",
+    hdrs = ["renode_debug_interface.h"],
+    deps = [
+        "@abseil-cpp//absl/status",
+        "@abseil-cpp//absl/status:statusor",
+        "@mpact-sim//mpact/sim/generic:core_debug_interface",
+    ],
+)
+
+cc_library(
+    name = "coralnpu_renode_memory",
+    srcs = [
+        "coralnpu_renode_memory.cc",
+    ],
+    hdrs = [
+        "coralnpu_renode_memory.h",
+    ],
+    deps = [
+        "//sim:coralnpu_state",
+        "@abseil-cpp//absl/base:core_headers",
+        "@abseil-cpp//absl/numeric:bits",
+        "@mpact-sim//mpact/sim/generic:core",
+        "@mpact-sim//mpact/sim/generic:instruction",
+        "@mpact-sim//mpact/sim/util/memory",
+    ],
+)
+
+cc_library(
+    name = "coralnpu_renode",
+    srcs = [
+        "coralnpu_renode.cc",
+        "coralnpu_renode_reigster_info.cc",
+    ],
+    hdrs = [
+        "coralnpu_renode.h",
+        "coralnpu_renode_register_info.h",
+    ],
+    deps = [
+        ":renode_debug_interface",
+        "//sim:coralnpu_top",
+        "@abseil-cpp//absl/status",
+        "@abseil-cpp//absl/status:statusor",
+        "@abseil-cpp//absl/strings",
+        "@com_google_mpact-riscv//riscv:riscv_debug_info",
+        "@mpact-sim//mpact/sim/generic:core",
+        "@mpact-sim//mpact/sim/generic:core_debug_interface",
+        "@mpact-sim//mpact/sim/generic:instruction",
+        "@mpact-sim//mpact/sim/generic:type_helpers",
+    ],
+    alwayslink = True,
+)

@@ -1,0 +1,11 @@
+# Build configurations for the project
+build --action_env=BAZEL_CXXOPTS="-std=c++20"
+build --action_env=CC="clang"
+# Disable warnings we don't care about or that generally have a low signal/noise
+# ratio.
+build --copt=-Wno-unused-function
+build --host_copt=-Wno-unused-function
+
+# TODO: migrate all dependencies from WORKSPACE to MODULE.bazel
+# https://github.com/protocolbuffers/protobuf/issues/14313
+common --noenable_bzlmod --enable_workspace

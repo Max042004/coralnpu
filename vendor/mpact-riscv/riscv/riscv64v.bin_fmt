@@ -1,0 +1,45 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// RiscV 64 bit G + V instruction decoder.
+decoder RiscV64GV {
+  namespace mpact::sim::riscv::encoding64;
+  opcode_enum = "isa64v::OpcodeEnum";
+  includes {
+    #include "riscv/riscv64gv_decoder.h"
+  }
+  // Group these instruction groups in the same decoder function.
+  RiscV64GVInst32 = {RiscVGInst32, RiscVVInst32};
+  // Keep this separate (different base format).
+  RiscVCInst16;
+};
+
+decoder RiscV64GVZB {
+  namespace mpact::sim::riscv::isa64gvzb;
+  opcode_enum = "isa64gvzb::OpcodeEnum";
+  includes {
+    #include "riscv/riscv64gvzb_decoder.h"
+  }
+  // Group these instruction groups in the same decoder function.
+  RiscV64GVZBInst32 = {RiscVGInst32, RiscVVInst32, RiscVZbaInst32,
+                      RiscVZbaInst64, RiscVZbbInst32, RiscVZbbInst64,
+                      RiscVZbcInst32, RiscVZbsInst32, RiscVZbsImmInst64};
+  // Keep this separate (different base format).
+  RiscVCInst16;
+}
+
+#include "riscv32zb.bin_fmt"
+#include "riscv64g.bin_fmt"
+#include "riscv64zb.bin_fmt"
+#include "riscv_vector.bin_fmt"

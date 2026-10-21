@@ -25,7 +25,8 @@ HOST_CXX       ?= g++
 HOST_CC        ?= gcc
 
 # Checkout directories (valid after `make host-deps`).
-dep_src = $(firstword $(wildcard $(ROOT)/tools/.bender/git/checkouts/$(1)-*))
+# $(shell ...) rather than $(wildcard ...): wildcard results are cached per make run.
+dep_src = $(shell ls -d $(ROOT)/tools/.bender/git/checkouts/$(1)-* 2>/dev/null | head -1)
 ABSEIL_SRC   = $(call dep_src,abseil_cpp)
 SYSTEMC_SRC  = $(call dep_src,systemc)
 SYSTEMCTLM_SRC = $(call dep_src,libsystemctlm_soc)

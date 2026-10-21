@@ -5,11 +5,29 @@ packages:
     source:
       Git: https://github.com/abseil/abseil-cpp.git
     dependencies: []
+  antlr4:
+    revision: 7ed420ff2c78d62883875c442d75f32e73bc86c8
+    version: null
+    source:
+      Git: https://github.com/antlr/antlr4.git
+    dependencies: []
+  elfio:
+    revision: 8ae6cec5d60495822ecd57d736f66149da9b1830
+    version: null
+    source:
+      Git: https://github.com/serge1/ELFIO.git
+    dependencies: []
   libsystemctlm_soc:
     revision: 79d624f3c7300a2ead97ca35e683c38f0b6f5021
     version: null
     source:
       Git: https://github.com/Xilinx/libsystemctlm-soc.git
+    dependencies: []
+  linenoise:
+    revision: dc83cc373ac2058030eb3cf5e404959a26fef112
+    version: null
+    source:
+      Git: https://github.com/antirez/linenoise.git
     dependencies: []
   pybind11:
     revision: a2e59f0e7065404b44dfe92a28aca47ba1378dc4

@@ -1,0 +1,49 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// This file contains the ISA description for the RiscV64GV architecture.
+
+// First disasm field is 18 char wide and left justified.
+disasm widths = {-18};
+
+int global_v_latency = 0;
+
+isa RiscV64GV {
+  namespace mpact::sim::riscv::isa64v;
+  slots { riscv64gv; }
+}
+
+isa RiscV64GVZB {
+  namespace mpact::sim::riscv::isa64gvzb;
+  slots { riscv64gvzb; }
+}
+
+#include "riscv64gzb.isa"
+#include "riscv_vector.isa"
+
+// This adds vector instructions.
+slot riscv64gv : riscv64g, riscv_vector {
+  default size = 4;
+  default opcode =
+    disasm: "Illegal instruction at 0x%(@:08x)",
+    semfunc: "&RiscVIllegalInstruction";
+}
+
+// This adds vector and bit manipulation instructions.
+slot riscv64gvzb : riscv64gzb, riscv_vector {
+  default size = 4;
+  default opcode =
+    disasm: "Illegal instruction at 0x%(@:08x)",
+    semfunc: "&RiscVIllegalInstruction";
+}

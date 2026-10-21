@@ -1,0 +1,103 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// This file refactors the original "C" extension into the new set of Zc*
+// extensions. These should be preferred for new simulator targets.
+
+#include "riscv_format16.bin_fmt"
+
+// Compact instruction formats.
+
+// Non floating point compact instructions from "C".
+instruction group RiscVCZca[16] : Inst16Format {
+  caddi4spn : CIW: func3 == 0b000, op == 0b00, imm8 != 0;
+  clw       : CL : func3 == 0b010, op == 0b00;
+  csw       : CS : func3 == 0b110, op == 0b00;
+  cnop      : CI : func3 == 0b000, imm1 == 0, rs1 == 0, imm5 == 0, op == 0b01;
+  caddi     : CI : func3 == 0b000, imm6 != 0, rd != 0, op == 0b01;
+  cjal      : CJ : func3 == 0b001, op == 0b01;
+  cli       : CI : func3 == 0b010, rd != 0, op == 0b01;
+  caddi16sp : CI : func3 == 0b011, rd == 2, op == 0b01;
+  clui      : CI : func3 == 0b011, rd != 0, rd != 2, op == 0b01;
+  csrli     : CB : func3 == 0b100, imm3 == 0b000, op == 0b01;
+  csrai     : CB : func3 == 0b100, imm3 == 0b001, op == 0b01;
+  candi     : CB : func3 == 0b100, func2 == 0b10, op == 0b01;
+  csub      : CA : func6 == 0b100'011, func2 == 0b00, op == 0b01;
+  cxor      : CA : func6 == 0b100'011, func2 == 0b01, op == 0b01;
+  cor       : CA : func6 == 0b100'011, func2 == 0b10, op == 0b01;
+  cand      : CA : func6 == 0b100'011, func2 == 0b11, op == 0b01;
+  cj        : CJ : func3 == 0b101, op == 0b01;
+  cbeqz     : CB : func3 == 0b110, op == 0b01;
+  cbnez     : CB : func3 == 0b111, op == 0b01;
+  cslli     : CI : func3 == 0b000, imm1 == 0, rs1 != 0, op == 0b10;
+  clwsp     : CI : func3 == 0b010, rd != 0, op == 0b10;
+  cjr       : CR : func4 == 0b1000, rs1 != 0, rs2 == 0, op == 0b10;
+  cmv       : CR : func4 == 0b1000, rs1 != 0, rs2 != 0, op == 0b10;
+  cebreak   : CR : func4 == 0b1001, rs1 == 0, rs2 == 0, op == 0b10;
+  cjalr     : CR : func4 == 0b1001, rs1 != 0, rs2 == 0, op == 0b10;
+  cadd      : CR : func4 == 0b1001, rs1 != 0, rs2 != 0, op == 0b10;
+  cswsp     : CSS: func3 == 0b110, op == 0b10;
+}
+
+// Single-precision floating point compact instructions from "C".
+instruction group RiscVCZcf[16] : Inst16Format {
+  cflw      : CL : func3 == 0b011, op == 0b00;
+  cfsw      : CS : func3 == 0b111, op == 0b00;
+  cflwsp    : CI : func3 == 0b011, op == 0b10;
+  cfswsp    : CSS: func3 == 0b111, op == 0b10;
+}
+
+// Double-precision floating point compact instructions from "C".
+instruction group RiscVCZcd[16] : Inst16Format {
+  cfld      : CL : func3 == 0b001, op == 0b00;
+  cfldsp    : CI : func3 == 0b001, op == 0b10;
+  cfsd      : CS : func3 == 0b101, op == 0b00;
+  cfsdsp    : CSS: func3 == 0b101, op == 0b10;
+}
+
+// Simple code-size saving instructions that are easy to implement on all CPUs.
+instruction group RiscVCZcb32[16] : Inst16Format {
+  c_lbu    : CLB : func6 == 0b100'000, op == 0b00;
+  c_lhu    : CLH : func6 == 0b100'001, func1 == 0b0, op == 0b00;
+  c_lh     : CLH : func6 == 0b100'001, func1 == 0b1, op == 0b00;
+  c_sb     : CSB : func6 == 0b100'010, op == 0b00;
+  c_sh     : CSH : func6 == 0b100'011, func1 == 0b0, op == 0b00;
+  c_zext_b : CU : func6 == 0b100'111, func5 == 0b11000, op == 0b01;
+  c_sext_b : CU : func6 == 0b100'111, func5 == 0b11001, op == 0b01;
+  c_zext_h : CU : func6 == 0b100'111, func5 == 0b11010, op == 0b01;
+  c_sext_h : CU : func6 == 0b100'111, func5 == 0b11011, op == 0b01;
+  c_not    : CU : func6 == 0b100'111, func5 == 0b11101, op == 0b01;
+  c_mul    : CA : func6 == 0b100'111, func2 == 0b10, op == 0b01;
+}
+
+// For 64 bit CPUs the zext_w instruction is added.
+instruction group RiscV64Zcb64[64] : Inst16Format {
+  c_zext_w : CU : func6 == 0b100'111, func5 == 0b11100, op == 0b01;
+}
+
+// Push/pop/register move instructions. Incompatible with Zcf and Zcd.
+instruction group RiscVCZcmp[16] : Inst16Format {
+  cm_push    : CMPP : func8 == 0b101'11000, rlist > 3, op == 0b10;
+  cm_pop     : CMPP : func8 == 0b101'11010, rlist > 3,op == 0b10;
+  cm_popret  : CMPP : func8 == 0b101'11110, rlist > 3,op == 0b10;
+  cm_popretz : CMPP : func8 == 0b101'11100, rlist > 3, op == 0b10;
+  cm_mvsa01  : CMMV : func6 == 0b101'011, func2 == 0b01, rs1p != rs2p, op == 0b10;
+  cm_mva01s  : CMMV : func6 == 0b101'011, func2 == 0b11, op == 0b10;
+}
+
+// Jump table instructions.
+instruction group RiscVCZcmt[16] : Inst16Format {
+  cm_jt   : CMJT : func6 == 0b101'000, index < 32, op == 0b10;
+  cm_jalt : CMJT : func6 == 0b101'000, index >= 32,op == 0b10;
+}

@@ -47,7 +47,7 @@ step_apt() {
     cmake ninja-build clang \
     python3-venv python3-pip \
     device-tree-compiler libboost-dev libboost-system-dev libboost-regex-dev libelf-dev liblz4-dev libmpfr-dev \
-    libgtest-dev libgmock-dev gawk xxd srecord zip
+    libgtest-dev libgmock-dev libre2-dev libprotobuf-dev protobuf-compiler gawk xxd srecord zip
 }
 
 step_bender() {

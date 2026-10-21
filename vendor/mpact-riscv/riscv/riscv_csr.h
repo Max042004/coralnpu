@@ -1,0 +1,761 @@
+// Copyright 2023 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#ifndef MPACT_RISCV_RISCV_RISCV_CSR_H_
+#define MPACT_RISCV_RISCV_RISCV_CSR_H_
+
+#include <any>
+#include <cstddef>
+#include <cstdint>
+#include <limits>
+#include <string>
+#include <type_traits>
+#include <vector>
+
+#include "absl/container/flat_hash_map.h"
+#include "absl/status/status.h"
+#include "absl/status/statusor.h"
+#include "absl/strings/string_view.h"
+#include "mpact/sim/generic/arch_state.h"
+#include "mpact/sim/generic/data_buffer.h"
+#include "mpact/sim/generic/operand_interface.h"
+
+// This file contains definitions for classes used to model the RiscV constrol
+// and status registers. For now, these are not modeled as actual register
+// state, instead, they're tied into the RiscV machine state a bit more. This
+// is so that side-effects from reads/writes can more easily be handled.
+
+namespace mpact {
+namespace sim {
+namespace riscv {
+
+using ::mpact::sim::generic::ArchState;
+
+enum class RiscVCsrEnum {
+  // User trap setup.
+  kUStatus = 0x000,
+  kUIe = 0x004,
+  kUTvec = 0x005,
+  // User vector CSRs.
+  kVstart = 0x008,
+  kVxsat = 0x009,
+  kVxrm = 0x00a,
+  kVcsr = 0x00f,
+  // Jump base vector and control register.
+  kJvt = 0x017,
+  // User trap handling.
+  kUScratch = 0x040,
+  kUEpc = 0x041,
+  kUCause = 0x042,
+  kUTval = 0x043,
+  kUIp = 0x044,
+  // User floating point CSRs.
+  kFFlags = 0x001,
+  kFrm = 0x002,
+  kFCsr = 0x003,
+  // User counters/timers.
+  kCycle = 0xc00,
+  kTime = 0xc01,
+  kInstret = 0xc02,
+  kHpmcounter3 = 0xc03,
+  kHpmcounter4 = 0xc04,
+  kHpmcounter5 = 0xc05,
+  kHpmcounter6 = 0xc06,
+  kHpmcounter7 = 0xc07,
+  kHpmcounter8 = 0xc08,
+  kHpmcounter9 = 0xc09,
+  kHpmcounter10 = 0xc0a,
+  kHpmcounter11 = 0xc0b,
+  kHpmcounter12 = 0xc0c,
+  kHpmcounter13 = 0xc0d,
+  kHpmcounter14 = 0xc0e,
+  kHpmcounter15 = 0xc0f,
+  kHpmcounter16 = 0xc10,
+  kHpmcounter17 = 0xc11,
+  kHpmcounter18 = 0xc12,
+  kHpmcounter19 = 0xc13,
+  kHpmcounter20 = 0xc14,
+  kHpmcounter21 = 0xc15,
+  kHpmcounter22 = 0xc16,
+  kHpmcounter23 = 0xc17,
+  kHpmcounter24 = 0xc18,
+  kHpmcounter25 = 0xc19,
+  kHpmcounter26 = 0xc1a,
+  kHpmcounter27 = 0xc1b,
+  kHpmcounter28 = 0xc1c,
+  kHpmcounter29 = 0xc1d,
+  kHpmcounter30 = 0xc1e,
+  kHpmcounter31 = 0xc1f,
+
+  kCycleH = 0xc80,
+  kTimeH = 0xc81,
+  kInstretH = 0x82,
+  kHpmcounter3H = 0xc83,
+  kHpmcounter4H = 0xc84,
+  kHpmcounter5H = 0xc85,
+  kHpmcounter6H = 0xc86,
+  kHpmcounter7H = 0xc87,
+  kHpmcounter8H = 0xc88,
+  kHpmcounter9H = 0xc89,
+  kHpmcounter10H = 0xc8a,
+  kHpmcounter11H = 0xc8b,
+  kHpmcounter12H = 0xc8c,
+  kHpmcounter13H = 0xc8d,
+  kHpmcounter14H = 0xc8e,
+  kHpmcounter15H = 0xc8f,
+  kHpmcounter16H = 0xc90,
+  kHpmcounter17H = 0xc91,
+  kHpmcounter18H = 0xc92,
+  kHpmcounter19H = 0xc93,
+  kHpmcounter20H = 0xc94,
+  kHpmcounter21H = 0xc95,
+  kHpmcounter22H = 0xc96,
+  kHpmcounter23H = 0xc97,
+  kHpmcounter24H = 0xc98,
+  kHpmcounter25H = 0xc99,
+  kHpmcounter26H = 0xc9a,
+  kHpmcounter27H = 0xc9b,
+  kHpmcounter28H = 0xc9c,
+  kHpmcounter29H = 0xc9d,
+  kHpmcounter30H = 0xc9e,
+  kHpmcounter31H = 0xc9f,
+
+  // Ignoring perf monitoring counters for now.
+
+  // Ignoring high bits of perf monitoring counters for now.
+
+  // Supervisor trap setup.
+  kSStatus = 0x100,
+  kSEDeleg = 0x102,
+  kSIDeleg = 0x103,
+  kSIe = 0x104,
+  kSTvec = 0x105,
+  kSCounteren = 0x106,  // Supervisor counter enable.
+  kSenvcfg = 0x10a,     // Supervisor environment configuration register.
+  // Supervisor trap handling.
+  kSScratch = 0x140,  // Scratch register for supervisor trap handlers.
+  kSEpc = 0x141,      // Supervisor exception program counter.
+  kSCause = 0x142,    // Supervisor trap cause.
+  kSTval = 0x143,     // Supervisor bad address or instruction.
+  kSIp = 0x144,       // Supervisor interrupt pending.
+
+  // Supervisor protection and translation.
+  kSAtp = 0x180,  // Supervisor address translation and protection.
+
+  // Machine information registers.
+  kMVendorId = 0xf11,  // Vendor ID.
+  kMArchId = 0xf12,    // Architecture ID.
+  kMImpId = 0xf13,     // Implementation ID.
+  kMHartId = 0xf14,    // Hardware thread ID.
+  // Machine trap setup.
+  kMStatus = 0x300,     // Machine status register.
+  kMIsa = 0x301,        // ISA and extensions.
+  kMEDeleg = 0x302,     // Machine exception delegation register.
+  kMIDeleg = 0x303,     // Machine interrupt delegation register.
+  kMIe = 0x304,         // Machine interrupt-enable register.
+  kMTvec = 0x305,       // Machine trap-handler base address.
+  kMCounterEn = 0x306,  // Machine counter enable.
+  // Machine trap handling.
+  kMScratch = 0x340,  // Scratch register for machine trap handlers.
+  kMEpc = 0x341,      // Machine exception program counter.
+  kMCause = 0x342,    // Machine trap cause.
+  kMTval = 0x343,     // Machine bad address or instruction.
+  kMIp = 0x344,       // Machine interrupt pending.
+  kMenvcfg = 0x30A,   // Machine environment configuration register.
+
+  // PMP registers.
+  kPmpCfg0 = 0x3a0,    // PMP configuration register 0.
+  kPmpCfg1 = 0x3a1,    // PMP configuration register 1 (only for RV32).
+  kPmpCfg2 = 0x3a2,    // PMP configuration register 2.
+  kPmpCfg3 = 0x3a3,    // PMP configuration register 3 (only for RV32).
+  kPmpAddr0 = 0x3b0,   // PMP address register 0.
+  kPmpAddr1 = 0x3b1,   // PMP address register 1.
+  kPmpAddr2 = 0x3b2,   // PMP address register 2.
+  kPmpAddr3 = 0x3b3,   // PMP address register 3.
+  kPmpAddr4 = 0x3b4,   // PMP address register 4.
+  kPmpAddr5 = 0x3b5,   // PMP address register 5.
+  kPmpAddr6 = 0x3b6,   // PMP address register 6.
+  kPmpAddr7 = 0x3b7,   // PMP address register 7.
+  kPmpAddr8 = 0x3b8,   // PMP address register 8.
+  kPmpAddr9 = 0x3b9,   // PMP address register 9.
+  kPmpAddr10 = 0x3ba,  // PMP address register 10.
+  kPmpAddr11 = 0x3bb,  // PMP address register 11.
+  kPmpAddr12 = 0x3bc,  // PMP address register 12.
+  kPmpAddr13 = 0x3bd,  // PMP address register 13.
+  kPmpAddr14 = 0x3be,  // PMP address register 14.
+  kPmpAddr15 = 0x3bf,  // PMP address register 15.
+
+  // Hypervisor level CSRs.
+  kHenvcfg = 0x60A,  // Hypervisor environment configuration register.
+
+  // Ignoring machine memory protection for now.
+
+  kMCycle = 0xb00,    // Machine cycle counter.
+  kMInstret = 0xb02,  // Machine instructions-retired counter.
+  kMhpmcounter3 = 0xb03,
+  kMhpmcounter4 = 0xb04,
+  kMhpmcounter5 = 0xb05,
+  kMhpmcounter6 = 0xb06,
+  kMhpmcounter7 = 0xb07,
+  kMhpmcounter8 = 0xb08,
+  kMhpmcounter9 = 0xb09,
+  kMhpmcounter10 = 0xb0a,
+  kMhpmcounter11 = 0xb0b,
+  kMhpmcounter12 = 0xb0c,
+  kMhpmcounter13 = 0xb0d,
+  kMhpmcounter14 = 0xb0e,
+  kMhpmcounter15 = 0xb0f,
+  kMhpmcounter16 = 0xb10,
+  kMhpmcounter17 = 0xb11,
+  kMhpmcounter18 = 0xb12,
+  kMhpmcounter19 = 0xb13,
+  kMhpmcounter20 = 0xb14,
+  kMhpmcounter21 = 0xb15,
+  kMhpmcounter22 = 0xb16,
+  kMhpmcounter23 = 0xb17,
+  kMhpmcounter24 = 0xb18,
+  kMhpmcounter25 = 0xb19,
+  kMhpmcounter26 = 0xb1a,
+  kMhpmcounter27 = 0xb1b,
+  kMhpmcounter28 = 0xb1c,
+  kMhpmcounter29 = 0xb1d,
+  kMhpmcounter30 = 0xb1e,
+  kMhpmcounter31 = 0xb1f,
+
+  // Ignoring machine performance counters for now.
+
+  kVl = 0xc20,     // Vector length.
+  kVtype = 0xc21,  // Vector type.
+  kVlenb = 0xc22,  // Vector length in bytes.
+
+  kMCycleH = 0xb80,    // Upper 32 bits of mcycle.
+  kMInstretH = 0xb82,  // Upper 32 bits of MInstret
+  kMhpmcounter3H = 0xb83,
+  kMhpmcounter4H = 0xb84,
+  kMhpmcounter5H = 0xb85,
+  kMhpmcounter6H = 0xb86,
+  kMhpmcounter7H = 0xb87,
+  kMhpmcounter8H = 0xb88,
+  kMhpmcounter9H = 0xb89,
+  kMhpmcounter10H = 0xb8a,
+  kMhpmcounter11H = 0xb8b,
+  kMhpmcounter12H = 0xb8c,
+  kMhpmcounter13H = 0xb8d,
+  kMhpmcounter14H = 0xb8e,
+  kMhpmcounter15H = 0xb8f,
+  kMhpmcounter16H = 0xb90,
+  kMhpmcounter17H = 0xb91,
+  kMhpmcounter18H = 0xb92,
+  kMhpmcounter19H = 0xb93,
+  kMhpmcounter20H = 0xb94,
+  kMhpmcounter21H = 0xb95,
+  kMhpmcounter22H = 0xb96,
+  kMhpmcounter23H = 0xb97,
+  kMhpmcounter24H = 0xb98,
+  kMhpmcounter25H = 0xb99,
+  kMhpmcounter26H = 0xb9a,
+  kMhpmcounter27H = 0xb9b,
+  kMhpmcounter28H = 0xb9c,
+  kMhpmcounter29H = 0xb9d,
+  kMhpmcounter30H = 0xb9e,
+  kMhpmcounter31H = 0xb9f,
+
+  // Ignoring machine counter setup for now.
+
+  // Ignoring debug trace registers.
+
+  // Ignoring debug mode registers.
+
+  // Simulator specific CSRs. These are numbered 0x1800-0x18ff.
+  kSimMode = 0x1800,
+};
+
+// Base class for CSRs contains the name and index. The index is made wide in
+// case memory mapped registers need to be supported with their address as
+// the index.
+class RiscVCsrBase {
+ public:
+  RiscVCsrBase(std::string name, uint64_t index, ArchState* state)
+      : name_(name), index_(index), state_(state) {}
+  RiscVCsrBase() = delete;
+  virtual ~RiscVCsrBase() = default;
+
+  // Source and destination creation interface.
+  virtual generic::SourceOperandInterface* CreateSourceOperand() = 0;
+  virtual generic::DestinationOperandInterface* CreateSetDestinationOperand(
+      int latency, std::string op_name) = 0;
+  virtual generic::DestinationOperandInterface* CreateClearDestinationOperand(
+      int latency, std::string op_name) = 0;
+  virtual generic::DestinationOperandInterface* CreateWriteDestinationOperand(
+      int latency, std::string op_name) = 0;
+
+  // Three getters: name, index, and state
+  const std::string& name() { return name_; }
+  uint64_t index() const { return index_; }
+  ArchState* state() { return state_; }
+
+ private:
+  std::string name_;
+  uint64_t index_ = 0;
+  ArchState* state_;
+};
+
+class RiscVCsrInterface : public RiscVCsrBase {
+ public:
+  RiscVCsrInterface(std::string name, uint64_t index, ArchState* state)
+      : RiscVCsrBase(name, index, state) {}
+  RiscVCsrInterface() = delete;
+  ~RiscVCsrInterface() override = default;
+  // Return the value, modified as per read mask.
+  virtual uint32_t AsUint32() = 0;
+  virtual uint64_t AsUint64() = 0;
+  // Write the value, modified as per write mask.
+  virtual void Write(uint32_t value) = 0;
+  virtual void Write(uint64_t value) = 0;
+  // Set the bits that are set in value, leave other bits unchanged.
+  virtual void SetBits(uint32_t value) = 0;
+  virtual void SetBits(uint64_t value) = 0;
+  // Clear the bits that are set in value, leave other bits unchanged.
+  virtual void ClearBits(uint32_t value) = 0;
+  virtual void ClearBits(uint64_t value) = 0;
+  // Return the value, ignoring the read mask.
+  virtual uint32_t GetUint32() = 0;
+  virtual uint64_t GetUint64() = 0;
+  // Sets the value, ignoring the write mask.
+  virtual void Set(uint32_t value) = 0;
+  virtual void Set(uint64_t value) = 0;
+  // Size of value.
+  virtual size_t size() const = 0;
+  // Set to reset value.
+  virtual void Reset() = 0;
+};
+
+class RiscVCsrWriteDb : public generic::DataBufferDestination {
+ public:
+  RiscVCsrWriteDb() = delete;
+  explicit RiscVCsrWriteDb(RiscVCsrInterface* csr) : csr_(csr) {}
+
+  void SetDataBuffer(generic::DataBuffer* db) override;
+
+ private:
+  RiscVCsrInterface* csr_;
+};
+
+class RiscVCsrClearBitsDb : public generic::DataBufferDestination {
+ public:
+  RiscVCsrClearBitsDb() = delete;
+  explicit RiscVCsrClearBitsDb(RiscVCsrInterface* csr) : csr_(csr) {}
+
+  void SetDataBuffer(generic::DataBuffer* db) override;
+
+ private:
+  RiscVCsrInterface* csr_;
+};
+
+class RiscVCsrSetBitsDb : public generic::DataBufferDestination {
+ public:
+  RiscVCsrSetBitsDb() = delete;
+  explicit RiscVCsrSetBitsDb(RiscVCsrInterface* csr) : csr_(csr) {}
+
+  void SetDataBuffer(generic::DataBuffer* db) override;
+
+ private:
+  RiscVCsrInterface* csr_;
+};
+
+// RiscV CSR class.
+template <typename T>
+class RiscVSimpleCsr : public RiscVCsrInterface {
+ public:
+  // Enum index.
+  RiscVSimpleCsr(std::string name, RiscVCsrEnum index, ArchState* state)
+      : RiscVSimpleCsr(
+            name, index, 0,
+            std::numeric_limits<typename std::make_unsigned<T>::type>::max(),
+            std::numeric_limits<typename std::make_unsigned<T>::type>::max(),
+            state) {}
+  RiscVSimpleCsr(std::string name, RiscVCsrEnum index, T initial_value,
+                 ArchState* state)
+      : RiscVSimpleCsr(
+            name, index, initial_value,
+            std::numeric_limits<typename std::make_unsigned<T>::type>::max(),
+            std::numeric_limits<typename std::make_unsigned<T>::type>::max(),
+            state) {}
+  RiscVSimpleCsr(std::string name, RiscVCsrEnum index, T read_mask,
+                 T write_mask, ArchState* state)
+      : RiscVSimpleCsr(name, index, 0, read_mask, write_mask, state) {}
+  // Uint64_t valued index. These are useful for other RiscV architecture
+  // variants that add custom CSRs.
+  RiscVSimpleCsr(std::string name, uint64_t index, ArchState* state)
+      : RiscVSimpleCsr(
+            name, index, 0,
+            std::numeric_limits<typename std::make_unsigned<T>::type>::max(),
+            std::numeric_limits<typename std::make_unsigned<T>::type>::max(),
+            state) {}
+  RiscVSimpleCsr(std::string name, uint64_t index, T initial_value,
+                 ArchState* state)
+      : RiscVSimpleCsr(
+            name, index, initial_value,
+            std::numeric_limits<typename std::make_unsigned<T>::type>::max(),
+            std::numeric_limits<typename std::make_unsigned<T>::type>::max(),
+            state) {}
+  RiscVSimpleCsr(std::string name, uint64_t index, T read_mask, T write_mask,
+                 ArchState* state)
+      : RiscVSimpleCsr(name, index, 0, read_mask, write_mask, state) {}
+
+  RiscVSimpleCsr(std::string name, RiscVCsrEnum index, T initial_value,
+                 T read_mask, T write_mask, ArchState* state)
+      : RiscVSimpleCsr(name, static_cast<uint64_t>(index), initial_value,
+                       read_mask, write_mask, state) {}
+  RiscVSimpleCsr(std::string name, uint64_t index, T initial_value, T read_mask,
+                 T write_mask, ArchState* state)
+      : RiscVCsrInterface(name, index, state),
+        value_(initial_value),
+        read_mask_(read_mask),
+        write_mask_(write_mask),
+        write_target_(new RiscVCsrWriteDb(this)),
+        set_bits_target_(new RiscVCsrSetBitsDb(this)),
+        clear_bits_target_(new RiscVCsrClearBitsDb(this)) {}
+
+  ~RiscVSimpleCsr() override {
+    delete write_target_;
+    delete set_bits_target_;
+    delete clear_bits_target_;
+  }
+
+  // Disable default and copy constructor, as well as assignment.
+  RiscVSimpleCsr() = delete;
+  RiscVSimpleCsr(const RiscVSimpleCsr&) = delete;
+  RiscVSimpleCsr& operator=(const RiscVSimpleCsr&) = delete;
+
+  // Return the value, modified as per read mask.
+  uint32_t AsUint32() override {
+    return static_cast<uint32_t>(GetUint32() & read_mask_);
+  }
+  uint64_t AsUint64() override {
+    return static_cast<uint64_t>(GetUint64() & read_mask_);
+  }
+  // Write the value, modified as per write mask.
+  void Write(uint32_t value) override {
+    T t_value = static_cast<T>(value);
+    Set((t_value & write_mask_) | (GetUint32() & ~write_mask_));
+  }
+  void Write(uint64_t value) override {
+    T t_value = static_cast<T>(value);
+    Set((t_value & write_mask_) | (GetUint64() & ~write_mask_));
+  }
+  // Set the bits specified in the value. Don't change the other bits.
+  void SetBits(uint32_t value) override { Write(GetUint32() | value); }
+  void SetBits(uint64_t value) override { Write(GetUint64() | value); }
+  // Clear the bits specified in the value. Don't change the other bits.
+  void ClearBits(uint32_t value) override { Write(GetUint32() & ~value); }
+  void ClearBits(uint64_t value) override { Write(GetUint64() & ~value); }
+  // Return the value, ignoring the read mask and any read related side-effects.
+  uint32_t GetUint32() override { return static_cast<uint32_t>(value_); }
+  uint64_t GetUint64() override { return static_cast<uint64_t>(value_); }
+  // Sets the value, ignoring the write mask and any write related side-effects.
+  void Set(uint32_t value) override { value_ = static_cast<T>(value); }
+  void Set(uint64_t value) override { value_ = static_cast<T>(value); }
+
+  // Operand creation interface.
+  generic::SourceOperandInterface* CreateSourceOperand() override;
+  generic::DestinationOperandInterface* CreateSetDestinationOperand(
+      int latency, std::string op_name) override;
+  generic::DestinationOperandInterface* CreateClearDestinationOperand(
+      int latency, std::string op_name) override;
+  generic::DestinationOperandInterface* CreateWriteDestinationOperand(
+      int latency, std::string op_name) override;
+
+  // Getters and setters.
+  T read_mask() const { return read_mask_; }
+  void set_read_mask(T value) { read_mask_ = value; }
+  T write_mask() const { return write_mask_; }
+  void set_write_mask(T value) { write_mask_ = value; }
+
+  RiscVCsrWriteDb* write_target() const { return write_target_; }
+  RiscVCsrSetBitsDb* set_bits_target() const { return set_bits_target_; }
+  RiscVCsrClearBitsDb* clear_bits_target() const { return clear_bits_target_; }
+
+  size_t size() const override { return sizeof(T); }
+
+  void Reset() override { Set(static_cast<uint64_t>(0ULL)); }
+
+ private:
+  std::string name_;
+  RiscVCsrEnum index_;
+  T value_ = 0;
+  T read_mask_ =
+      std::numeric_limits<typename std::make_unsigned<T>::type>::max();
+  T write_mask_ =
+      std::numeric_limits<typename std::make_unsigned<T>::type>::max();
+  RiscVCsrWriteDb* write_target_;
+  RiscVCsrSetBitsDb* set_bits_target_;
+  RiscVCsrClearBitsDb* clear_bits_target_;
+};
+
+// The shadow csr class is used to implement a more restricted view of another
+// CSR, for instance, making a read-only view version of a CSR that may be
+// accessible at lower privilege levels.
+template <typename T>
+class RiscVShadowCsr : public RiscVCsrInterface {
+ public:
+  RiscVShadowCsr(std::string name, RiscVCsrEnum index, T read_mask,
+                 T write_mask, ArchState* state, RiscVCsrInterface* csr)
+      : RiscVCsrInterface(name, static_cast<uint64_t>(index), state),
+        csr_(csr),
+        read_mask_(read_mask),
+        write_mask_(write_mask),
+        write_target_(new RiscVCsrWriteDb(this)),
+        set_bits_target_(new RiscVCsrSetBitsDb(this)),
+        clear_bits_target_(new RiscVCsrClearBitsDb(this)) {}
+  RiscVShadowCsr() = delete;
+  RiscVShadowCsr(const RiscVShadowCsr&) = delete;
+  RiscVShadowCsr& operator=(const RiscVShadowCsr&) = delete;
+
+  ~RiscVShadowCsr() override {
+    delete write_target_;
+    delete set_bits_target_;
+    delete clear_bits_target_;
+  }
+
+  // Return the value, modified as per read mask.
+  uint32_t AsUint32() override {
+    return static_cast<uint32_t>(static_cast<T>(csr_->AsUint32()) & read_mask_);
+  }
+  uint64_t AsUint64() override {
+    return static_cast<uint64_t>(static_cast<T>(csr_->AsUint64()) & read_mask_);
+  }
+  // Write the value, modified as per write mask.
+  void Write(uint32_t value) override {
+    if (write_mask_ != 0) {
+      csr_->Write((static_cast<T>(csr_->GetUint32()) & ~write_mask_) |
+                  (static_cast<T>(value) & write_mask_));
+    }
+  }
+  void Write(uint64_t value) override {
+    if (write_mask_ != 0) {
+      csr_->Write((static_cast<T>(csr_->GetUint64()) & ~write_mask_) |
+                  (static_cast<T>(value) & write_mask_));
+    }
+  }
+  // Set the bits that are set in value, leave other bits unchanged.
+  // Set the bits specified in the value. Don't change the other bits.
+  void SetBits(uint32_t value) override { Write(GetUint32() | value); }
+  void SetBits(uint64_t value) override { Write(GetUint64() | value); }
+  // Clear the bits specified in the value. Don't change the other bits.
+  void ClearBits(uint32_t value) override { Write(GetUint32() & ~value); }
+  void ClearBits(uint64_t value) override { Write(GetUint64() & ~value); }
+  // Return the value, ignoring the read mask.
+  uint32_t GetUint32() override { return csr_->GetUint32(); }
+  uint64_t GetUint64() override { return csr_->GetUint64(); }
+  // Sets the value, ignoring the write mask.
+  void Set(uint32_t value) override { csr_->Set(static_cast<T>(value)); }
+  void Set(uint64_t value) override { csr_->Set(static_cast<T>(value)); }
+  // Size of value.
+  size_t size() const override { return sizeof(T); }
+  // Set to reset value.
+  void Reset() override { /* Empty. */ }
+  // Operand creation interface.
+  generic::SourceOperandInterface* CreateSourceOperand() override;
+  generic::DestinationOperandInterface* CreateSetDestinationOperand(
+      int latency, std::string op_name) override;
+  generic::DestinationOperandInterface* CreateClearDestinationOperand(
+      int latency, std::string op_name) override;
+  generic::DestinationOperandInterface* CreateWriteDestinationOperand(
+      int latency, std::string op_name) override;
+
+  RiscVCsrWriteDb* write_target() const { return write_target_; }
+  RiscVCsrSetBitsDb* set_bits_target() const { return set_bits_target_; }
+  RiscVCsrClearBitsDb* clear_bits_target() const { return clear_bits_target_; }
+
+  RiscVCsrInterface* csr() const { return csr_; }
+  T read_mask() const { return read_mask_; }
+  T write_mask() const { return write_mask_; }
+
+ private:
+  RiscVCsrInterface* csr_;
+  T read_mask_;
+  T write_mask_;
+  RiscVCsrWriteDb* write_target_;
+  RiscVCsrSetBitsDb* set_bits_target_;
+  RiscVCsrClearBitsDb* clear_bits_target_;
+};
+
+using RiscV32SimpleCsr = RiscVSimpleCsr<uint32_t>;
+using RiscV64SimpleCsr = RiscVSimpleCsr<uint64_t>;
+
+class RiscVCsrSet {
+ public:
+  // Constructor.
+  RiscVCsrSet() = default;
+  RiscVCsrSet(const RiscVCsrSet&) = delete;
+  RiscVCsrSet& operator=(const RiscVCsrSet&) = delete;
+
+  // Add the CSR to the CsrSet. Return error if it already exists. The storage
+  // is owned by the caller, and must remain valid for the duration of
+  // the lifetime of the CsrSet instance, or explicitly removed.
+  absl::Status AddCsr(RiscVCsrInterface* csr);
+  // Methods to get a handle to the CSR.
+  absl::StatusOr<RiscVCsrInterface*> GetCsr(absl::string_view name);
+  absl::StatusOr<RiscVCsrInterface*> GetCsr(uint64_t index);
+  // Remove the CSR from the CsrSet.
+  absl::Status RemoveCsr(uint64_t csr_index);
+
+ private:
+  absl::flat_hash_map<std::string, RiscVCsrInterface*> csr_name_map_;
+  absl::flat_hash_map<uint64_t, RiscVCsrInterface*> csr_index_map_;
+};
+
+// Source operand type for CSR.
+class RiscVCsrSourceOperand : public generic::SourceOperandInterface {
+ public:
+  // Constructor. Note, default constructor is deleted.
+  RiscVCsrSourceOperand(RiscVCsrInterface* csr, std::string op_name);
+  explicit RiscVCsrSourceOperand(RiscVCsrInterface* csr);
+  RiscVCsrSourceOperand() = delete;
+
+  // Methods to read the value of the CSR.
+  bool AsBool(int i) final;
+  int8_t AsInt8(int i) final;
+  uint8_t AsUint8(int i) final;
+  int16_t AsInt16(int i) final;
+  uint16_t AsUint16(int i) final;
+  int32_t AsInt32(int i) final;
+  uint32_t AsUint32(int i) final;
+  int64_t AsInt64(int i) final;
+  uint64_t AsUint64(int i) final;
+  // Returns the RiscVCsrInterface<T> object wrapped in absl::any.
+  std::any GetObject() const final { return std::any(csr_); }
+  // Non-inherited method to get the register object.
+  RiscVCsrInterface* GetCsr() const { return csr_; }
+
+  std::vector<int> shape() const final { return {1}; }
+
+  std::string AsString() const final { return op_name_; }
+
+ private:
+  RiscVCsrInterface* csr_;
+  std::string op_name_;
+};
+
+// RiscV Csr destination operand type .
+class RiscVCsrDestinationOperand : public generic::DestinationOperandInterface {
+ public:
+  // Constructor and Destructor
+  RiscVCsrDestinationOperand(RiscVCsrInterface* csr,
+                             generic::DataBufferDestination* db_dest,
+                             int latency);
+  RiscVCsrDestinationOperand(RiscVCsrInterface* csr,
+                             generic::DataBufferDestination* db_dest,
+                             int latency, std::string op_name);
+  RiscVCsrDestinationOperand() = delete;
+
+  // Initializes the DataBuffer instance so that when Submit is called, it can
+  // be entered into the correct delay line, with the correct latency, targeting
+  // the correct csr.
+  void InitializeDataBuffer(generic::DataBuffer* db) override;
+
+  // Allocates and returns an initialized DataBuffer instance that contains a
+  // copy of the current value of the csr. This is useful when only part
+  // of the destination register will be modified.
+  generic::DataBuffer* CopyDataBuffer() override;
+
+  // Allocates and returns an initialized DataBuffer instance.
+  generic::DataBuffer* AllocateDataBuffer() final;
+
+  // Returns the latency associated with writes to this csr operand.
+  int latency() const override { return latency_; }
+
+  // Returns the csr interface object wrapped in absl::any.
+  std::any GetObject() const override { return std::any(csr_); }
+
+  std::vector<int> shape() const override { return {1}; }
+
+  // Non-inherited method to get the register object.
+  RiscVCsrInterface* GetRiscVCsr() const { return csr_; }
+
+  std::string AsString() const override { return op_name_; }
+
+ private:
+  RiscVCsrInterface* csr_;
+  generic::DataBufferDestination* db_dest_;
+  generic::DataBufferFactory* db_factory_;
+  int latency_;
+  generic::DataBufferDelayLine* delay_line_;
+  std::string op_name_;
+};
+
+template <typename T>
+generic::DestinationOperandInterface*
+RiscVSimpleCsr<T>::CreateSetDestinationOperand(int latency,
+                                               std::string op_name) {
+  return new RiscVCsrDestinationOperand(this, this->set_bits_target(), latency,
+                                        op_name);
+}
+
+template <typename T>
+generic::DestinationOperandInterface*
+RiscVSimpleCsr<T>::CreateClearDestinationOperand(int latency,
+                                                 std::string op_name) {
+  return new RiscVCsrDestinationOperand(this, this->clear_bits_target(),
+                                        latency, op_name);
+}
+
+template <typename T>
+generic::DestinationOperandInterface*
+RiscVSimpleCsr<T>::CreateWriteDestinationOperand(int latency,
+                                                 std::string op_name) {
+  return new RiscVCsrDestinationOperand(this, this->write_target(), latency,
+                                        op_name);
+}
+
+template <typename T>
+generic::SourceOperandInterface* RiscVSimpleCsr<T>::CreateSourceOperand() {
+  return new RiscVCsrSourceOperand(this);
+}
+
+template <typename T>
+generic::DestinationOperandInterface*
+RiscVShadowCsr<T>::CreateSetDestinationOperand(int latency,
+                                               std::string op_name) {
+  return new RiscVCsrDestinationOperand(this, this->set_bits_target(), latency,
+                                        op_name);
+}
+
+template <typename T>
+generic::DestinationOperandInterface*
+RiscVShadowCsr<T>::CreateClearDestinationOperand(int latency,
+                                                 std::string op_name) {
+  return new RiscVCsrDestinationOperand(this, this->clear_bits_target(),
+                                        latency, op_name);
+}
+
+template <typename T>
+generic::DestinationOperandInterface*
+RiscVShadowCsr<T>::CreateWriteDestinationOperand(int latency,
+                                                 std::string op_name) {
+  return new RiscVCsrDestinationOperand(this, this->write_target(), latency,
+                                        op_name);
+}
+
+template <typename T>
+generic::SourceOperandInterface* RiscVShadowCsr<T>::CreateSourceOperand() {
+  return new RiscVCsrSourceOperand(this);
+}
+
+}  // namespace riscv
+}  // namespace sim
+}  // namespace mpact
+
+#endif  // MPACT_RISCV_RISCV_RISCV_CSR_H_

@@ -245,7 +245,7 @@ index 9a7965b..f7fa184 100644
    matrix_state->set_tile_m(std::min(
        {matrix_state->tile_m(), kLmulElements, kEffectiveTileElements}));
  }
-@@ -207,33 +234,85 @@ void RiscVZvtMsetTm(const Instruction* inst) {
+@@ -207,33 +234,80 @@ void RiscVZvtMsetTm(const Instruction* inst) {
      kTileM = std::min<uint32_t>(kRs1, kBound);
    }
    matrix_state->set_tile_m(kTileM);

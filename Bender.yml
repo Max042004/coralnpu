@@ -137,6 +137,27 @@ vendor_package:
       git: "https://github.com/mborgerding/kissfft.git"
       rev: 918336beac80868ad3011cb283063bb224e3e5da  # v130
     patch_dir: vendor/patches/kissfft
+  # MPACT instruction-set simulator stack (host C++): the generic simulator
+  # framework + ISA/bin-format decoder generators, the RISC-V library, and the
+  # CoralNPU simulator on top of them.
+  - name: mpact-sim
+    target_dir: vendor/mpact-sim
+    upstream:
+      git: "https://github.com/google/mpact-sim.git"
+      rev: 9c43949f80bef9978654473d9703ac29de30bc34
+    patch_dir: vendor/patches/mpact-sim
+  - name: mpact-riscv
+    target_dir: vendor/mpact-riscv
+    upstream:
+      git: "https://github.com/google/mpact-riscv.git"
+      rev: e4f1e9c1b243954ff8388fd39019248b2ae7341a
+    patch_dir: vendor/patches/mpact-riscv
+  - name: coralnpu-mpact
+    target_dir: vendor/coralnpu-mpact
+    upstream:
+      git: "https://github.com/google-coral/coralnpu-mpact.git"
+      rev: 7670ee4c3df4cbc0ea06220c39a19b5d14338ed6
+    patch_dir: vendor/patches/coralnpu-mpact
   # Spike (RISC-V ISA simulator) with the CoralNPU deviations; used for co-simulation.
   - name: riscv-isa-sim
     target_dir: vendor/riscv-isa-sim

@@ -1,0 +1,171 @@
+frm_test.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <_start>:
+   0:	00018117          	auipc	sp,0x18
+   4:	00010113          	mv	sp,sp
+   8:	00010197          	auipc	gp,0x10
+   c:	7f818193          	addi	gp,gp,2040 # 10800 <__global_pointer$>
+  10:	00000213          	li	tp,0
+  14:	00000313          	li	t1,0
+  18:	00000393          	li	t2,0
+  1c:	00000413          	li	s0,0
+  20:	00000493          	li	s1,0
+  24:	00000593          	li	a1,0
+  28:	00000613          	li	a2,0
+  2c:	00000693          	li	a3,0
+  30:	00000713          	li	a4,0
+  34:	00000793          	li	a5,0
+  38:	00000813          	li	a6,0
+  3c:	00000893          	li	a7,0
+  40:	00000913          	li	s2,0
+  44:	00000993          	li	s3,0
+  48:	00000a13          	li	s4,0
+  4c:	00000a93          	li	s5,0
+  50:	00000b13          	li	s6,0
+  54:	00000b93          	li	s7,0
+  58:	00000c13          	li	s8,0
+  5c:	00000c93          	li	s9,0
+  60:	00000d13          	li	s10,0
+  64:	00000d93          	li	s11,0
+  68:	00000e13          	li	t3,0
+  6c:	00000e93          	li	t4,0
+  70:	00000f13          	li	t5,0
+  74:	00000f93          	li	t6,0
+  78:	82018513          	addi	a0,gp,-2016 # 10020 <__bss_end>
+  7c:	82018593          	addi	a1,gp,-2016 # 10020 <__bss_end>
+  80:	0d0000ef          	jal	150 <crt_section_clear>
+  84:	1c000413          	li	s0,448
+  88:	1c000493          	li	s1,448
+  8c:	00947a63          	bgeu	s0,s1,a0 <init_array_loop_end>
+
+00000090 <init_array_loop>:
+  90:	00042283          	lw	t0,0(s0)
+  94:	000280e7          	jalr	t0
+  98:	00440413          	addi	s0,s0,4
+  9c:	fe946ae3          	bltu	s0,s1,90 <init_array_loop>
+
+000000a0 <init_array_loop_end>:
+  a0:	00000297          	auipc	t0,0x0
+  a4:	05428293          	addi	t0,t0,84 # f4 <coralnpu_exception_handler>
+  a8:	30529073          	csrw	mtvec,t0
+  ac:	00010297          	auipc	t0,0x10
+  b0:	f6828293          	addi	t0,t0,-152 # 10014 <_ret>
+  b4:	0badd537          	lui	a0,0xbadd
+  b8:	00d50513          	addi	a0,a0,13 # badd00d <__stack_end__+0xbac500d>
+  bc:	00a2a023          	sw	a0,0(t0)
+  c0:	00000513          	li	a0,0
+  c4:	00000593          	li	a1,0
+  c8:	00000097          	auipc	ra,0x0
+  cc:	05408093          	addi	ra,ra,84 # 11c <main>
+  d0:	000080e7          	jalr	ra
+  d4:	00010297          	auipc	t0,0x10
+  d8:	f4028293          	addi	t0,t0,-192 # 10014 <_ret>
+  dc:	00a2a023          	sw	a0,0(t0)
+  e0:	00050663          	beqz	a0,ec <success>
+
+000000e4 <failure>:
+  e4:	00100073          	ebreak
+  e8:	0080006f          	j	f0 <loop>
+
+000000ec <success>:
+  ec:	08000073          	.insn	4, 0x08000073
+
+000000f0 <loop>:
+  f0:	0000006f          	j	f0 <loop>
+
+000000f4 <coralnpu_exception_handler>:
+  f4:	00010797          	auipc	a5,0x10
+  f8:	f0c78793          	addi	a5,a5,-244 # 10000 <faulted>
+  fc:	00100713          	li	a4,1
+ 100:	00e7a023          	sw	a4,0(a5)
+ 104:	34202773          	csrr	a4,mcause
+ 108:	00e7a223          	sw	a4,4(a5)
+ 10c:	34302773          	csrr	a4,mtval
+ 110:	00e7a423          	sw	a4,8(a5)
+ 114:	00100073          	ebreak
+ 118:	0000006f          	j	118 <coralnpu_exception_handler+0x24>
+
+0000011c <main>:
+ 11c:	00010797          	auipc	a5,0x10
+ 120:	ee478793          	addi	a5,a5,-284 # 10000 <faulted>
+ 124:	00c7a703          	lw	a4,12(a5)
+ 128:	00000697          	auipc	a3,0x0
+ 12c:	0986a787          	flw	fa5,152(a3) # 1c0 <__init_array_end>
+ 130:	00000697          	auipc	a3,0x0
+ 134:	0946a707          	flw	fa4,148(a3) # 1c4 <__init_array_end+0x4>
+ 138:	00271073          	fsrm	a4
+ 13c:	10e7f7d3          	fmul.s	fa5,fa5,fa4
+ 140:	00f7a827          	fsw	fa5,16(a5)
+ 144:	00000513          	li	a0,0
+ 148:	00008067          	ret
+ 14c:	0000                	.insn	2, 0x0000
+	...
+
+Disassembly of section .crt:
+
+00000150 <crt_section_clear>:
+ 150:	02b57063          	bgeu	a0,a1,170 <crt_section_clear+0x20>
+ 154:	00b562b3          	or	t0,a0,a1
+ 158:	0032f293          	andi	t0,t0,3
+ 15c:	00029e63          	bnez	t0,178 <crt_section_clear+0x28>
+ 160:	00052023          	sw	zero,0(a0)
+ 164:	00450513          	addi	a0,a0,4
+ 168:	feb56ce3          	bltu	a0,a1,160 <crt_section_clear+0x10>
+ 16c:	00008067          	ret
+ 170:	00b51463          	bne	a0,a1,178 <crt_section_clear+0x28>
+ 174:	00008067          	ret
+ 178:	00100073          	ebreak
+
+0000017c <crt_section_copy>:
+ 17c:	02b57c63          	bgeu	a0,a1,1b4 <crt_section_copy+0x38>
+ 180:	00b562b3          	or	t0,a0,a1
+ 184:	00c2e2b3          	or	t0,t0,a2
+ 188:	0032f293          	andi	t0,t0,3
+ 18c:	02029863          	bnez	t0,1bc <crt_section_copy+0x40>
+ 190:	40c502b3          	sub	t0,a0,a2
+ 194:	40a58333          	sub	t1,a1,a0
+ 198:	0262e263          	bltu	t0,t1,1bc <crt_section_copy+0x40>
+ 19c:	00062283          	lw	t0,0(a2)
+ 1a0:	00460613          	addi	a2,a2,4
+ 1a4:	00552023          	sw	t0,0(a0)
+ 1a8:	00450513          	addi	a0,a0,4
+ 1ac:	feb568e3          	bltu	a0,a1,19c <crt_section_copy+0x20>
+ 1b0:	00008067          	ret
+ 1b4:	00b51463          	bne	a0,a1,1bc <crt_section_copy+0x40>
+ 1b8:	00008067          	ret
+ 1bc:	00100073          	ebreak
+
+Disassembly of section .rodata:
+
+000001c0 <.rodata>:
+ 1c0:	40000000            .insn	4, 0x40000000
+ 1c4:	40490fdb          	.insn	4, 0x40490fdb
+	...
+
+Disassembly of section .data:
+
+00010000 <faulted>:
+   10000:	0000                	.insn	2, 0x0000
+	...
+
+00010004 <mcause>:
+   10004:	0000                	.insn	2, 0x0000
+	...
+
+00010008 <mtval>:
+   10008:	0000                	.insn	2, 0x0000
+	...
+
+0001000c <frm>:
+   1000c:	0000                	.insn	2, 0x0000
+	...
+
+00010010 <result>:
+   10010:	0000                	.insn	2, 0x0000
+	...
+
+00010014 <_ret>:
+	...

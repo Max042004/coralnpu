@@ -127,3 +127,33 @@ $(foreach v,$(SIM_TESTS),$(eval $(call simtest_rule,$(word 1,$(subst :, ,$(v))),
 sim-tests: $(addprefix $(SIM_DIR)/,$(foreach v,$(SIM_TESTS),$(word 1,$(subst :, ,$(v)))))
 	@set -e; for t in core_mini_axi_non_incr_tests backdoor_load_test dbus2axi_tb; do \
 	  echo "== $$t"; (cd $(ROOT) && CORALNPU_RUNFILES=$(BUILD)/runfiles CORALNPU_ROOT=$(ROOT) $(SIM_DIR)/$$t); done
+
+# ---- hw_sim: C++ wrapper around the verilated core + libcoralnpu_simulator*.so ----
+# <so name>:<design>:<extra define>
+HWSIM_LIBS := \
+  libcoralnpu_simulator.so:CoreMiniAxi: \
+  libcoralnpu_simulator_rvv.so:RvvCoreMiniAxi:ENABLE_RVV \
+  libcoralnpu_simulator_vme.so:VmeCoreMiniAxi:ENABLE_VME
+HWSIM_SRCS := hw_sim/core_mini_axi_simulator.cc hw_sim/hw_primitives.cc hdl/verilog/sram_backdoor.cc
+HWSIM_INCS = -I$(ROOT) $(DEPS_INC) \
+             -isystem $(TOOLS_DIR)/verilator/share/verilator/include \
+             -isystem $(TOOLS_DIR)/verilator/share/verilator/include/vltstd
+HWSIM_CXXFLAGS = -std=c++17 -O1 -fPIC -Wno-sign-compare -Wno-unused-variable
+
+# The wrapper header includes the model headers of all three cores, so every
+# model's include directory is on the path; only the selected core is linked.
+HWSIM_MODEL_INCS = $(foreach d,CoreMiniAxi RvvCoreMiniAxi VmeCoreMiniAxi,-I$(VCC_DIR)/$(d)_cc)
+
+define hwsim_rule
+$(BUILD)/hw_sim/$(1): $(VCC_DIR)/CoreMiniAxi_cc/libVCoreMiniAxi.a $(VCC_DIR)/RvvCoreMiniAxi_cc/libVRvvCoreMiniAxi.a \
+                      $(VCC_DIR)/VmeCoreMiniAxi_cc/libVVmeCoreMiniAxi.a $$(HWSIM_SRCS) $(DEPS_PREFIX)/lib/libabsl_base.a
+	@mkdir -p $(BUILD)/hw_sim
+	$$(HOST_CXX) -shared $$(HWSIM_CXXFLAGS) $$(HWSIM_INCS) $$(HWSIM_MODEL_INCS) $$(addprefix -D,$(3)) \
+	  $$(HWSIM_SRCS) -o $$@ \
+	  -Wl,--whole-archive $(VCC_DIR)/$(2)_cc/libV$(2).a -Wl,--no-whole-archive \
+	  $(VCC_DIR)/$(2)_cc/libverilated.a -Wl,--start-group $$(ABSL_LIBS) -Wl,--end-group -lz -llz4 -lpthread
+endef
+$(foreach v,$(HWSIM_LIBS),$(eval $(call hwsim_rule,$(word 1,$(subst :, ,$(v))),$(word 2,$(subst :, ,$(v))),$(word 3,$(subst :, ,$(v))))))
+
+.PHONY: hwsim
+hwsim: $(addprefix $(BUILD)/hw_sim/,$(foreach v,$(HWSIM_LIBS),$(word 1,$(subst :, ,$(v)))))

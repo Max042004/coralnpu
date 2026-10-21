@@ -26,4 +26,7 @@ dependencies:
   abseil_cpp: { git: "https://github.com/abseil/abseil-cpp.git", rev: d38452e1ee03523a208362186fd42248ff2609f6 }  # 20250814.1
   systemc: { git: "https://github.com/accellera-official/systemc.git", rev: 5fc1469339775b54b1fcc2020ac744a58be5b50e }  # 2.3.4
   libsystemctlm_soc: { git: "https://github.com/Xilinx/libsystemctlm-soc.git", rev: 79d624f3c7300a2ead97ca35e683c38f0b6f5021 }
+  elfio: { git: "https://github.com/serge1/ELFIO.git", rev: 8ae6cec5d60495822ecd57d736f66149da9b1830 }  # Release_3.12
+  linenoise: { git: "https://github.com/antirez/linenoise.git", rev: dc83cc373ac2058030eb3cf5e404959a26fef112 }  # 2.0
+  antlr4: { git: "https://github.com/antlr/antlr4.git", rev: 7ed420ff2c78d62883875c442d75f32e73bc86c8 }  # 4.13.1
   pybind11: { git: "https://github.com/pybind/pybind11.git", rev: a2e59f0e7065404b44dfe92a28aca47ba1378dc4 }  # v2.13.6
