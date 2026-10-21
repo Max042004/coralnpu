@@ -63,14 +63,14 @@ endif
 	$(MAKE) $(BUILD)/model/$(MODEL)/$($(MODEL)_TOP)
 
 # Firmware ELFs that tests look up via the runfiles shim live in build/runfiles.
-cocotb-test: model
+cocotb-test: model $(BUILD)/runfiles/toolchain/gdb
 ifndef MODULE
 	$(error usage: make cocotb-test MODEL=<name> MODULE=<python module>)
 endif
 	CORALNPU_RUNFILES=$(BUILD)/runfiles $(PYTHON) utils/cocotb_run.py \
 	  --model $(BUILD)/model/$(MODEL)/$($(MODEL)_TOP) \
 	  --hdl_toplevel $($(MODEL)_TOP) --test_module $(MODULE) \
-	  $(if $(TESTCASE),--testcase $(TESTCASE))
+	  $(if $(TESTCASE),--testcase $(TESTCASE)) $(if $(SEED),--seed $(SEED))
 
 # ---- Suites (module + model pairs from the former cocotb_test_suite targets) ----
 
@@ -85,4 +85,4 @@ cocotb-suite:
 ifndef SUITE
 	$(error usage: make cocotb-suite SUITE=<name>; see `make list-suites`)
 endif
-	$(MAKE) cocotb-test MODEL=$($(SUITE)_MODEL) MODULE=$($(SUITE)_MODULE) TESTCASE=$(TESTCASE)
+	$(MAKE) cocotb-test MODEL=$($(SUITE)_MODEL) MODULE=$($(SUITE)_MODULE) TESTCASE=$(TESTCASE) SEED=$(or $(SEED),$($(SUITE)_SEED))

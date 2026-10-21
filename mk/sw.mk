@@ -38,7 +38,9 @@ SW_OPTFLAGS_dbg       := -g3 -Og
 
 SW_ARCH   := rv32imf_zve32f_zicsr_zifencei_zbb_zfbfmin_zvfbfmin_zvfbfwma
 SW_COMMON := -march=$(SW_ARCH) -mabi=ilp32 -mcmodel=medany -nostdlib \
-             -Wall -Werror -iquote $(ROOT) -I$(ROOT) \
+             -Wall -Werror -Wno-unused-function \
+             -DTF_LITE_USE_GLOBAL_CMATH_FUNCTIONS -DTF_LITE_USE_GLOBAL_MIN -DTF_LITE_USE_GLOBAL_MAX \
+             -DTF_LITE_MCU_DEBUG_LOG $(if $(filter opt,$(SW_COPT)),-DTF_LITE_STRIP_ERROR_STRINGS) -iquote $(ROOT) -I$(ROOT) \
              $(SW_OPTFLAGS_$(SW_COPT)) -ffunction-sections -fdata-sections
 SW_CFLAGS   := $(SW_COMMON) -std=gnu11
 SW_CXXFLAGS := $(SW_COMMON) -std=c++17 -fno-rtti -fno-exceptions
@@ -54,11 +56,31 @@ CRT_SRCS_HTIF := coralnpu_exceptions.cc coralnpu_htif_gloss.cc coralnpu_start.S 
 SW_OUT := $(BUILD)/sw
 ELF_DIR := $(BUILD)/runfiles
 
+# Sources generated from templates (RVV arithmetic tests, ...): mk/gen_sources.json.
+GEN_DIR   := $(BUILD)/gen
+GEN_STAMP := $(GEN_DIR)/.stamp
+GEN_TEMPLATES := $(shell python3 -c "import json;print(' '.join(sorted({j['template'] for j in json.load(open('mk/gen_sources.json'))})))")
+
+$(GEN_STAMP): mk/gen_sources.json utils/expand_templates.py $(GEN_TEMPLATES)
+	@mkdir -p $(GEN_DIR)
+	python3 utils/expand_templates.py --spec mk/gen_sources.json --outdir $(GEN_DIR)
+	@touch $@
+
+$(GEN_DIR)/%.cc: $(GEN_STAMP)
+	@:
+
+# Generated headers (genrules of the Bazel build); compiled sources see them via -iquote $(GEN_DIR).
+GEN_HDRS := $(GEN_DIR)/coralnpu_test_utils/rvv_cpp_util.h
+
+$(GEN_DIR)/coralnpu_test_utils/rvv_cpp_util.h: coralnpu_test_utils/rvv_cpp_util_header_generator.py
+	@mkdir -p $(dir $@)
+	python3 $< > $@
+
 # $(call sw_compile,<src path>,<obj>,<extra flags>)
 define sw_cc_rule
-$(2): $(1)
+$(2): $(1) | $$(GEN_HDRS)
 	@mkdir -p $$(dir $$@)
-	$$(if $$(filter %.cc %.cpp,$(1)),$$(RV_CXX) $$(SW_CXXFLAGS),$$(RV_CC) $$(SW_CFLAGS)) $(3) -MMD -MP -c $$< -o $$@
+	$$(if $$(filter %.cc %.cpp,$(1)),$$(RV_CXX) $$(SW_CXXFLAGS),$$(RV_CC) $$(SW_CFLAGS)) -iquote $$(GEN_DIR) $(3) -MMD -MP -c $$< -o $$@
 endef
 
 define sw_rule
@@ -68,7 +90,7 @@ $(1)_LD     := $(SW_OUT)/$(1)/link.ld
 $(1)_CRT    := $$(if $$($(1)_NOCRT),,$$(if $$($(1)_SEMIHOSTING),$$(CRT_SRCS_HTIF),$$(CRT_SRCS)))
 $(1)_CRTDEF := $$(if $$($(1)_SEMIHOSTING),,-DSKIP_HTIF_SYMBOLS)
 $(1)_OBJS   := $$(addprefix $$($(1)_OBJDIR)/crt_,$$(addsuffix .o,$$(notdir $$($(1)_CRT)))) \
-               $$(addprefix $$($(1)_OBJDIR)/,$$(addsuffix .o,$$(subst /,_,$$($(1)_SRCS))))
+               $$(addprefix $$($(1)_OBJDIR)/,$$(addsuffix .o,$$(subst /,_,$$($(1)_SRCS) $$($(1)_GENSRCS))))
 
 $$($(1)_LD): toolchain/coralnpu_tcm.ld.tpl utils/gen_linker_script.py
 	@mkdir -p $$(dir $$@)
@@ -76,7 +98,8 @@ $$($(1)_LD): toolchain/coralnpu_tcm.ld.tpl utils/gen_linker_script.py
 	  --itcm $$(word 1,$$($(1)_LDS)) --dtcm $$(word 2,$$($(1)_LDS)) --stack $$(word 3,$$($(1)_LDS)) \
 	  --heap-size $$(word 4,$$($(1)_LDS)) --heap-location $$(word 5,$$($(1)_LDS))
 
-$$(foreach s,$$($(1)_SRCS),$$(eval $$(call sw_cc_rule,$$($(1)_PKG)/$$(s),$$($(1)_OBJDIR)/$$(subst /,_,$$(s)).o,$$($(1)_COPTS) $$(addprefix -D,$$($(1)_DEFS)))))
+$$(foreach s,$$($(1)_SRCS),$$(eval $$(call sw_cc_rule,$$(s),$$($(1)_OBJDIR)/$$(subst /,_,$$(s)).o,$$($(1)_COPTS) $$(addprefix -D,$$($(1)_DEFS)))))
+$$(foreach s,$$($(1)_GENSRCS),$$(eval $$(call sw_cc_rule,$$(GEN_DIR)/$$(s),$$($(1)_OBJDIR)/$$(subst /,_,$$(s)).o,$$($(1)_COPTS) $$(addprefix -D,$$($(1)_DEFS)) -iquote $$(dir $$(GEN_DIR)/$$(s)))))
 $$(foreach s,$$($(1)_CRT),$$(eval $$(call sw_cc_rule,$$(CRT_DIR)/$$(s),$$($(1)_OBJDIR)/crt_$$(s).o,$$($(1)_CRTDEF))))
 
 $$($(1)_ELF): $$($(1)_OBJS) $$($(1)_LD)
@@ -103,3 +126,13 @@ endif
 	$(MAKE) $(ELF_DIR)/$(T).elf
 
 elfs-cocotb: $(COCOTB_ELFS)
+
+# Tests that drive gdb (core_mini_axi_debug) look it up as coralnpu_hw/toolchain/gdb.
+# The toolchain's gdb links libmpfr.so.4 (the old Docker image symlinked it to
+# libmpfr.so.6); provide that without touching system directories.
+$(ELF_DIR)/toolchain/gdb: $(RV_PREFIX)gdb
+	@mkdir -p $(dir $@) $(BUILD)/libcompat
+	@for d in /lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu /usr/lib64 /lib64; do \
+	  if [ -e $$d/libmpfr.so.6 ]; then ln -sf $$d/libmpfr.so.6 $(BUILD)/libcompat/libmpfr.so.4; break; fi; done
+	printf '#!/bin/sh\nLD_LIBRARY_PATH=%s:$$LD_LIBRARY_PATH exec %sgdb "$$@"\n' '$(BUILD)/libcompat' '$(RV_PREFIX)' > $@
+	chmod +x $@

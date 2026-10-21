@@ -1,115 +1,325 @@
 #!/usr/bin/env python3
-"""One-off migration helper: turn Bazel `coralnpu_v2_binary` targets into mk/sw_targets.mk.
+"""One-off migration helper: Bazel firmware targets -> mk/sw_targets.mk + mk/gen_sources.json.
 
-Per target <pkg>/<name> (id = package path with '/' -> '_' plus name):
-    <id>_PKG   package directory
-    <id>_NAME  output name (<name>.elf)
-    <id>_SRCS  sources relative to the package
-    <id>_COPTS compiler options
-    <id>_DEFS  preprocessor definitions
-    <id>_LDS   linker script parameters: itcm dtcm stack heap-size heap-location
-    <id>_SEMIHOSTING 1 for htif semihosting runtime
-Targets with dependencies other than the default CRT are listed as UNSUPPORTED
-for follow-up (FreeRTOS, TFLite, ...).
+BUILD and .bzl files are valid Python, so each BUILD file is *executed* with
+stubbed Bazel rules that merely record their arguments. That makes macros,
+list comprehensions and `template_rule(...)` expand exactly as Bazel would.
+
+Outputs
+  mk/sw_targets.mk    one block per `coralnpu_v2_binary`:
+      <id>_PKG/_NAME/_SRCS/_COPTS/_DEFS/_LDS/_SEMIHOSTING/_NOCRT
+      <id>_GENSRCS   generated sources (paths relative to the build dir)
+  mk/gen_sources.json templates to expand (see utils/expand_templates.py)
+Targets with deps that are not local header/source libraries (FreeRTOS,
+TFLite, ...) are listed as UNSUPPORTED.
 """
 import ast
+import json
 import pathlib
 import sys
+import types
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+SKIP = {"third_party", "rules", "build", "target", "node_modules"}
+
+RECORDS = {}            # kind -> [kwargs]
+GENERATED = {}          # (pkg, target name) -> repo-relative generated file
+GEN_SPECS = []          # template expansion jobs
+CUR_PKG = [""]
 
 
-def literal(node, env):
-    return eval(compile(ast.Expression(node), "BUILD", "eval"), {}, env)
+class _Attr:
+    """Stand-in for Bazel's `attr` module."""
+
+    def __getattr__(self, kind):
+        def mk(*a, **kw):
+            return {"kind": kind, **kw}
+        return mk
+
+
+class _Rule:
+    """Result of `rule(...)`: calling it runs the implementation with a fake ctx."""
+
+    def __init__(self, implementation, attrs, **_):
+        self.impl = implementation
+        self.attrs = attrs
+
+    def __call__(self, name, **kw):
+        pkg = CUR_PKG[0]
+        attrs = {}
+        for k, spec in self.attrs.items():
+            if k in kw:
+                attrs[k] = kw[k]
+            elif isinstance(spec, dict) and "default" in spec:
+                attrs[k] = spec["default"]
+        attrs["name"] = name
+        files = {}
+        for k, v in attrs.items():
+            if isinstance(v, str) and (v.startswith(":") or v.startswith("//")) and k.startswith("_"):
+                p = v.split(":")[-1] if v.startswith("//") else v[1:]
+                files[k] = str(pathlib.Path(pkg) / p)
+        outputs = {}
+        for k, spec in self.attrs.items():
+            if isinstance(spec, dict) and spec.get("kind") == "output" and k in kw:
+                outputs[k] = str(pathlib.Path(pkg) / kw[k])
+        recorded = {}
+
+        class Actions:
+            def expand_template(self, template, output, substitutions):
+                recorded.update(template=template, output=output, substitutions=substitutions)
+
+        ctx = types.SimpleNamespace(
+            attr=types.SimpleNamespace(**attrs),
+            file=types.SimpleNamespace(**files),
+            outputs=types.SimpleNamespace(**outputs),
+            actions=Actions(), label=types.SimpleNamespace(name=name))
+        self.impl(ctx)
+        if recorded:
+            GEN_SPECS.append(recorded)
+            GENERATED[(pkg, name)] = recorded["output"]
+
+
+def record(kind):
+    def f(**kw):
+        kw["_pkg"] = CUR_PKG[0]
+        RECORDS.setdefault(kind, []).append(kw)
+    return f
+
+
+def template_rule(rule, name_map, **kwargs):
+    for name, over in name_map.items():
+        kw = dict(kwargs)
+        kw.update(over)
+        rule(name=name, **kw)
+
+
+def _ignored(*a, **k):
+    return None
+
+
+STUBS = {
+    "package": _ignored, "filegroup": _ignored, "exports_files": _ignored,
+    "py_binary": _ignored, "py_library": _ignored, "py_test": _ignored,
+    "genrule": _ignored, "sh_test": _ignored, "sh_binary": _ignored,
+    "cc_binary": _ignored, "cc_test": _ignored, "pkg_zip": _ignored,
+    "glob": lambda *a, **k: [], "select": lambda d, **k: next(iter(d.values()), []),
+    "rule": _Rule, "attr": _Attr(), "native": types.SimpleNamespace(
+        package_name=lambda: CUR_PKG[0], existing_rules=lambda: {},
+        filegroup=_ignored, genrule=_ignored, sh_test=_ignored),
+    "template_rule": template_rule,
+    "requirement": lambda n: n,
+    "Label": lambda s: s,
+}
+RECORDED_KINDS = ["coralnpu_v2_binary", "cc_library"]
+for _k in RECORDED_KINDS:
+    STUBS[_k] = record(_k)
+
+
+def make_env():
+    env = dict(STUBS)
+    return env
+
+
+_BZL_CACHE = {}
+
+
+def load_bzl(label, pkg):
+    """Execute a repo-local .bzl and return its namespace (None if not local)."""
+    if label.startswith("@") and not label.startswith("@coralnpu_hw"):
+        return None
+    label = label.replace("@coralnpu_hw", "")
+    if label.startswith("//"):
+        d, f = label[2:].split(":")
+    elif label.startswith(":"):
+        d, f = pkg, label[1:]
+    else:
+        return None
+    if d.startswith("rules") or d.startswith("third_party"):
+        return None
+    path = ROOT / d / f
+    if not path.exists():
+        return None
+    key = str(path)
+    if key not in _BZL_CACHE:
+        _BZL_CACHE[key] = None
+        _BZL_CACHE[key] = run_file(path, d)
+    return _BZL_CACHE[key]
+
+
+def run_file(path, pkg):
+    """exec a BUILD/.bzl file with stubs; returns its namespace."""
+    tree = ast.parse(path.read_text())
+    env = make_env()
+    body = []
+    for node in tree.body:
+        if (isinstance(node, ast.Expr) and isinstance(node.value, ast.Call)
+                and getattr(node.value.func, "id", "") == "load"):
+            args = node.value.args
+            label = args[0].value
+            ns = load_bzl(label, pkg)
+            for a in args[1:]:
+                name = a.value if isinstance(a, ast.Constant) else None
+                if name is None:
+                    continue
+                if ns is not None and name in ns:
+                    env[name] = ns[name]
+                elif name not in env:
+                    env[name] = record("__" + name)
+            for kw in node.value.keywords:   # load(..., alias = "sym")
+                src = kw.value.value
+                if ns is not None and src in ns:
+                    env[kw.arg] = ns[src]
+            continue
+        body.append(node)
+    saved = CUR_PKG[0]
+    CUR_PKG[0] = pkg
+    code = compile(ast.Module(body=body, type_ignores=[]), str(path), "exec")
+    try:
+        # Unknown rules (alias, constraint_setting, ...) are stubbed on demand;
+        # re-running is safe because stubs are the only side effects, but the
+        # recorders must not double-count, so snapshot and restore them.
+        for _ in range(200):
+            snap = {k: list(v) for k, v in RECORDS.items()}
+            gsnap, nspecs = dict(GENERATED), len(GEN_SPECS)
+            try:
+                exec(code, env)
+                break
+            except NameError as e:
+                missing = getattr(e, "name", None)
+                if not missing or missing in env:
+                    raise
+                RECORDS.clear(); RECORDS.update(snap)
+                GENERATED.clear(); GENERATED.update(gsnap)
+                del GEN_SPECS[nspecs:]
+                env[missing] = _ignored
+    except Exception as e:
+        sys.stderr.write(f"warning: {path}: {type(e).__name__}: {e}\n")
+    finally:
+        CUR_PKG[0] = saved
+    return env
+
+
+# Third-party firmware libraries that used to be Bazel external repos. They are
+# now Bender vendor_packages under vendor/ (see Bender.yml).
+_FRT = "vendor/freertos"
+EXTERNAL = {
+    "@freertos": {
+        "srcs": [f"{_FRT}/{s}" for s in (
+            "croutine.c", "event_groups.c", "list.c", "queue.c", "stream_buffer.c",
+            "tasks.c", "timers.c", "portable/GCC/RISC-V/port.c",
+            "portable/GCC/RISC-V/portASM.S", "portable/MemMang/heap_4.c")],
+        "copts": [f"-I{_FRT}/include", f"-I{_FRT}/portable/GCC/RISC-V"],
+    },
+    "//third_party/freertos:config": {"copts": ["-Ithird_party/freertos/config"]},
+}
+
+
+def norm_label(dep, pkg):
+    if dep.startswith(":"):
+        return f"//{pkg}:{dep[1:]}"
+    if dep.startswith("//") and ":" not in dep:
+        return f"{dep}:{dep.split('/')[-1]}"
+    return dep
 
 
 def main():
-    consts = {}
-    out = []
-    unsupported = []
-    for b in sorted(ROOT.glob("**/BUILD")):
-        if not b.is_file() or {"third_party", "rules", "build", "target"} & set(b.parts):
+    builds = sorted(set(ROOT.glob("**/BUILD")) | set(ROOT.glob("**/BUILD.bazel")))
+    for b in builds:
+        if not b.is_file() or SKIP & set(b.parts):
             continue
-        pkg = str(b.parent.relative_to(ROOT))
-        tree = ast.parse(b.read_text())
-        env = dict(consts)
-        for node in tree.body:
-            if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
-                try:
-                    env[node.targets[0].id] = literal(node.value, env)
-                except Exception:
-                    pass
+        if b.name == "BUILD.bazel" and (b.parent / "BUILD").exists():
+            continue
+        run_file(b, str(b.parent.relative_to(ROOT)))
 
-        # wfi_targets.bzl style generators
-        gens = {}
-        wfi = ROOT / "tests/cocotb/wfi_targets.bzl"
-        if pkg == "tests/cocotb" and wfi.exists():
-            ns = {}
-            exec(compile(wfi.read_text().replace("load(", "#load("), str(wfi), "exec"), ns)
-            gens["get_wfi_slot_targets"] = ns["get_wfi_slot_targets"]
+    libs = {}
+    for kw in RECORDS.get("cc_library", []):
+        libs[f"//{kw['_pkg']}:{kw['name']}"] = kw
 
-        def emit(kw):
-            name = kw["name"]
-            tid = (pkg.replace("/", "_") + "_" + name).replace("-", "_")
-            deps = kw.get("deps") or []
-            extra = [d for d in deps]
-            if kw.get("crt") or extra or kw.get("linker_script"):
-                unsupported.append((pkg, name, f"deps={extra} crt={kw.get('crt')} ld={kw.get('linker_script')}"))
-                return
-            out.append((tid, pkg, name, kw))
-
-        for node in tree.body:
-            if not (isinstance(node, ast.Expr) and isinstance(node.value, ast.Call)):
+    def resolve(deps, pkg, seen=None):
+        """Flatten local cc_library deps -> (srcs, defines, copts) or None if unsupported."""
+        srcs, defs, copts = [], [], []
+        for d in deps:
+            lbl = norm_label(d, pkg)
+            if lbl.startswith("//toolchain/crt"):
                 continue
-            c = node.value
-            fn = getattr(c.func, "id", "")
-            if fn == "coralnpu_v2_binary":
-                try:
-                    kw = {k.arg: literal(k.value, env) for k in c.keywords}
-                except Exception as e:
-                    unsupported.append((pkg, "?", f"non-literal kwargs: {e}"))
-                    continue
-                emit(kw)
-            elif fn == "template_rule" and c.args and getattr(c.args[0], "id", "") == "coralnpu_v2_binary":
-                try:
-                    variants = literal(c.args[1], dict(env, **{k: v for k, v in gens.items()}))
-                except Exception:
-                    # expression is a call like get_wfi_slot_targets()
-                    variants = literal(c.args[1], dict(env, **gens))
-                common = {k.arg: literal(k.value, env) for k in c.keywords}
-                for name, over in variants.items():
-                    kw = dict(common)
-                    kw.update(over)
-                    kw["name"] = name
-                    emit(kw)
+            if lbl in EXTERNAL:
+                ext = EXTERNAL[lbl]
+                srcs += ext.get("srcs", [])
+                copts += ext.get("copts", [])
+                continue
+            lib = libs.get(lbl)
+            if lib is None:
+                return None
+            for s in lib.get("srcs", []):
+                srcs.append(f"{lib['_pkg']}/{s}")
+            defs += lib.get("defines", [])
+            copts += lib.get("copts", [])
+            sub = resolve(lib.get("deps", []), lib["_pkg"])
+            if sub is None:
+                return None
+            srcs += sub[0]; defs += sub[1]; copts += sub[2]
+        return srcs, defs, copts
 
-    print("# Generated by utils/extract_sw.py from the former Bazel targets.")
-    print("# Firmware built with the CoralNPU toolchain; see mk/sw.mk.\n")
-    for tid, pkg, name, kw in out:
-        srcs = kw.get("srcs") or []
-        if not all(isinstance(s, str) and not s.startswith(("//", "@", ":")) for s in srcs):
-            unsupported.append((pkg, name, f"srcs={srcs}"))
+    out, unsupported = [], []
+    for kw in RECORDS.get("coralnpu_v2_binary", []):
+        pkg, name = kw["_pkg"], kw["name"]
+        tid = (pkg.replace("/", "_") + "_" + name).replace("-", "_")
+        if kw.get("crt") or kw.get("linker_script"):
+            unsupported.append((pkg, name, f"crt={kw.get('crt')} ld={kw.get('linker_script')}"))
             continue
-        print(f"SW_TARGETS += {tid}")
-        print(f"{tid}_PKG  := {pkg}")
-        print(f"{tid}_NAME := {name}")
-        print(f"{tid}_SRCS := {' '.join(srcs)}")
-        if kw.get("copts"):
-            print(f"{tid}_COPTS := {' '.join(kw['copts'])}")
-        if kw.get("defines"):
-            print(f"{tid}_DEFS := {' '.join(kw['defines'])}")
+        res = resolve(kw.get("deps") or [], pkg)
+        if res is None:
+            unsupported.append((pkg, name, f"deps={kw.get('deps')}"))
+            continue
+        srcs, gens = [], []
+        bad = False
+        for s in kw.get("srcs", []):
+            if (pkg, s.lstrip(":")) in GENERATED:
+                gens.append(GENERATED[(pkg, s.lstrip(":"))])
+            elif s.startswith(("//", "@")) or (s.startswith(":") and (pkg, s[1:]) not in GENERATED):
+                bad = True
+            else:
+                srcs.append(f"{pkg}/{s}")
+        if bad:
+            unsupported.append((pkg, name, f"srcs={kw.get('srcs')}"))
+            continue
+        out.append((tid, pkg, name, kw, srcs, gens, res))
+
+    lines = ["# Generated by utils/extract_sw.py from the former Bazel targets.",
+             "# Firmware built with the CoralNPU toolchain; see mk/sw.mk.",
+             "# _SRCS are repo-relative; _GENSRCS are generated under $(BUILD)/gen (mk/gen_sources.json).", ""]
+    for tid, pkg, name, kw, srcs, gens, (dsrcs, ddefs, dcopts) in out:
+        lines.append(f"SW_TARGETS += {tid}")
+        lines.append(f"{tid}_PKG  := {pkg}")
+        lines.append(f"{tid}_NAME := {name}")
+        lines.append(f"{tid}_SRCS := {' '.join(dict.fromkeys(srcs + dsrcs))}")
+        if gens:
+            lines.append(f"{tid}_GENSRCS := {' '.join(gens)}")
+        copts = (kw.get("copts") or []) + dcopts
+        if copts:
+            lines.append(f"{tid}_COPTS := {' '.join(copts)}")
+        defs = (kw.get("defines") or []) + ddefs
+        if defs:
+            lines.append(f"{tid}_DEFS := {' '.join(defs)}")
         lds = (kw.get("itcm_size_kbytes", 8), kw.get("dtcm_size_kbytes", 32),
                kw.get("stack_size_bytes", 128), kw.get("heap_size", "") or "-",
                kw.get("heap_location", "DTCM"))
-        print(f"{tid}_LDS := {' '.join(map(str, lds))}")
+        lines.append(f"{tid}_LDS := {' '.join(map(str, lds))}")
         if kw.get("crt") == "":
-            print(f"{tid}_NOCRT := 1")
+            lines.append(f"{tid}_NOCRT := 1")
         if kw.get("semihosting"):
-            print(f"{tid}_SEMIHOSTING := 1")
-        print()
-    print("# ---- not yet ported (need extra libraries / custom runtime) ----")
+            lines.append(f"{tid}_SEMIHOSTING := 1")
+        lines.append("")
+    lines.append("# ---- not yet ported (need extra libraries / custom runtime) ----")
     for pkg, name, why in unsupported:
-        print(f"# UNSUPPORTED {pkg}:{name}  {why}")
+        lines.append(f"# UNSUPPORTED {pkg}:{name}  {why}")
+    (ROOT / "mk/sw_targets.mk").write_text("\n".join(lines) + "\n")
+
+    specs = [{"template": s["template"], "output": s["output"], "substitutions": s["substitutions"]}
+             for s in GEN_SPECS]
+    (ROOT / "mk/gen_sources.json").write_text(json.dumps(specs, indent=1, sort_keys=True) + "\n")
+    sys.stderr.write(f"{len(out)} firmware targets, {len(unsupported)} unsupported, "
+                     f"{len(specs)} generated sources\n")
 
 
 if __name__ == "__main__":

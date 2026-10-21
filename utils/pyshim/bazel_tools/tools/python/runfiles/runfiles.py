@@ -53,7 +53,9 @@ class _Runfiles:
                 full = os.path.join(root, rel)
                 if os.path.exists(full):
                     return full
-        return None
+        # Like a directory-based Bazel runfiles tree, a missing entry still maps
+        # to a path (callers probe with os.path.exists to skip absent binaries).
+        return os.path.join(_ROOT, candidates[-1])
 
     def EnvVars(self):
         return {}

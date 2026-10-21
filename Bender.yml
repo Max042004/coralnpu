@@ -70,6 +70,24 @@ vendor_package:
       rev: 6590276fa4dac315ae7c7c01371b954c5687a473
     include_from_upstream:
       - diplomacy/src/diplomacy/nodes/HeterogeneousBag.scala
+  # FreeRTOS kernel (firmware only; CoralNPU config lives in third_party/freertos/config).
+  - name: freertos
+    target_dir: vendor/freertos
+    upstream:
+      git: "https://github.com/FreeRTOS/FreeRTOS-Kernel.git"
+      rev: dbf70559b27d39c1fdb68dfb9a32140b6a6777a0  # V11.1.0
+    include_from_upstream:
+      - croutine.c
+      - event_groups.c
+      - list.c
+      - queue.c
+      - stream_buffer.c
+      - tasks.c
+      - timers.c
+      - include
+      - portable/GCC/RISC-V
+      - portable/MemMang/heap_4.c
+      - LICENSE.md
   # RISC-V ISA tests; `env/` is a submodule upstream and lives in
   # third_party/riscv-tests/env (CoralNPU-specific).
   - name: riscv-tests

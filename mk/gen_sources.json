@@ -1,0 +1,5795 @@
+[
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_add_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "add",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_add_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "add",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_add_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "add",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_add_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "add",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_add_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "add",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_add_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "add",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sub_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "sub",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sub_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "sub",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sub_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "sub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sub_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "sub",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sub_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "sub",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sub_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "sub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_mul_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "mul",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_mul_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "mul",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_mul_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "mul",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_mul_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "mul",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_mul_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "mul",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_mul_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "mul",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_div_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "div",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_div_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "div",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_div_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "div",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_div_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "divu",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_div_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "divu",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_div_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "divu",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_and_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "and",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_and_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "and",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_and_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "and",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_and_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "and",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_and_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "and",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_and_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "and",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_or_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "or",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_or_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "or",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_or_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "or",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_or_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "or",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_or_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "or",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_or_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "or",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_xor_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "xor",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_xor_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "xor",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_xor_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "xor",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_xor_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "xor",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_xor_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "xor",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_xor_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "xor",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_min_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "min",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_min_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "min",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_min_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "min",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_min_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "minu",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_min_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "minu",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_min_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "minu",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_max_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "max",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_max_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "max",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_max_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "max",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_max_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "maxu",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_max_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "maxu",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_max_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "maxu",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sadd_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "sadd",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sadd_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "sadd",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sadd_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "sadd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sadd_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "saddu",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sadd_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "saddu",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sadd_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "saddu",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_ssub_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "ssub",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_ssub_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "ssub",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_ssub_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "ssub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_ssub_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "ssubu",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_ssub_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "ssubu",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_ssub_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "ssubu",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_aadd_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "aadd",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_aadd_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "aadd",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_aadd_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "aadd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_aadd_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "aaddu",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_aadd_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "aaddu",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_aadd_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "aaddu",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_asub_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "asub",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_asub_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "asub",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_asub_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "asub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_asub_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "asubu",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_asub_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "asubu",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_asub_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "asubu",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_smul_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "smul",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_smul_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "smul",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_smul_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "smul",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_mulh_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "mulh",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_mulh_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "mulh",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_mulh_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "mulh",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_mulh_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "mulhu",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_mulh_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "mulhu",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_mulh_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "mulhu",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_rem_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "rem",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_rem_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "rem",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_rem_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "rem",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_rem_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "remu",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_rem_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "remu",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_rem_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "remu",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_macc_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "macc",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_macc_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "macc",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_macc_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "macc",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_macc_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "macc",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_macc_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "macc",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_macc_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "macc",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_nmsac_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "nmsac",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_nmsac_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "nmsac",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_nmsac_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "nmsac",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_nmsac_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "nmsac",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_nmsac_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "nmsac",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_nmsac_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "nmsac",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_madd_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "madd",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_madd_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "madd",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_madd_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "madd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_madd_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "madd",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_madd_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "madd",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_madd_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "madd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_nmsub_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "nmsub",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "i8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_nmsub_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "nmsub",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "i16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_nmsub_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "nmsub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "i32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "int32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_nmsub_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "nmsub",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_nmsub_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "nmsub",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_nmsub_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n\n\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "nmsub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sll_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n#define SHIFT_OP\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "sll",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sll_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n#define SHIFT_OP\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "sll",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sll_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n#define SHIFT_OP\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "sll",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sll_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n#define SHIFT_OP\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "sll",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sll_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n#define SHIFT_OP\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "sll",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sll_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n#define SHIFT_OP\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "sll",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_srl_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n#define SHIFT_OP\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "srl",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_srl_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n#define SHIFT_OP\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "srl",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_srl_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n#define SHIFT_OP\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "srl",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sra_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n#define SHIFT_OP\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "sra",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sra_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n#define SHIFT_OP\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "sra",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_sra_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n#define SHIFT_OP\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "sra",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_ssra_int8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n#define SHIFT_OP\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int8",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "ssra",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_ssra_int16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n#define SHIFT_OP\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int16",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "ssra",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_ssra_int32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n#define SHIFT_OP\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "int32",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "ssra",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_ssrl_uint8_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n#define SHIFT_OP\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint8",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "ssrl",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX_V2}": "u8m1",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint8_t",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint8m1_t",
+   "{VEC_TYPE}": "vuint8m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_ssrl_uint16_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n#define SHIFT_OP\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint16",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "ssrl",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX_V2}": "u16m1",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint16_t",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint16m1_t",
+   "{VEC_TYPE}": "vuint16m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_ssrl_uint32_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n\n#define SHIFT_OP\n#define SIGN_i 1\n#define SIGN_u 0\n#define SIGN_f 2",
+   "{DTYPE}": "uint32",
+   "{EXTRA_ARGS}": ", 0",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "ssrl",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "u32m1",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "uint32_t",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{VEC_TYPE_V2}": "vuint32m1_t",
+   "{VEC_TYPE}": "vuint32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fadd_float_rne_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 0",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fadd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fadd_float_rtz_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 1",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fadd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fadd_float_rdn_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 2",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fadd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fadd_float_rup_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 3",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fadd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fadd_float_rmm_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 4",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fadd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsub_float_rne_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 0",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsub_float_rtz_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 1",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsub_float_rdn_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 2",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsub_float_rup_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 3",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsub_float_rmm_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 4",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmul_float_rne_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 0",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmul",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmul_float_rtz_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 1",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmul",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmul_float_rdn_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 2",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmul",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmul_float_rup_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 3",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmul",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmul_float_rmm_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 4",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmul",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fdiv_float_rne_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 0",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fdiv",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fdiv_float_rtz_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 1",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fdiv",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fdiv_float_rdn_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 2",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fdiv",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fdiv_float_rup_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 3",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fdiv",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fdiv_float_rmm_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 4",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fdiv",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmin_float_rne_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 0",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmin",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmin_float_rtz_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 1",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmin",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmin_float_rdn_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 2",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmin",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmin_float_rup_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 3",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmin",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmin_float_rmm_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 4",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmin",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmax_float_rne_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 0",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmax",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmax_float_rtz_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 1",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmax",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmax_float_rdn_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 2",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmax",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmax_float_rup_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 3",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmax",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmax_float_rmm_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 4",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmax",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsgnj_float_rne_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 0",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsgnj",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsgnj_float_rtz_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 1",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsgnj",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsgnj_float_rdn_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 2",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsgnj",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsgnj_float_rup_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 3",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsgnj",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsgnj_float_rmm_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 4",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsgnj",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsgnjn_float_rne_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 0",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsgnjn",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsgnjn_float_rtz_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 1",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsgnjn",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsgnjn_float_rdn_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 2",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsgnjn",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsgnjn_float_rup_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 3",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsgnjn",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsgnjn_float_rmm_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 4",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsgnjn",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsgnjx_float_rne_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 0",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsgnjx",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsgnjx_float_rtz_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 1",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsgnjx",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsgnjx_float_rdn_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 2",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsgnjx",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsgnjx_float_rup_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 3",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsgnjx",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsgnjx_float_rmm_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 4",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsgnjx",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmacc_float_rne_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 0",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmacc",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmacc_float_rtz_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 1",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmacc",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmacc_float_rdn_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 2",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmacc",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmacc_float_rup_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 3",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmacc",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmacc_float_rmm_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 4",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmacc",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmacc_float_rne_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 0",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmacc",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmacc_float_rtz_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 1",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmacc",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmacc_float_rdn_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 2",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmacc",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmacc_float_rup_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 3",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmacc",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmacc_float_rmm_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 4",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmacc",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmadd_float_rne_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 0",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmadd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmadd_float_rtz_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 1",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmadd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmadd_float_rdn_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 2",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmadd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmadd_float_rup_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 3",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmadd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmadd_float_rmm_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 4",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmadd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmadd_float_rne_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 0",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmadd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmadd_float_rtz_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 1",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmadd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmadd_float_rdn_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 2",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmadd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmadd_float_rup_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 3",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmadd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmadd_float_rmm_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 4",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmadd",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmsac_float_rne_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 0",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmsac",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmsac_float_rtz_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 1",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmsac",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmsac_float_rdn_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 2",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmsac",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmsac_float_rup_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 3",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmsac",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmsac_float_rmm_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 4",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmsac",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmsac_float_rne_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 0",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmsac",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmsac_float_rtz_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 1",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmsac",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmsac_float_rdn_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 2",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmsac",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmsac_float_rup_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 3",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmsac",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmsac_float_rmm_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 4",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmsac",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmsub_float_rne_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 0",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmsub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmsub_float_rtz_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 1",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmsub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmsub_float_rdn_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 2",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmsub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmsub_float_rup_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 3",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmsub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fmsub_float_rmm_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 4",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fmsub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmsub_float_rne_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 0",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmsub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmsub_float_rtz_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 1",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmsub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmsub_float_rdn_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 2",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmsub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmsub_float_rup_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 3",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmsub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fnmsub_float_rmm_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_TERNARY\n\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 4",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fnmsub",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsqrt_float_rne_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n#define TEST_UNARY\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 0",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsqrt",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsqrt_float_rtz_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n#define TEST_UNARY\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 1",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsqrt",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsqrt_float_rdn_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n#define TEST_UNARY\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 2",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsqrt",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsqrt_float_rup_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n#define TEST_UNARY\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 3",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsqrt",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fsqrt_float_rmm_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "\n#define TEST_UNARY\n#define TEST_FLOAT\n#define SIGN_f 2\n#define TEST_RM 4",
+   "{DTYPE}": "float",
+   "{EXTRA_ARGS}": "",
+   "{IN_DATA_SIZE}": "16",
+   "{MATH_OP}": "fsqrt",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX_V2}": "f32m1",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{SCALAR_TYPE_V2}": "float",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{VEC_TYPE_V2}": "vfloat32m1_t",
+   "{VEC_TYPE}": "vfloat32m1_t"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redsum_int8_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "int8",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redsum",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_i8m1",
+   "{VEC_TYPE}": "vint8m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_i8m1_i8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redsum_int16_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "int16",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redsum",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_i16m1",
+   "{VEC_TYPE}": "vint16m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_i16m1_i16"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redsum_int32_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "int32",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redsum",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_i32m1",
+   "{VEC_TYPE}": "vint32m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_i32m1_i32"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redsum_uint8_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "uint8",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redsum",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_u8m1",
+   "{VEC_TYPE}": "vuint8m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_u8m1_u8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redsum_uint16_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "uint16",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redsum",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_u16m1",
+   "{VEC_TYPE}": "vuint16m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_u16m1_u16"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redsum_uint32_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "uint32",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redsum",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_u32m1",
+   "{VEC_TYPE}": "vuint32m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_u32m1_u32"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redmin_int8_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "int8",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redmin",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_i8m1",
+   "{VEC_TYPE}": "vint8m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_i8m1_i8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redmin_int16_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "int16",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redmin",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_i16m1",
+   "{VEC_TYPE}": "vint16m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_i16m1_i16"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redmin_int32_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "int32",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redmin",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_i32m1",
+   "{VEC_TYPE}": "vint32m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_i32m1_i32"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redmin_uint8_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "uint8",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redminu",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_u8m1",
+   "{VEC_TYPE}": "vuint8m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_u8m1_u8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redmin_uint16_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "uint16",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redminu",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_u16m1",
+   "{VEC_TYPE}": "vuint16m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_u16m1_u16"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redmin_uint32_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "uint32",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redminu",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_u32m1",
+   "{VEC_TYPE}": "vuint32m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_u32m1_u32"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redmax_int8_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "int8",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redmax",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_i8m1",
+   "{VEC_TYPE}": "vint8m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_i8m1_i8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redmax_int16_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "int16",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redmax",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_i16m1",
+   "{VEC_TYPE}": "vint16m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_i16m1_i16"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redmax_int32_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "int32",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redmax",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_i32m1",
+   "{VEC_TYPE}": "vint32m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_i32m1_i32"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redmax_uint8_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "uint8",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redmaxu",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_u8m1",
+   "{VEC_TYPE}": "vuint8m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_u8m1_u8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redmax_uint16_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "uint16",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redmaxu",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_u16m1",
+   "{VEC_TYPE}": "vuint16m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_u16m1_u16"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redmax_uint32_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "uint32",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redmaxu",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_u32m1",
+   "{VEC_TYPE}": "vuint32m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_u32m1_u32"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redand_int8_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "int8",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redand",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_i8m1",
+   "{VEC_TYPE}": "vint8m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_i8m1_i8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redand_int16_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "int16",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redand",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_i16m1",
+   "{VEC_TYPE}": "vint16m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_i16m1_i16"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redand_int32_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "int32",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redand",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_i32m1",
+   "{VEC_TYPE}": "vint32m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_i32m1_i32"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redand_uint8_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "uint8",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redand",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_u8m1",
+   "{VEC_TYPE}": "vuint8m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_u8m1_u8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redand_uint16_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "uint16",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redand",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_u16m1",
+   "{VEC_TYPE}": "vuint16m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_u16m1_u16"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redand_uint32_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "uint32",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redand",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_u32m1",
+   "{VEC_TYPE}": "vuint32m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_u32m1_u32"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redor_int8_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "int8",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redor",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_i8m1",
+   "{VEC_TYPE}": "vint8m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_i8m1_i8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redor_int16_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "int16",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redor",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_i16m1",
+   "{VEC_TYPE}": "vint16m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_i16m1_i16"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redor_int32_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "int32",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redor",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_i32m1",
+   "{VEC_TYPE}": "vint32m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_i32m1_i32"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redor_uint8_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "uint8",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redor",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_u8m1",
+   "{VEC_TYPE}": "vuint8m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_u8m1_u8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redor_uint16_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "uint16",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redor",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_u16m1",
+   "{VEC_TYPE}": "vuint16m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_u16m1_u16"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redor_uint32_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "uint32",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redor",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_u32m1",
+   "{VEC_TYPE}": "vuint32m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_u32m1_u32"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redxor_int8_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "int8",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX}": "i8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redxor",
+   "{SCALAR_TYPE}": "int8_t",
+   "{SEW}": "8",
+   "{SIGN}": "i",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_i8m1",
+   "{VEC_TYPE}": "vint8m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_i8m1_i8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redxor_int16_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "int16",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX}": "i16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redxor",
+   "{SCALAR_TYPE}": "int16_t",
+   "{SEW}": "16",
+   "{SIGN}": "i",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_i16m1",
+   "{VEC_TYPE}": "vint16m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_i16m1_i16"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redxor_int32_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "int32",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX}": "i32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redxor",
+   "{SCALAR_TYPE}": "int32_t",
+   "{SEW}": "32",
+   "{SIGN}": "i",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_i32m1",
+   "{VEC_TYPE}": "vint32m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_i32m1_i32"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redxor_uint8_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "uint8",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "16",
+   "{OP_SUFFIX}": "u8m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redxor",
+   "{SCALAR_TYPE}": "uint8_t",
+   "{SEW}": "8",
+   "{SIGN}": "u",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_u8m1",
+   "{VEC_TYPE}": "vuint8m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_u8m1_u8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redxor_uint16_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "uint16",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "8",
+   "{OP_SUFFIX}": "u16m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redxor",
+   "{SCALAR_TYPE}": "uint16_t",
+   "{SEW}": "16",
+   "{SIGN}": "u",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_u16m1",
+   "{VEC_TYPE}": "vuint16m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_u16m1_u16"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_redxor_uint32_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "uint32",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX}": "u32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "redxor",
+   "{SCALAR_TYPE}": "uint32_t",
+   "{SEW}": "32",
+   "{SIGN}": "u",
+   "{S_MV_V_FN}": "__riscv_vmv_v_x_u32m1",
+   "{VEC_TYPE}": "vuint32m1_t",
+   "{V_MV_S_FN}": "__riscv_vmv_x_s_u32m1_u32"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fredusum_float_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "float",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "fredusum",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{S_MV_V_FN}": "__riscv_vfmv_v_f_f32m1",
+   "{VEC_TYPE}": "vfloat32m1_t",
+   "{V_MV_S_FN}": "__riscv_vfmv_f_s_f32m1_f32"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fredosum_float_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "float",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "fredosum",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{S_MV_V_FN}": "__riscv_vfmv_v_f_f32m1",
+   "{VEC_TYPE}": "vfloat32m1_t",
+   "{V_MV_S_FN}": "__riscv_vfmv_f_s_f32m1_f32"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fredmin_float_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "float",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "fredmin",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{S_MV_V_FN}": "__riscv_vfmv_v_f_f32m1",
+   "{VEC_TYPE}": "vfloat32m1_t",
+   "{V_MV_S_FN}": "__riscv_vfmv_f_s_f32m1_f32"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_fredmax_float_m1.cc",
+  "substitutions": {
+   "{DTYPE}": "float",
+   "{IN_DATA_SIZE}": "16",
+   "{NUM_OPERANDS}": "4",
+   "{OP_SUFFIX}": "f32m1",
+   "{OUT_DATA_SIZE}": "16",
+   "{REDUCTION_OP}": "fredmax",
+   "{SCALAR_TYPE}": "float",
+   "{SEW}": "32",
+   "{SIGN}": "f",
+   "{S_MV_V_FN}": "__riscv_vfmv_v_f_f32m1",
+   "{VEC_TYPE}": "vfloat32m1_t",
+   "{V_MV_S_FN}": "__riscv_vfmv_f_s_f32m1_f32"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_reduction_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_widen_add_int8_int16.cc",
+  "substitutions": {
+   "{IN_DTYPE}": "int8",
+   "{IN_SEW}": "8",
+   "{MATH_OP}": "add",
+   "{NUM_TEST_VALUES}": "256",
+   "{OUT_DTYPE}": "int16",
+   "{OUT_SEW}": "16",
+   "{SIGN}": "i",
+   "{STEP_OPERANDS}": "8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_widen_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_widen_add_int16_int32.cc",
+  "substitutions": {
+   "{IN_DTYPE}": "int16",
+   "{IN_SEW}": "16",
+   "{MATH_OP}": "add",
+   "{NUM_TEST_VALUES}": "256",
+   "{OUT_DTYPE}": "int32",
+   "{OUT_SEW}": "32",
+   "{SIGN}": "i",
+   "{STEP_OPERANDS}": "4"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_widen_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_widen_add_uint8_uint16.cc",
+  "substitutions": {
+   "{IN_DTYPE}": "uint8",
+   "{IN_SEW}": "8",
+   "{MATH_OP}": "addu",
+   "{NUM_TEST_VALUES}": "256",
+   "{OUT_DTYPE}": "uint16",
+   "{OUT_SEW}": "16",
+   "{SIGN}": "u",
+   "{STEP_OPERANDS}": "8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_widen_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_widen_add_uint16_uint32.cc",
+  "substitutions": {
+   "{IN_DTYPE}": "uint16",
+   "{IN_SEW}": "16",
+   "{MATH_OP}": "addu",
+   "{NUM_TEST_VALUES}": "256",
+   "{OUT_DTYPE}": "uint32",
+   "{OUT_SEW}": "32",
+   "{SIGN}": "u",
+   "{STEP_OPERANDS}": "4"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_widen_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_widen_sub_int8_int16.cc",
+  "substitutions": {
+   "{IN_DTYPE}": "int8",
+   "{IN_SEW}": "8",
+   "{MATH_OP}": "sub",
+   "{NUM_TEST_VALUES}": "256",
+   "{OUT_DTYPE}": "int16",
+   "{OUT_SEW}": "16",
+   "{SIGN}": "i",
+   "{STEP_OPERANDS}": "8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_widen_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_widen_sub_int16_int32.cc",
+  "substitutions": {
+   "{IN_DTYPE}": "int16",
+   "{IN_SEW}": "16",
+   "{MATH_OP}": "sub",
+   "{NUM_TEST_VALUES}": "256",
+   "{OUT_DTYPE}": "int32",
+   "{OUT_SEW}": "32",
+   "{SIGN}": "i",
+   "{STEP_OPERANDS}": "4"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_widen_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_widen_sub_uint8_uint16.cc",
+  "substitutions": {
+   "{IN_DTYPE}": "uint8",
+   "{IN_SEW}": "8",
+   "{MATH_OP}": "subu",
+   "{NUM_TEST_VALUES}": "256",
+   "{OUT_DTYPE}": "uint16",
+   "{OUT_SEW}": "16",
+   "{SIGN}": "u",
+   "{STEP_OPERANDS}": "8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_widen_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_widen_sub_uint16_uint32.cc",
+  "substitutions": {
+   "{IN_DTYPE}": "uint16",
+   "{IN_SEW}": "16",
+   "{MATH_OP}": "subu",
+   "{NUM_TEST_VALUES}": "256",
+   "{OUT_DTYPE}": "uint32",
+   "{OUT_SEW}": "32",
+   "{SIGN}": "u",
+   "{STEP_OPERANDS}": "4"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_widen_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_widen_mul_int8_int16.cc",
+  "substitutions": {
+   "{IN_DTYPE}": "int8",
+   "{IN_SEW}": "8",
+   "{MATH_OP}": "mul",
+   "{NUM_TEST_VALUES}": "256",
+   "{OUT_DTYPE}": "int16",
+   "{OUT_SEW}": "16",
+   "{SIGN}": "i",
+   "{STEP_OPERANDS}": "8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_widen_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_widen_mul_int16_int32.cc",
+  "substitutions": {
+   "{IN_DTYPE}": "int16",
+   "{IN_SEW}": "16",
+   "{MATH_OP}": "mul",
+   "{NUM_TEST_VALUES}": "256",
+   "{OUT_DTYPE}": "int32",
+   "{OUT_SEW}": "32",
+   "{SIGN}": "i",
+   "{STEP_OPERANDS}": "4"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_widen_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_widen_mul_uint8_uint16.cc",
+  "substitutions": {
+   "{IN_DTYPE}": "uint8",
+   "{IN_SEW}": "8",
+   "{MATH_OP}": "mulu",
+   "{NUM_TEST_VALUES}": "256",
+   "{OUT_DTYPE}": "uint16",
+   "{OUT_SEW}": "16",
+   "{SIGN}": "u",
+   "{STEP_OPERANDS}": "8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_widen_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_widen_mul_uint16_uint32.cc",
+  "substitutions": {
+   "{IN_DTYPE}": "uint16",
+   "{IN_SEW}": "16",
+   "{MATH_OP}": "mulu",
+   "{NUM_TEST_VALUES}": "256",
+   "{OUT_DTYPE}": "uint32",
+   "{OUT_SEW}": "32",
+   "{SIGN}": "u",
+   "{STEP_OPERANDS}": "4"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/rvv_widen_arithmetic_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_mac_vv_mf2.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_MAC_VV",
+   "{LMUL}": "mf2",
+   "{W_LMUL}": "m1"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_mac_vv_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_MAC_VV",
+   "{LMUL}": "m1",
+   "{W_LMUL}": "m2"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_mac_vv_m2.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_MAC_VV",
+   "{LMUL}": "m2",
+   "{W_LMUL}": "m4"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_mac_vv_m4.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_MAC_VV",
+   "{LMUL}": "m4",
+   "{W_LMUL}": "m8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_mac_vf_mf2.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_MAC_VF",
+   "{LMUL}": "mf2",
+   "{W_LMUL}": "m1"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_mac_vf_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_MAC_VF",
+   "{LMUL}": "m1",
+   "{W_LMUL}": "m2"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_mac_vf_m2.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_MAC_VF",
+   "{LMUL}": "m2",
+   "{W_LMUL}": "m4"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_mac_vf_m4.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_MAC_VF",
+   "{LMUL}": "m4",
+   "{W_LMUL}": "m8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_pipeline_mf2.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_PIPELINE",
+   "{LMUL}": "mf2",
+   "{W_LMUL}": "m1"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_pipeline_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_PIPELINE",
+   "{LMUL}": "m1",
+   "{W_LMUL}": "m2"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_pipeline_m2.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_PIPELINE",
+   "{LMUL}": "m2",
+   "{W_LMUL}": "m4"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_pipeline_m4.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_PIPELINE",
+   "{LMUL}": "m4",
+   "{W_LMUL}": "m8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_strided_mf2.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_STRIDED",
+   "{LMUL}": "mf2",
+   "{W_LMUL}": "m1"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_strided_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_STRIDED",
+   "{LMUL}": "m1",
+   "{W_LMUL}": "m2"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_strided_m2.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_STRIDED",
+   "{LMUL}": "m2",
+   "{W_LMUL}": "m4"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_strided_m4.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_STRIDED",
+   "{LMUL}": "m4",
+   "{W_LMUL}": "m8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_indexed_mf2.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_INDEXED",
+   "{LMUL}": "mf2",
+   "{W_LMUL}": "m1"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_indexed_m1.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_INDEXED",
+   "{LMUL}": "m1",
+   "{W_LMUL}": "m2"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_indexed_m2.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_INDEXED",
+   "{LMUL}": "m2",
+   "{W_LMUL}": "m4"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ },
+ {
+  "output": "tests/cocotb/rvv/arithmetics/template_bf16_indexed_m4.cc",
+  "substitutions": {
+   "{DEFINES}": "#define TEST_INDEXED",
+   "{LMUL}": "m4",
+   "{W_LMUL}": "m8"
+  },
+  "template": "tests/cocotb/rvv/arithmetics/bfloat16_ops_template.cc"
+ }
+]
