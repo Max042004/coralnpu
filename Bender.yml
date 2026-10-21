@@ -158,6 +158,16 @@ vendor_package:
       git: "https://github.com/google-coral/coralnpu-mpact.git"
       rev: 7670ee4c3df4cbc0ea06220c39a19b5d14338ed6
     patch_dir: vendor/patches/coralnpu-mpact
+  # UVM 1.2 for Verilator (UVM testbench in tests/uvm); TLM2/REG made optional.
+  - name: uvm-verilator
+    target_dir: vendor/uvm-verilator
+    upstream:
+      git: "https://github.com/chipsalliance/uvm-verilator.git"
+      rev: 1eab10a7995c7846dcad7305b995ddb265880433  # uvm-2020-3.2
+    patch_dir: vendor/patches/uvm-verilator
+    include_from_upstream:
+      - src
+      - LICENSE
   # Spike (RISC-V ISA simulator) with the CoralNPU deviations; used for co-simulation.
   - name: riscv-isa-sim
     target_dir: vendor/riscv-isa-sim

@@ -111,7 +111,7 @@ genrule in `mk/mpact_cmds/` (ISA/bin-format decoder generation, ANTLR). Re-run i
 after changing the vendored revisions:
 
 ```bash
-python3 utils/bazel2make.py @coralnpu_mpact//sim:coralnpu_simulator @coralnpu_mpact//sim:coralnpu_v2_sim
+python3 utils/bazel2make.py @coralnpu_mpact//sim:coralnpu_simulator @coralnpu_mpact//sim:coralnpu_v2_sim @coralnpu_mpact//sim/cosim:coralnpu_cosim_lib
 ```
 
 Verified on the `vivado` OrbStack VM: Spike wrapper tests (16), MPACT

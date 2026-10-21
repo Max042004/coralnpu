@@ -104,7 +104,7 @@ define sw_rule
 $(1)_OBJDIR := $(SW_OUT)/$(1)
 $(1)_FLAGS  := $$($(1)_COPTS) $$(addprefix -D,$$($(1)_DEFS)) $$(if $$($(1)_TFLM),$$(TFLM_FLAGS))
 $(1)_ELF    := $(ELF_DIR)/$$($(1)_PKG)/$$($(1)_NAME).elf
-$(1)_LD     := $(SW_OUT)/$(1)/link.ld
+$(1)_LD     := $$(or $$($(1)_LDSCRIPT),$(SW_OUT)/$(1)/link.ld)
 $(1)_CRT    := $$(if $$($(1)_NOCRT),,$$(if $$($(1)_SEMIHOSTING),$$(CRT_SRCS_HTIF),$$(CRT_SRCS)))
 $(1)_CRTDEF := $$(if $$($(1)_SEMIHOSTING),,-DSKIP_HTIF_SYMBOLS)
 $(1)_OBJS   := $$(addprefix $$($(1)_OBJDIR)/crt_,$$(addsuffix .o,$$(notdir $$($(1)_CRT)))) \
@@ -154,3 +154,7 @@ $(ELF_DIR)/toolchain/gdb: $(RV_PREFIX)gdb
 	  if [ -e $$d/libmpfr.so.6 ]; then ln -sf $$d/libmpfr.so.6 $(BUILD)/libcompat/libmpfr.so.4; break; fi; done
 	printf '#!/bin/sh\nLD_LIBRARY_PATH=%s:$$LD_LIBRARY_PATH exec %sgdb "$$@"\n' '$(BUILD)/libcompat' '$(RV_PREFIX)' > $@
 	chmod +x $@
+
+# Memory initialisation files for ROM images / FPGA block RAMs (the old enable_vmem output).
+%.vmem: %.bin
+	srec_cat $< -binary -byte-swap 4 -fill 0xff -within $< -binary -range-pad 4 -o $@ -vmem 32

@@ -51,7 +51,7 @@ step_apt() {
 }
 
 step_bender() {
-  local tmp; tmp="$(mktemp -d)"
+  local tmp; tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' RETURN
   curl -fsSL -o "$tmp/bender.tgz" \
     "https://github.com/pulp-platform/bender/releases/download/v${BENDER_VERSION}/bender-${BENDER_VERSION}-x86_64-linux-gnu-ubuntu22.04.tar.gz"
   tar xzf "$tmp/bender.tgz" -C "$tmp"
@@ -60,7 +60,7 @@ step_bender() {
 }
 
 step_sbt() {
-  local tmp; tmp="$(mktemp -d)"
+  local tmp; tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' RETURN
   curl -fsSL -o "$tmp/sbt.tgz" \
     "https://github.com/sbt/sbt/releases/download/v${SBT_VERSION}/sbt-${SBT_VERSION}.tgz"
   rm -rf "$TOOLS/sbt"
@@ -69,7 +69,7 @@ step_sbt() {
 }
 
 step_firtool() {
-  local tmp; tmp="$(mktemp -d)"
+  local tmp; tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' RETURN
   curl -fsSL -o "$tmp/firtool.jar" \
     "https://repo1.maven.org/maven2/org/chipsalliance/llvm-firtool/${FIRTOOL_VERSION}/llvm-firtool-${FIRTOOL_VERSION}.jar"
   rm -rf "$TOOLS/firtool"; mkdir -p "$TOOLS/firtool"
@@ -80,7 +80,7 @@ step_firtool() {
 }
 
 step_verilator() {
-  local tmp; tmp="$(mktemp -d)"
+  local tmp; tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' RETURN
   curl -fsSL -o "$tmp/v.tgz" \
     "https://github.com/verilator/verilator/archive/refs/tags/v${VERILATOR_VERSION}.tar.gz"
   tar xzf "$tmp/v.tgz" -C "$tmp"
@@ -96,7 +96,7 @@ step_verilator() {
 # Prebuilt RISC-V cross toolchain for CoralNPU firmware (same archive the
 # Bazel build used).
 step_toolchain() {
-  local tmp; tmp="$(mktemp -d)"
+  local tmp; tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' RETURN
   curl -fsSL -o "$tmp/tc.tar.xz" "$TOOLCHAIN_URL"
   echo "$TOOLCHAIN_SHA256  $tmp/tc.tar.xz" | sha256sum -c -
   rm -rf "$TOOLS/toolchain_coralnpu_v2"
@@ -106,7 +106,7 @@ step_toolchain() {
 
 # Python 3.11 venv (cocotb et al.), matching the old hermetic interpreter.
 step_python() {
-  local tmp; tmp="$(mktemp -d)"
+  local tmp; tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' RETURN
   curl -fsSL -o "$tmp/uv.tgz" \
     "https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/uv-x86_64-unknown-linux-gnu.tar.gz"
   tar xzf "$tmp/uv.tgz" -C "$tmp"

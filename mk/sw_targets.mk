@@ -20,6 +20,12 @@ fpga_clk_test_NAME := clk_test
 fpga_clk_test_SRCS := fpga/sw/clk_test.c fpga/sw/clk.c fpga/sw/uart.c
 fpga_clk_test_LDS := 8 32 128 - DTCM
 
+SW_TARGETS += fpga_display_test
+fpga_display_test_PKG  := fpga
+fpga_display_test_NAME := display_test
+fpga_display_test_SRCS := fpga/sw/display_test.cc fpga/sw/display_hal.c fpga/sw/gpio.c fpga/sw/spi.c fpga/sw/clk.c third_party/waveshare_display/LCD_Driver.cpp third_party/waveshare_display/font12.c third_party/waveshare_display/font16.c third_party/waveshare_display/font20.c third_party/waveshare_display/font24.c third_party/waveshare_display/font8.c
+fpga_display_test_LDS := 1024 1024 128 - DTCM
+
 SW_TARGETS += fpga_add_uint32_m1
 fpga_add_uint32_m1_PKG  := fpga
 fpga_add_uint32_m1_NAME := add_uint32_m1
@@ -38,11 +44,41 @@ fpga_gpio_test_NAME := gpio_test
 fpga_gpio_test_SRCS := fpga/sw/gpio_test.cc fpga/sw/gpio.c fpga/sw/uart.c fpga/sw/clk.c
 fpga_gpio_test_LDS := 8 32 128 - DTCM
 
+SW_TARGETS += fpga_trivial_pass_sim_test_binary
+fpga_trivial_pass_sim_test_binary_PKG  := fpga
+fpga_trivial_pass_sim_test_binary_NAME := trivial_pass_sim_test_binary
+fpga_trivial_pass_sim_test_binary_SRCS := fpga/sw/trivial_pass_test.cc fpga/sw/uart.c fpga/sw/clk.c
+fpga_trivial_pass_sim_test_binary_LDS := 8 32 128 - DTCM
+
+SW_TARGETS += fpga_clk_sim_test_binary
+fpga_clk_sim_test_binary_PKG  := fpga
+fpga_clk_sim_test_binary_NAME := clk_sim_test_binary
+fpga_clk_sim_test_binary_SRCS := fpga/sw/clk_test.c fpga/sw/clk.c fpga/sw/uart.c
+fpga_clk_sim_test_binary_LDS := 8 32 128 - DTCM
+
+SW_TARGETS += fpga_trivial_pass_highmem_sim_test_binary
+fpga_trivial_pass_highmem_sim_test_binary_PKG  := fpga
+fpga_trivial_pass_highmem_sim_test_binary_NAME := trivial_pass_highmem_sim_test_binary
+fpga_trivial_pass_highmem_sim_test_binary_SRCS := fpga/sw/trivial_pass_test.cc fpga/sw/uart.c fpga/sw/clk.c
+fpga_trivial_pass_highmem_sim_test_binary_LDS := 1024 1024 128 - DTCM
+
+SW_TARGETS += fpga_dma_sim_test_binary
+fpga_dma_sim_test_binary_PKG  := fpga
+fpga_dma_sim_test_binary_NAME := dma_sim_test_binary
+fpga_dma_sim_test_binary_SRCS := fpga/sw/dma_test.cc fpga/sw/dma.c fpga/sw/uart.c fpga/sw/clk.c
+fpga_dma_sim_test_binary_LDS := 8 32 128 - DTCM
+
 SW_TARGETS += fpga_flash_tool
 fpga_flash_tool_PKG  := fpga
 fpga_flash_tool_NAME := flash_tool
 fpga_flash_tool_SRCS := fpga/sw/flash_tool.c fpga/sw/flash_tool_status.h fpga/sw/spi.c fpga/sw/clk.c fpga/sw/spi_flash.c fpga/sw/dma.c fpga/sw/gpio.c fpga/sw/uart.c
 fpga_flash_tool_LDS := 1024 1024 128 - DTCM
+
+SW_TARGETS += fpga_spi_flash_sim_test_binary
+fpga_spi_flash_sim_test_binary_PKG  := fpga
+fpga_spi_flash_sim_test_binary_NAME := spi_flash_sim_test_binary
+fpga_spi_flash_sim_test_binary_SRCS := fpga/sw/spi_flash_test.cc fpga/sw/gpio.c fpga/sw/spi.c fpga/sw/clk.c fpga/sw/spi_flash.c fpga/sw/dma.c fpga/sw/uart.c
+fpga_spi_flash_sim_test_binary_LDS := 8 32 128 - DTCM
 
 SW_TARGETS += fpga_i2c_camera_test
 fpga_i2c_camera_test_PKG  := fpga
@@ -67,6 +103,22 @@ fpga_isp_cam_test_PKG  := fpga
 fpga_isp_cam_test_NAME := isp_cam_test
 fpga_isp_cam_test_SRCS := fpga/sw/isp_cam_test.c fpga/sw/yocto_isp_register_address.h fpga/sw/uart.c fpga/sw/clk.c
 fpga_isp_cam_test_LDS := 8 32 128 - DTCM
+
+SW_TARGETS += fpga_rom_test
+fpga_rom_test_PKG  := fpga
+fpga_rom_test_NAME := rom_test
+fpga_rom_test_SRCS := fpga/sw/rom_boot/main.c fpga/sw/rom_boot/crt0.S fpga/sw/dma.c fpga/sw/spi_flash.c fpga/sw/clk.c fpga/sw/gpio.c fpga/sw/spi.c fpga/sw/uart.c
+fpga_rom_test_LDS := 8 32 128 - DTCM
+fpga_rom_test_NOCRT := 1
+fpga_rom_test_LDSCRIPT := fpga/sw/rom_boot/rom.ld
+
+SW_TARGETS += fpga_rom_test_highmem
+fpga_rom_test_highmem_PKG  := fpga
+fpga_rom_test_highmem_NAME := rom_test_highmem
+fpga_rom_test_highmem_SRCS := fpga/sw/rom_boot/main.c fpga/sw/rom_boot/crt0.S fpga/sw/dma.c fpga/sw/spi_flash.c fpga/sw/clk.c fpga/sw/gpio.c fpga/sw/spi.c fpga/sw/uart.c
+fpga_rom_test_highmem_LDS := 8 32 128 - DTCM
+fpga_rom_test_highmem_NOCRT := 1
+fpga_rom_test_highmem_LDSCRIPT := fpga/sw/rom_boot/rom_highmem.ld
 
 SW_TARGETS += hw_sim_mailbox_example
 hw_sim_mailbox_example_PKG  := hw_sim
@@ -5040,6 +5092,3 @@ tests_verilator_sim_htif_semihosting_test_LDS := 1024 1024 128 - DTCM
 tests_verilator_sim_htif_semihosting_test_SEMIHOSTING := 1
 
 # ---- not yet ported (need extra libraries / custom runtime) ----
-# UNSUPPORTED fpga:display_test  deps=[':display_hal', ':gpio', ':spi', '//third_party/waveshare_display']
-# UNSUPPORTED fpga:rom_test  crt=:rom_boot_crt0 ld=sw/rom_boot/rom.ld
-# UNSUPPORTED fpga:rom_test_highmem  crt=:rom_boot_crt0 ld=sw/rom_boot/rom_highmem.ld

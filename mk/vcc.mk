@@ -42,12 +42,16 @@ $(VCC_DIR)/$(1)_$(2)/libV$(1).a: $(BUILD)/rtl/$(1)/$$($(1)_SV) $(DEPS_PREFIX)/li
 	    CXX=$$(HOST_CXX) OPT_FAST=-O2 OPT_SLOW=-O1 \
 	    USER_CPPFLAGS="-fPIC -std=c++17 -Wno-sign-compare -Wno-unused-variable -Wno-unused-parameter -Wno-bool-operation -Wno-tautological-compare" \
 	    libV$(1).a libverilated.a
+endef
+
 # The generated header path the testbenches expect: hdl/chisel/src/coralnpu/V<design>_parameters.h
+define vcc_params_rule
 $(VCC_INC)/hdl/chisel/src/coralnpu/V$(1)_parameters.h: $(BUILD)/rtl/$(1)/$$($(1)_SV)
 	@mkdir -p $$(dir $$@)
 	cp $(BUILD)/rtl/$(1)/V$(1)_parameters.h $$@ 2>/dev/null || true
 	@touch $$@
 endef
+$(foreach d,$(DESIGNS),$(eval $(call vcc_params_rule,$(d))))
 $(foreach d,$(DESIGNS),$(eval $(call vcc_rule,$(d),sc)))
 $(foreach d,$(DESIGNS),$(eval $(call vcc_rule,$(d),cc)))
 
