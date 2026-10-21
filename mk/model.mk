@@ -63,7 +63,7 @@ endif
 	$(MAKE) $(BUILD)/model/$(MODEL)/$($(MODEL)_TOP)
 
 # Firmware ELFs that tests look up via coralnpu_test_utils/runfiles.py live in build/runfiles.
-cocotb-test: model $(BUILD)/runfiles/toolchain/gdb
+cocotb-test: model elfs-cocotb $(BUILD)/runfiles/toolchain/gdb
 ifndef MODULE
 	$(error usage: make cocotb-test MODEL=<name> MODULE=<python module>)
 endif

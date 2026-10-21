@@ -11,7 +11,7 @@ robot_output.xml
 # VCS generated things
 novas.fsdb
 ucli.key
-internal
+/internal
 *vcst*
 novas*
 *csrc*

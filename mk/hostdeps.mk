@@ -40,10 +40,13 @@ CMAKE_COMMON := -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=$(HOST_
 
 host-deps: $(ROOT)/tools/.bender/.checked_out
 
-# The libsystemctlm-soc checkout fails on its (unneeded) submodules; the headers are all we use.
+# Submodules are listed with ssh URLs; fetch them over https (no ssh keys needed).
+GIT_HTTPS := GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=url.https://github.com/.insteadOf GIT_CONFIG_VALUE_0=git@github.com:
+
+# The libsystemctlm-soc checkout may still fail on its (unneeded) submodules; the headers are all we use.
 $(ROOT)/tools/.bender/.checked_out: tools/Bender.yml
-	$(TOOLS_BENDER) update
-	-$(TOOLS_BENDER) checkout
+	$(GIT_HTTPS) $(TOOLS_BENDER) update
+	-$(GIT_HTTPS) $(TOOLS_BENDER) checkout
 	@test -d "$(ABSEIL_SRC)" -a -d "$(SYSTEMC_SRC)" -a -d "$(SYSTEMCTLM_SRC)/soc" -a -d "$(PYBIND11_SRC)" \
 	  || { echo "host dependency checkout incomplete"; exit 1; }
 	@touch $@

@@ -30,7 +30,7 @@ $(TOOLS_OUT)/nexus_loader: sw/utils/nexus_loader/main.cc $(NEXUS_SRCS) $(DEPS_PR
 	$(HOST_CXX) $(TOOLS_CXXFLAGS) -I/usr/include/libftdi1 -I/usr/include/libusb-1.0 \
 	  sw/utils/nexus_loader/main.cc $(NEXUS_SRCS) -o $@ \
 	  -Wl,--start-group $(ABSL_LIBS) -Wl,--end-group -lftdi1 -lusb-1.0 -lelf -lpthread
-$(TOOLS_OUT)/nexus_loader_test: sw/utils/nexus_loader/test.cc $(NEXUS_SRCS)
+$(TOOLS_OUT)/nexus_loader_test: sw/utils/nexus_loader/test.cc $(NEXUS_SRCS) $(DEPS_PREFIX)/lib/libabsl_base.a
 	@mkdir -p $(TOOLS_OUT)
 	$(HOST_CXX) $(TOOLS_CXXFLAGS) sw/utils/nexus_loader/test.cc $(NEXUS_SRCS) -o $@ -lgtest -lgtest_main -lpthread
 nexus-loader: $(TOOLS_OUT)/nexus_loader
@@ -44,7 +44,7 @@ FST_LIBS = -Wl,--start-group $(ABSL_LIBS) -Wl,--end-group -lre2 -lz -llz4 -lpthr
 $(TOOLS_OUT)/fst_query: utils/fst_query/main.cc $(FST_LIB_SRCS) $(DEPS_PREFIX)/lib/libabsl_base.a
 	@mkdir -p $(TOOLS_OUT)
 	$(HOST_CXX) $(FST_FLAGS) utils/fst_query/main.cc $(FST_LIB_SRCS) $(FST_RT_SRCS) -o $@ $(FST_LIBS)
-$(TOOLS_OUT)/fst_query_test: utils/fst_query/fst_query_test.cc $(FST_LIB_SRCS)
+$(TOOLS_OUT)/fst_query_test: utils/fst_query/fst_query_test.cc $(FST_LIB_SRCS) $(DEPS_PREFIX)/lib/libabsl_base.a
 	@mkdir -p $(TOOLS_OUT)
 	$(HOST_CXX) $(FST_FLAGS) utils/fst_query/fst_query_test.cc $(FST_LIB_SRCS) $(FST_RT_SRCS) -o $@ \
 	  $(FST_LIBS) -lgtest -lgtest_main
