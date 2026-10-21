@@ -1,9 +1,8 @@
 # Pinned requirements for manual Gemma model tensor extraction (tests/cocotb/dump_gemma_tensors.py).
 #
-# NOTE: This requirements file is maintained for manual developer execution outside
-# of Bazel. During the pure Bzlmod airgap migration (September 2026), the `@gemma_deps`
-# Bazel pip hub was removed to prevent multi-gigabyte PyTorch/Transformers wheel bloat
-# during full-repository offline airgap vendoring (`bazel vendor //...`).
+# NOTE: These requirements are for manual developer execution only; they are not
+# part of requirements.txt to avoid multi-gigabyte PyTorch/Transformers wheels in
+# the CI environment.
 #
 # To install in a virtual environment:
 #   python3 -m venv .venv && source .venv/bin/activate

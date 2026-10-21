@@ -18,7 +18,7 @@
 #   make cocotb-test MODEL=core_mini_axi_model MODULE=tests.cocotb.core_mini_axi_sim \
 #                    [TESTCASE=core_mini_axi_basic_write_read_memory]
 #
-# Replaces rules/verilator.bzl + rules/coco_tb.bzl. The per-model settings are
+# Verilator models for cocotb. The per-model settings are
 # in mk/models.mk; the generated SystemVerilog comes from `make rtl`.
 
 include mk/models.mk

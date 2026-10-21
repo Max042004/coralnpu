@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Verilated C++/SystemC models of the Chisel designs and the C++ testbenches
-# built on them. Port of verilator_cc_library (rules/verilator.bzl) and of
+# built on them. Verilator C++ library and
 # tests/verilator_sim.
 #
 #   make vcc DESIGN=CoreMiniAxi [KIND=sc|cc]   -> build/vcc/<design>_<kind>/

@@ -173,7 +173,7 @@ if __name__ == "__main__":
     rvv_matmul_asm_test()
     # MpactNpuSim (CoralNPUV2Simulator) defaults to kV2 (integer-only RVV)
     # without Zve32f or Zvfbfwma, and the standard UVM core_mini_axi RTL build
-    # does not enable Zvfbfwma (see rules/uvm_denylist.bzl).
+    # does not enable Zvfbfwma (see tests/uvm/denylist.py).
     if target != "npusim":
         rvv_float_matmul_c_test()
         rvv_float_matmul_asm_test()

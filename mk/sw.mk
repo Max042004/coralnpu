@@ -18,7 +18,7 @@
 #   make elfs-cocotb                       every tests/cocotb firmware
 #   make list-elfs
 #
-# Port of rules/coralnpu_v2.bzl + toolchain/. Target table: mk/sw_targets.mk.
+# Firmware build (toolchain/crt, toolchain/coralnpu_tcm.ld.tpl). Target table: mk/sw_targets.mk.
 # ELFs land in build/runfiles/<package>/ where coralnpu_test_utils/runfiles.py looks.
 #
 #   SW_COPT=fastbuild|opt|dbg   build type (default fastbuild)

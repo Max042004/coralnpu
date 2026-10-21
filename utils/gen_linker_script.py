@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Expand toolchain/coralnpu_tcm.ld.tpl (port of rules/linker.bzl)."""
+"""Expand toolchain/coralnpu_tcm.ld.tpl."""
 
 import argparse
 

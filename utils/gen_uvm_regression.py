@@ -15,10 +15,9 @@
 
 """Generate mk/uvm_regression.tsv: the firmware the UVM regression runs.
 
-Mirrors collect_coralnpu_elfs() / collect_coralnpu_riscv_tests() of the Bazel
-build: every firmware binary that uses the default linker script and is not on
+Every firmware binary that uses the default linker script and is not on
 the UVM denylist, plus the riscv-tests ELFs. Columns: ELF path relative to
-build/runfiles, Bazel-style label, timeout (cycles), run Spike co-sim (True/False).
+build/runfiles, target label, timeout (cycles), run Spike co-sim (True/False).
 
 The denylists and timeouts come from tests/uvm/denylist.py;
 the firmware table from mk/sw_targets.mk. Re-run after either changes:
