@@ -78,6 +78,16 @@ $(GEN_DIR)/coralnpu_test_utils/rvv_cpp_util.h: coralnpu_test_utils/rvv_cpp_util_
 	@mkdir -p $(dir $@)
 	python3 $< > $@
 
+# Demo model, kept out of git: tests/npusim_examples/models/face_embedding_int8.tflite
+# is turned into a C array (the target using it is in mk/sw_targets.mk).
+FACE_MODEL := tests/npusim_examples/models/face_embedding_int8.tflite
+FACE_GEN   := $(GEN_DIR)/genfiles/tests/npusim_examples/face_embedding_model.cc
+$(FACE_GEN): $(FACE_MODEL)
+	@mkdir -p $(dir $@)
+	$(PYTHON) vendor/tflite_micro/tensorflow/lite/micro/tools/generate_cc_arrays.py $@ $<
+	@# The model is too big for ITCM: keep it in the external data region.
+	sed -i 's/const unsigned char/const unsigned char __attribute__((section(".extdata"), aligned(16)))/' $@
+
 # $(call sw_compile,<src path>,<obj>,<extra flags>)
 define sw_cc_rule
 $(2): $(1) | $$(GEN_HDRS) $$(GEN_STAMP)

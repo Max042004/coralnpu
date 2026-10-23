@@ -5098,4 +5098,16 @@ tests_verilator_sim_htif_semihosting_test_SRCS := tests/verilator_sim/coralnpu/h
 tests_verilator_sim_htif_semihosting_test_LDS := 1024 1024 128 - DTCM
 tests_verilator_sim_htif_semihosting_test_SEMIHOSTING := 1
 
+# Face-embedding demo; needs the (git-ignored) model, see tests/npusim_examples/models.
+ifneq ($(wildcard tests/npusim_examples/models/face_embedding_int8.tflite),)
+SW_TARGETS += tests_npusim_examples_run_face_embedding
+tests_npusim_examples_run_face_embedding_PKG  := tests/npusim_examples
+tests_npusim_examples_run_face_embedding_NAME := run_face_embedding
+tests_npusim_examples_run_face_embedding_SRCS := tests/npusim_examples/run_face_embedding.cc sw/opt/litert-micro/conv.cc
+tests_npusim_examples_run_face_embedding_GENSRCS := genfiles/tests/npusim_examples/face_embedding_model.cc
+tests_npusim_examples_run_face_embedding_TFLM := 1
+tests_npusim_examples_run_face_embedding_LDS := 1024 1024 128 - DTCM
+tests_npusim_examples_run_face_embedding_SEMIHOSTING := 1
+endif
+
 # ---- not yet ported (need extra libraries / custom runtime) ----

@@ -1,5 +1,7 @@
 # Make/sbt/Bender outputs
 /build/
+# Downloaded demo models (licences unclear, not redistributed)
+/tests/npusim_examples/models/
 target/
 project/project/
 .bsp/
