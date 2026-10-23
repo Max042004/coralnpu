@@ -1,0 +1,23 @@
+# Scripts and build files must keep LF line endings even when the repository is
+# checked out through Windows git (autocrlf), because they run inside Linux/WSL2.
+*.sh      text eol=lf
+*.py      text eol=lf
+*.mk      text eol=lf
+*.tpl     text eol=lf
+*.json    text eol=lf
+*.yml     text eol=lf
+*.scala   text eol=lf
+*.sbt     text eol=lf
+*.sv      text eol=lf
+*.S       text eol=lf
+Makefile  text eol=lf
+Bender.lock text eol=lf
+tools/gitconfig text eol=lf
+
+# Patches are applied with `git apply`; their bytes must not be rewritten.
+*.patch   -text
+
+# Binary data
+*.tflite  binary
+*.pdf     binary
+*.elf     binary

@@ -39,7 +39,8 @@ Coral NPU offers the following top-level feature set:
 `utils/setup_vm.sh` installs all of them (pinned versions) on a bare Ubuntu
 22.04 machine or VM; see [coralnpu.dockerfile](utils/coralnpu.dockerfile) for the
 equivalent container. Our CI systems run builds and tests in that image.
-See [doc/build.md](doc/build.md) for the build system in detail.
+See [doc/build.md](doc/build.md) for the build system in detail. On Windows use
+WSL2: [doc/windows.md](doc/windows.md).
 
 ## Verification & Testing
 
