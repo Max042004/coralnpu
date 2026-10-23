@@ -5098,6 +5098,13 @@ tests_verilator_sim_htif_semihosting_test_SRCS := tests/verilator_sim/coralnpu/h
 tests_verilator_sim_htif_semihosting_test_LDS := 1024 1024 128 - DTCM
 tests_verilator_sim_htif_semihosting_test_SEMIHOSTING := 1
 
+SW_TARGETS += tests_npusim_examples_c_baremetal_demo
+tests_npusim_examples_c_baremetal_demo_PKG  := tests/npusim_examples
+tests_npusim_examples_c_baremetal_demo_NAME := c_baremetal_demo
+tests_npusim_examples_c_baremetal_demo_SRCS := tests/npusim_examples/c_baremetal_demo.c
+tests_npusim_examples_c_baremetal_demo_LDS := 1024 1024 128 - DTCM
+tests_npusim_examples_c_baremetal_demo_SEMIHOSTING := 1
+
 # Face-embedding demo; needs the (git-ignored) model, see tests/npusim_examples/models.
 ifneq ($(wildcard tests/npusim_examples/models/face_embedding_int8.tflite),)
 SW_TARGETS += tests_npusim_examples_run_face_embedding
