@@ -17,11 +17,12 @@
 #   make nexus-loader fst-query        build/tools/{nexus_loader,fst_query}
 #   make tool-tests                    C++ unit tests of those tools
 #   make py-tests                      python unit tests (+ MPACT-backed kernel tests)
+#   make demo-rvv-add                  RVV element-wise add (8 x uint32_t) on MPACT and on the RTL
 
 TOOLS_OUT := $(BUILD)/tools
 TOOLS_CXXFLAGS = -std=c++20 -O1 -I$(ROOT) $(DEPS_INC)
 
-.PHONY: nexus-loader fst-query tool-tests py-tests
+.PHONY: nexus-loader fst-query tool-tests py-tests demo-rvv-add
 
 # ---- nexus_loader: SPI loader for the Nexus board (FTDI) ----
 NEXUS_SRCS := sw/utils/nexus_loader/spi_master.cc
@@ -72,3 +73,9 @@ py-tests: $(PYBIND_SO) $(ELF_DIR)/tests/cocotb/rvv/arithmetics/rvv_add_int8_m1.e
           $(ELF_DIR)/sw/opt/litert-micro/test/conv_test.elf $(ELF_DIR)/sw/opt/litert-micro/test/max_pool_test.elf
 	set -e; for t in $(PY_UNIT_TESTS) $(PY_KERNEL_TESTS); do \
 	  echo "== $$t"; CORALNPU_RUNFILES=$(ELF_DIR) $(ROOT)/utils/run_py_test.sh $$t; done
+
+# ---- tutorial: RVV vector add (tests/cocotb/tutorial/program_rvv.cc) ----
+RVV_ADD_ELF := $(ELF_DIR)/tests/cocotb/tutorial/coralnpu_v2_program_rvv.elf
+demo-rvv-add: $(PYBIND_SO) $(RVV_ADD_ELF)
+	$(ROOT)/utils/run_py_test.sh tests/cocotb/tutorial/npusim_rvv.py
+	$(MAKE) cocotb-suite SUITE=tests_cocotb_tutorial_test_rvv
