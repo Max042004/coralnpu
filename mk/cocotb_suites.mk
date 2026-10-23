@@ -374,6 +374,13 @@ tests_cocotb_tutorial_tutorial_CASES  := core_mini_axi_tutorial
 tests_cocotb_tutorial_tutorial_SEED   := 42
 
 # tests/cocotb/tutorial
+COCOTB_SUITES += tests_cocotb_tutorial_test_rvv
+tests_cocotb_tutorial_test_rvv_MODEL  := rvv_core_mini_axi_model
+tests_cocotb_tutorial_test_rvv_MODULE := tests.cocotb.tutorial.test_rvv
+tests_cocotb_tutorial_test_rvv_CASES  := core_mini_axi_tutorial_rvv
+tests_cocotb_tutorial_test_rvv_SEED   := 42
+
+# tests/cocotb/tutorial
 COCOTB_SUITES += tests_cocotb_tutorial_hello_world_float_core_mini_axi
 tests_cocotb_tutorial_hello_world_float_core_mini_axi_MODEL  := core_mini_axi_model
 tests_cocotb_tutorial_hello_world_float_core_mini_axi_MODULE := tests.cocotb.tutorial.hello_world_float_core_mini_axi

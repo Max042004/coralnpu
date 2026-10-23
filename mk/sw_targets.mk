@@ -4965,6 +4965,12 @@ tests_cocotb_tutorial_coralnpu_v2_program_NAME := coralnpu_v2_program
 tests_cocotb_tutorial_coralnpu_v2_program_SRCS := tests/cocotb/tutorial/program.cc
 tests_cocotb_tutorial_coralnpu_v2_program_LDS := 8 32 128 - DTCM
 
+SW_TARGETS += tests_cocotb_tutorial_coralnpu_v2_program_rvv
+tests_cocotb_tutorial_coralnpu_v2_program_rvv_PKG  := tests/cocotb/tutorial
+tests_cocotb_tutorial_coralnpu_v2_program_rvv_NAME := coralnpu_v2_program_rvv
+tests_cocotb_tutorial_coralnpu_v2_program_rvv_SRCS := tests/cocotb/tutorial/program_rvv.cc
+tests_cocotb_tutorial_coralnpu_v2_program_rvv_LDS := 8 32 128 - DTCM
+
 SW_TARGETS += tests_cocotb_tutorial_tflite_micro_test
 tests_cocotb_tutorial_tflite_micro_test_PKG  := tests/cocotb/tutorial
 tests_cocotb_tutorial_tflite_micro_test_NAME := tflite_micro_test
